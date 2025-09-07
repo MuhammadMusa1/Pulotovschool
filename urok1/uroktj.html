@@ -1,0 +1,529 @@
+```html
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аз азимҷуссҳо то смартфонҳо: классификатсияи компютерҳо ва шиносоӣ бо Python</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #6366f1;
+            --text: #374151;
+            --text-light: #6b7280;
+            --bg: #f8fafc;
+            --bg-light: #ffffff;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --indigo-100: #e0e7ff;
+            --indigo-700: #4338ca;
+            --yellow-50: #fffbeb;
+            --yellow-100: #fef3c7;
+            --yellow-600: #d97706;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--blue-50) 0%, var(--indigo-100) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--blue-600), var(--blue-700));
+            color: white;
+            padding: 2rem;
+            border-radius: 16px 16px 0 0;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .presentation {
+            background: var(--bg-light);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .navigation {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: white;
+        }
+
+        .intro {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--blue-100);
+            color: var(--blue-700);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .tab:hover {
+            background: var(--blue-200);
+            transform: translateY(-1px);
+        }
+
+        .tab.active {
+            background: var(--blue-600);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .content {
+            padding: 2rem;
+            min-height: 500px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--blue-700);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--blue-100);
+        }
+
+        .content-box {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            line-height: 1.8;
+        }
+
+        .content-box h3 {
+            color: var(--blue-700);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        ul {
+            list-style: disc;
+            padding-left: 1.8rem;
+            margin: 0.8rem 0;
+        }
+
+        ol {
+            list-style: decimal;
+            padding-left: 1.8rem;
+            margin: 0.8rem 0;
+        }
+
+        li {
+            margin-bottom: 0.7rem;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 0.3em 0.6em;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+        }
+
+        pre {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.2rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            border-left: 5px solid var(--blue-300);
+            background: linear-gradient(to right, #f1f5f9 0%, #f8fafc 100%);
+        }
+
+        .placeholder {
+            text-align: center;
+            padding: 6rem 2rem;
+            color: var(--text-light);
+        }
+
+        .placeholder-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .placeholder-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        footer {
+            background: #f1f5f9;
+            padding: 1.8rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1rem;
+            border-top: 1px solid var(--border);
+            border-radius: 0 0 16px 16px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                width: 100%;
+                text-align: center;
+            }
+
+            .content {
+                padding: 1.5rem;
+            }
+
+            .content-box {
+                padding: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="presentation">
+            <header>
+                <h1>Аз азимҷуссҳо то смартфонҳо</h1>
+                <p class="subtitle">Классификатсияи компютерҳо ва шиносоӣ бо Python</p>
+            </header>
+
+            <div class="navigation">
+                <p class="intro">Презентация дар бораи классификатсияи компютерҳо ва шиносоӣ бо барномасозӣ. Интихоб кунед, ки кадом слайдро намоиш диҳед.</p>
+                <div class="tabs">
+                    <button class="tab active" data-section="1">Сарлавҳа</button>
+                    <button class="tab" data-section="2">Компютер чист?</button>
+                    <button class="tab" data-section="3">Классификатсия</button>
+                    <button class="tab" data-section="4">Суперкомпютерҳо</button>
+                    <button class="tab" data-section="5">Мейнфреймҳо</button>
+                    <button class="tab" data-section="6">Компютерҳои шахсӣ</button>
+                    <button class="tab" data-section="7">Микрокомпютерҳо</button>
+                    <button class="tab" data-section="8">Шиносоӣ бо Python</button>
+                    <button class="tab" data-section="9">Барномаи аввалини мо</button>
+                    <button class="tab" data-section="10">Хулоса</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Slide 1: Сарлавҳа -->
+                <div id="section-1" class="section active">
+                    <h2 class="section-title">Сарлавҳа</h2>
+                    <div class="content-box" style="text-align: center; background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);">
+                        <h1 style="color: var(--blue-700); font-size: 2.5rem; margin-bottom: 1rem;">Аз азимҷуссҳо то смартфонҳо</h1>
+                        <h2 style="color: var(--blue-600); font-size: 1.8rem; margin-bottom: 2rem;">классификатсияи компютерҳо ва шиносоӣ бо Python</h2>
+                        <div style="font-size: 1.3rem; color: var(--text); padding: 1.5rem; background: white; border-radius: 12px; display: inline-block;">
+                            <strong>Барномаи "Салом, Ҷаҳон!" ҳамчун қадами аввал ба олами код.</strong>
+                        </div>
+                        <div style="margin-top: 2rem; font-size: 1.1rem; color: var(--text-light);">
+                            Таҳияшуда барои донишҷӯён ва навкорон дар соҳаи барномасозӣ
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Компютер чист? -->
+                <div id="section-2" class="section">
+                    <h2 class="section-title">Компютер чист?</h2>
+                    <div class="content-box">
+                        <p><strong>Компютер</strong> — ин дастгоҳи электронӣ аст, ки иттилоотро мувофиқи фармонҳо (барномаҳо) коркард мекунад.</p>
+                    </div>
+                    <div class="content-box">
+                        <p>Компютерҳо моро аз ҳама ҷониб иҳота кардаанд:</p>
+                        <ul>
+                            <li>аз телефонҳо ва соатҳо то</li>
+                            <li>суперкомпютерҳои мураккабтарин.</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <p>Барои дарк кардани гуногуншаклии онҳо ба мо классификатсия лозим аст.</p>
+                        <p>Ин ба мо кӯмак мекунад, ки фаҳмем, ҳар як навъ барои чӣ истифода мешавад.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Классификатсия -->
+                <div id="section-3" class="section">
+                    <h2 class="section-title">Классификатсия аз рӯи қувва ва андоза</h2>
+                    <div class="content-box">
+                        <p>Мо компютерҳоро ба гурӯҳҳо ҷудо мекунем, вобаста ба:</p>
+                        <ul>
+                            <li>қувваи ҳисоббарорӣ</li>
+                            <li>андоза</li>
+                            <li>ва вазифаашон</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <p>Ин ба мо кӯмак мекунад, ки фаҳмем, ҳар як навъ барои чӣ истифода мешавад.</p>
+                    </div>
+                    <div class="content-box">
+                        <p>Мо аз пурқувваттарин то хурдтарин ҳаракат мекунем:</p>
+                        <ol>
+                            <li>Суперкомпютерҳо</li>
+                            <li>Мейнфреймҳо</li>
+                            <li>Компютерҳои шахсӣ</li>
+                            <li>Микрокомпютерҳо</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Суперкомпютерҳо -->
+                <div id="section-4" class="section">
+                    <h2 class="section-title">Суперкомпютерҳо</h2>
+                    <div class="content-box">
+                        <p><strong>Қавитарин ва зудтарин компютерҳои ҷаҳон.</strong></p>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Истифода:</strong></p>
+                        <ul>
+                            <li>тадқиқоти илмӣ</li>
+                            <li>моделсозии равандҳои мураккаб (иқлим, реаксияҳои ядроӣ)</li>
+                            <li>таҳлили маълумоти калон</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Мисолҳо:</strong></p>
+                        <ul>
+                            <li><strong>Frontier (ИМА)</strong> — яке аз қавитарин дар ҷаҳон</li>
+                            <li><strong>Aurora (ИМА)</strong> — онҳо тамоми биноҳоро ишғол мекунанд</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 5: Мейнфреймҳо -->
+                <div id="section-5" class="section">
+                    <h2 class="section-title">Мейнфреймҳо (ЭВМ-ҳои бузург)</h2>
+                    <div class="content-box">
+                        <p><strong>Қавӣ, боэътимод ва устувор</strong> барои ташкилотҳои калон.</p>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Истифода:</strong></p>
+                        <ul>
+                            <li>коркарди транзаксияҳо дар бонкҳо</li>
+                            <li>идоракунии базаҳои маълумоти ширкатҳои ҳавопаймоӣ</li>
+                            <li>коркарди маълумот дар муассисаҳои давлатӣ</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Хусусият:</strong> метавонад ҳамзамон ба ҳазорҳо корбар хизмат расонад.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 6: Компютерҳои шахсӣ -->
+                <div id="section-6" class="section">
+                    <h2 class="section-title">Компютерҳои шахсӣ (ПК)</h2>
+                    <div class="content-box">
+                        <p><strong>Машҳуртарин навъ</strong>, барои як нафар пешбинӣ шудааст.</p>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Намудҳо:</strong></p>
+                        <ul>
+                            <li><strong>Компютери мизи корӣ:</strong> барои кор, бозиҳо, эҷодкорӣ</li>
+                            <li><strong>Ноутбук:</strong> компютери портативӣ</li>
+                            <li><strong>Моноблок:</strong> компютер ва монитор дар як корпус</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 7: Микрокомпютерҳо -->
+                <div id="section-7" class="section">
+                    <h2 class="section-title">Микрокомпютерҳо (Системаҳои дарунсохт)</h2>
+                    <div class="content-box">
+                        <p><strong>Хурдтарин ва махсустарин синфи компютерҳо.</strong></p>
+                        <p>Онҳо ба дастгоҳҳои дигар дохил карда мешаванд.</p>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Мисолҳо:</strong></p>
+                        <ul>
+                            <li>Смартфонҳо ва планшетҳо</li>
+                            <li>Соатҳои "ҳушманд" ва телевизорҳо</li>
+                            <li>Компютерҳои дохилӣ дар мошинҳо</li>
+                            <li>Электроника дар асбобҳои маишӣ</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 8: Шиносоӣ бо Python -->
+                <div id="section-8" class="section">
+                    <h2 class="section-title">Шиносоӣ бо Python</h2>
+                    <div class="content-box">
+                        <p><strong>Python</strong> — яке аз забонҳои барномасозии маъруф ва осон аст.</p>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Он барои:</strong></p>
+                        <ul>
+                            <li>сохтани сомонаҳо</li>
+                            <li>таҳлили маълумот</li>
+                            <li>офаридани бозиҳо</li>
+                            <li>ва бисёр чизҳои дигар истифода мешавад</li>
+                        </ul>
+                    </div>
+                    <div class="content-box">
+                        <p><strong>Хусусият:</strong> синтаксисаш хеле ба забони англисӣ монанд аст, ки барои навкорон беҳтарин аст.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 9: Барномаи аввалини мо -->
+                <div id="section-9" class="section">
+                    <h2 class="section-title">Барномаи аввалини мо</h2>
+                    <div class="content-box">
+                        <p>Анъанавӣ, шиносоӣ бо забон аз барномаи <strong>"Салом, Ҷаҳон!"</strong> оғоз мешавад.</p>
+                        <p><strong>Ҳадаф</strong> — нишон додани он аст, ки чӣ тавр матнро дар экран намоиш диҳем.</p>
+                    </div>
+                    <div class="content-box">
+                        <h3>Код дар Python:</h3>
+                        <pre>print("Салом, Ҷаҳон!")</pre>
+                        <p><strong>Функсияи print()</strong> ба компютер фармон медиҳад, ки матни дар нохунак бударо нишон диҳад.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 10: Хулоса -->
+                <div id="section-10" class="section">
+                    <h2 class="section-title">Хулоса</h2>
+                    <div class="content-box" style="background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); border-left: 5px solid var(--success);">
+                        <p><strong>Мо омӯхтем, ки компютерҳо гуногунанд</strong> — аз суперкомпютерҳои азим то микрокомпютерҳои хурд.</p>
+                    </div>
+                    <div class="content-box" style="background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); border-left: 5px solid var(--success);">
+                        <p><strong>Мо қадами аввалро дар барномасозӣ гузоштем</strong>, барномаи аввалини худро дар Python навиштем.</p>
+                    </div>
+                    <div class="content-box" style="background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); border-left: 5px solid var(--success);">
+                        <p><strong>Барномасозӣ — ин раванди шавқовари офаридани чизҳои нав аст</strong> ва шумо танҳо роҳро оғоз кардед.</p>
+                    </div>
+                    <div class="content-box" style="text-align: center; font-size: 1.4rem; font-weight: 600; color: var(--blue-700);">
+                        Ташаккур барои диққататон!
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                Презентация дар бораи классификатсияи компютерҳо ва шиносоӣ бо Python
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show selected section
+                    const sectionId = this.getAttribute('data-section');
+                    const selectedSection = document.getElementById(`section-${sectionId}`);
+                    if (selectedSection) {
+                        selectedSection.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+```
