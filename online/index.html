@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой цифровой дневник успеха</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Мой цифровой дневник успеха</h1>
+            <div class="header-controls">
+                <select id="language-switch" class="language-select">
+                    <option value="ru">Русский</option>
+                    <option value="tg">Тоҷикӣ</option>
+                </select>
+                <button id="user-menu" class="user-button">
+                    <i data-lucide="user"></i>
+                    <span id="user-name">Алексей</span>
+                </button>
+            </div>
+            <p id="greeting">Привет, Алексей!</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content">
+            <!-- Home Tab -->
+            <div id="home" class="content active">
+                <!-- Welcome Card -->
+                <div class="card welcome-card">
+                    <div class="emoji-large">🌟</div>
+                    <h2 id="welcome-title">Привет, Алексей!</h2>
+                    <p id="welcome-subtitle">Ты на правильном пути к успеху!</p>
+                </div>
+
+                <!-- Recent Grades -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="star"></i>
+                        <span id="recent-grades-title">Последние оценки</span>
+                    </div>
+                    <div id="recent-grades">
+                        <!-- Grades will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Active Goals -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="check-circle"></i>
+                        <span id="active-goals-title">Активные цели</span>
+                    </div>
+                    <div id="active-goals">
+                        <!-- Goals will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grades Tab -->
+            <div id="grades" class="content">
+                <!-- Add Grade Form -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="plus"></i>
+                        <span id="add-grade-title">Добавить оценку</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" id="subject-label">Название предмета</label>
+                        <input type="text" id="subject" class="form-control" placeholder="Например: Математика">
+                        <div class="error-message" id="subject-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label id="grade-label">Оценка: <span id="grade-value">5</span></label>
+                        <div class="range-container">
+                            <input type="range" id="grade" min="1" max="10" value="5">
+                            <div class="range-value" id="range-value">5</div>
+                        </div>
+                    </div>
+                    <button id="add-grade" class="btn btn-add">
+                        <i data-lucide="plus"></i>
+                        <span id="add-grade-btn-text">Добавить оценку</span>
+                    </button>
+                </div>
+
+                <!-- All Grades -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="chart-line"></i>
+                        <span id="all-grades-title">Все оценки</span>
+                    </div>
+                    <div id="all-grades">
+                        <!-- All grades will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Progress Chart -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="trending-up"></i>
+                        <span id="progress-title">Прогресс</span>
+                    </div>
+                    <div class="chart-container" id="progress-chart">
+                        <canvas id="chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Tab -->
+            <div id="goals" class="content">
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="target"></i>
+                        <span id="goals-title">Мои цели</span>
+                    </div>
+                    <div id="goals-list">
+                        <!-- Goals will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Tab -->
+            <div id="achievements" class="content">
+                <!-- Add Achievement Form -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="plus"></i>
+                        <span id="add-achievement-title">Добавить достижение</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="achievement-title" id="achievement-title-label">Название достижения</label>
+                        <input type="text" id="achievement-title" class="form-control" placeholder="Например: Лучший в математике">
+                        <div class="error-message" id="achievement-title-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="achievement-desc" id="achievement-desc-label">Описание</label>
+                        <input type="text" id="achievement-desc" class="form-control" placeholder="Опишите свое достижение">
+                        <div class="error-message" id="achievement-desc-error"></div>
+                    </div>
+                    <button id="add-achievement" class="btn btn-add">
+                        <i data-lucide="plus"></i>
+                        <span id="add-achievement-btn-text">Добавить достижение</span>
+                    </button>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="award"></i>
+                        <span id="achievements-title">Мои достижения</span>
+                    </div>
+                    <div class="achievements-grid" id="achievements-grid">
+                        <!-- Achievements will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Section -->
+            <div id="export" class="content">
+                <div class="card">
+                    <div class="card-title">
+                        <i data-lucide="download"></i>
+                        <span id="export-title">Экспорт данных</span>
+                    </div>
+                    <div class="export-options">
+                        <button id="export-pdf" class="btn-export">
+                            <i data-lucide="file-text"></i>
+                            <span id="export-pdf-text">Экспорт в PDF</span>
+                        </button>
+                        <button id="export-excel" class="btn-export">
+                            <i data-lucide="file-spreadsheet"></i>
+                            <span id="export-excel-text">Экспорт в Excel</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <i data-lucide="check-circle" style="margin-right: 10px;"></i>
+            <span id="notification-text"></span>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav">
+        <div class="nav-item active" data-tab="home">
+            <i data-lucide="book-open"></i>
+            <span id="nav-home">Главная</span>
+        </div>
+        <div class="nav-item" data-tab="grades">
+            <i data-lucide="chart-line"></i>
+            <span id="nav-grades">Оценки</span>
+        </div>
+        <div class="nav-item" data-tab="goals">
+            <i data-lucide="target"></i>
+            <span id="nav-goals">Цели</span>
+        </div>
+        <div class="nav-item" data-tab="achievements">
+            <i data-lucide="trophy"></i>
+            <span id="nav-achievements">Достижения</span>
+        </div>
+        <div class="nav-item" data-tab="export">
+            <i data-lucide="download"></i>
+            <span id="nav-export">Экспорт</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
