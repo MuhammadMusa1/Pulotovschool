@@ -1,213 +1,71 @@
 // script.js
 
-// App Data and State
-const appData = {
-    currentLanguage: 'ru',
-    currentUser: {
-        name: 'Алексей',
-        role: 'student', // student, teacher, admin
-        class: '9 класс'
-    },
-    students: [
-        { id: 1, name: 'Алексей', class: '9 класс', role: 'student' },
-        { id: 2, name: 'Мария', class: '9 класс', role: 'student' },
-        { id: 3, name: 'Иван', class: '9 класс', role: 'student' }
-    ],
-    teachers: [
-        { id: 1, name: 'Ольга Петровна', subject: 'Математика', role: 'teacher' },
-        { id: 2, name: 'Анна Сергеевна', subject: 'Русский язык', role: 'teacher' }
-    ],
-    grades: [
-        { id: 1, studentId: 1, subject: 'Математика', grade: 9, date: '15.01.2024', teacherId: 1 },
-        { id: 2, studentId: 1, subject: 'Русский язык', grade: 7, date: '14.01.2024', teacherId: 2 },
-        { id: 3, studentId: 1, subject: 'Физика', grade: 10, date: '13.01.2024', teacherId: 1 },
-        { id: 4, studentId: 1, subject: 'История', grade: 6, date: '12.01.2024', teacherId: 2 },
-        { id: 5, studentId: 1, subject: 'Биология', grade: 8, date: '11.01.2024', teacherId: 1 }
-    ],
-    goals: [
-        { id: 1, studentId: 1, text: 'Подготовиться к контрольной по математике', completed: false },
-        { id: 2, studentId: 1, text: 'Прочитать главу по литературе', completed: true },
-        { id: 3, studentId: 1, text: 'Сдать проект по информатике', completed: false }
-    ],
-    achievements: [
-        { id: 1, studentId: 1, title: 'Лучший в математике', description: 'Высокие оценки за четверть', stars: 5, date: '10.01.2024' },
-        { id: 2, studentId: 1, title: 'Читатель года', description: 'Прочитал 10 книг', stars: 3, date: '05.01.2024' }
-    ],
-    nextId: 1000
-};
+// Initialize Lucide icons
+lucide.createIcons();
 
-// Language translations
-const translations = {
-    ru: {
-        greeting: 'Привет, ',
-        welcomeTitle: 'Привет, ',
-        welcomeSubtitle: 'Ты на правильном пути к успеху!',
-        recentGradesTitle: 'Последние оценки',
-        activeGoalsTitle: 'Активные цели',
-        addGradeTitle: 'Добавить оценку',
-        subjectLabel: 'Название предмета',
-        gradeLabel: 'Оценка: ',
-        addGradeBtnText: 'Добавить оценку',
-        allGradesTitle: 'Все оценки',
-        progressTitle: 'Прогресс',
-        goalsTitle: 'Мои цели',
-        addAchievementTitle: 'Добавить достижение',
-        achievementTitleLabel: 'Название достижения',
-        achievementDescLabel: 'Описание',
-        addAchievementBtnText: 'Добавить достижение',
-        achievementsTitle: 'Мои достижения',
-        exportTitle: 'Экспорт данных',
-        exportPdfText: 'Экспорт в PDF',
-        exportExcelText: 'Экспорт в Excel',
-        navHome: 'Главная',
-        navGrades: 'Оценки',
-        navGoals: 'Цели',
-        navAchievements: 'Достижения',
-        navExport: 'Экспорт',
-        errorEmpty: 'Поле не может быть пустым',
-        notificationGradeAdded: 'Оценка добавлена!',
-        notificationGoalCompleted: 'Цель выполнена!',
-        notificationAchievementAdded: 'Достижение добавлено!',
-        notificationExportPdf: 'Данные экспортированы в PDF!',
-        notificationExportExcel: 'Данные экспортированы в Excel!'
-    },
-    tg: {
-        greeting: 'Салом, ',
-        welcomeTitle: 'Салом, ',
-        welcomeSubtitle: 'Шумо дар роҳи муваффақият ҳастед!',
-        recentGradesTitle: 'Намудҳои охирин',
-        activeGoalsTitle: 'Ҳадафҳои фаъол',
-        addGradeTitle: 'Илова кардани нафар',
-        subjectLabel: 'Номи фан',
-        gradeLabel: 'Нафар: ',
-        addGradeBtnText: 'Илова кардани нафар',
-        allGradesTitle: 'Ҳамаи нафарҳо',
-        progressTitle: 'Тараqqиёт',
-        goalsTitle: 'Ҳадафҳои ман',
-        addAchievementTitle: 'Илова кардани дастовард',
-        achievementTitleLabel: 'Сарлавҳаи дастовард',
-        achievementDescLabel: 'Тавсиф',
-        addAchievementBtnText: 'Илова кардани дастовард',
-        achievementsTitle: 'Дастовардҳои ман',
-        exportTitle: 'Содироти маълумот',
-        exportPdfText: 'Содирот ба PDF',
-        exportExcelText: 'Содирот ба Excel',
-        navHome: 'Асосӣ',
-        navGrades: 'Нафарҳо',
-        navGoals: 'Ҳадафҳо',
-        navAchievements: 'Дастовардҳо',
-        navExport: 'Содирот',
-        errorEmpty: 'Майдон набояд холӣ бошад',
-        notificationGradeAdded: 'Нафар илова шуд!',
-        notificationGoalCompleted: 'Ҳадаф анҷом шуд!',
-        notificationAchievementAdded: 'Дастовард илова шуд!',
-        notificationExportPdf: 'Маълумот ба PDF содир шуд!',
-        notificationExportExcel: 'Маълумот ба Excel содир шуд!'
-    }
-};
+// Global variables
+let currentTab = 'dashboard';
 
 // DOM Elements
 const elements = {
+    // Navigation
     navItems: document.querySelectorAll('.nav-item'),
-    contents: document.querySelectorAll('.content'),
-    notification: document.getElementById('notification'),
-    notificationText: document.getElementById('notification-text'),
-    languageSwitch: document.getElementById('language-switch'),
-    userName: document.getElementById('user-name'),
-    greeting: document.getElementById('greeting'),
-    // Form elements
-    subject: document.getElementById('subject'),
-    grade: document.getElementById('grade'),
-    gradeValue: document.getElementById('grade-value'),
-    rangeValue: document.getElementById('range-value'),
-    addGradeBtn: document.getElementById('add-grade'),
-    // Achievement form
-    achievementTitle: document.getElementById('achievement-title'),
-    achievementDesc: document.getElementById('achievement-desc'),
-    addAchievementBtn: document.getElementById('add-achievement'),
-    // Error messages
-    subjectError: document.getElementById('subject-error'),
-    achievementTitleError: document.getElementById('achievement-title-error'),
-    achievementDescError: document.getElementById('achievement-desc-error'),
-    // Export buttons
-    exportPdf: document.getElementById('export-pdf'),
-    exportExcel: document.getElementById('export-excel')
+    tabContents: document.querySelectorAll('.tab-content'),
+    
+    // Modals
+    modalOverlay: document.getElementById('modal-overlay'),
+    modals: document.querySelectorAll('.modal'),
+    
+    // Buttons
+    addGradeBtn: document.getElementById('add-grade-btn'),
+    addStudentBtn: document.getElementById('add-student-btn'),
+    addGoalBtn: document.getElementById('add-goal-btn'),
+    addAchievementBtn: document.getElementById('add-achievement-btn'),
+    exportPdfBtn: document.getElementById('export-pdf-btn'),
+    exportExcelBtn: document.getElementById('export-excel-btn'),
+    exportStatsBtn: document.getElementById('export-stats-btn'),
+    
+    // Forms
+    addGradeForm: document.getElementById('add-grade-form'),
+    addStudentForm: document.getElementById('add-student-form'),
+    
+    // Dropdowns
+    classFilter: document.getElementById('class-filter'),
+    subjectFilter: document.getElementById('subject-filter'),
+    studentClassFilter: document.getElementById('student-class-filter'),
+    gradeStudent: document.getElementById('grade-student'),
+    
+    // Data containers
+    gradesBody: document.getElementById('grades-body'),
+    studentsBody: document.getElementById('students-body'),
+    goalsList: document.getElementById('goals-list'),
+    achievementsGrid: document.getElementById('achievements-grid'),
+    recentActivity: document.getElementById('recent-activity'),
+    
+    // Stats
+    totalGrades: document.getElementById('total-grades'),
+    activeGoals: document.getElementById('active-goals'),
+    achievementsCount: document.getElementById('achievements-count'),
+    averageScore: document.getElementById('average-score')
 };
 
 // Utility Functions
-function getTranslation(key) {
-    return translations[appData.currentLanguage][key] || key;
-}
-
-function updateTextContent() {
-    // Update all text elements based on current language
-    document.getElementById('greeting').textContent = getTranslation('greeting') + appData.currentUser.name;
-    document.getElementById('welcome-title').textContent = getTranslation('welcomeTitle') + appData.currentUser.name + '!';
-    document.getElementById('welcome-subtitle').textContent = getTranslation('welcomeSubtitle');
-    
-    // Update labels
-    document.getElementById('recent-grades-title').textContent = getTranslation('recentGradesTitle');
-    document.getElementById('active-goals-title').textContent = getTranslation('activeGoalsTitle');
-    document.getElementById('add-grade-title').textContent = getTranslation('addGradeTitle');
-    document.getElementById('subject-label').textContent = getTranslation('subjectLabel');
-    document.getElementById('grade-label').innerHTML = getTranslation('gradeLabel') + '<span id="grade-value">5</span>';
-    document.getElementById('add-grade-btn-text').textContent = getTranslation('addGradeBtnText');
-    document.getElementById('all-grades-title').textContent = getTranslation('allGradesTitle');
-    document.getElementById('progress-title').textContent = getTranslation('progressTitle');
-    document.getElementById('goals-title').textContent = getTranslation('goalsTitle');
-    document.getElementById('add-achievement-title').textContent = getTranslation('addAchievementTitle');
-    document.getElementById('achievement-title-label').textContent = getTranslation('achievementTitleLabel');
-    document.getElementById('achievement-desc-label').textContent = getTranslation('achievementDescLabel');
-    document.getElementById('add-achievement-btn-text').textContent = getTranslation('addAchievementBtnText');
-    document.getElementById('achievements-title').textContent = getTranslation('achievementsTitle');
-    document.getElementById('export-title').textContent = getTranslation('exportTitle');
-    document.getElementById('export-pdf-text').textContent = getTranslation('exportPdfText');
-    document.getElementById('export-excel-text').textContent = getTranslation('exportExcelText');
-    
-    // Update navigation
-    document.getElementById('nav-home').textContent = getTranslation('navHome');
-    document.getElementById('nav-grades').textContent = getTranslation('navGrades');
-    document.getElementById('nav-goals').textContent = getTranslation('navGoals');
-    document.getElementById('nav-achievements').textContent = getTranslation('navAchievements');
-    document.getElementById('nav-export').textContent = getTranslation('navExport');
-}
-
 function showNotification(message) {
-    elements.notificationText.textContent = message;
-    elements.notification.classList.add('show');
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notification-text');
+    
+    notificationText.textContent = message;
+    notification.classList.add('show');
     
     setTimeout(() => {
-        elements.notification.classList.remove('show');
+        notification.classList.remove('show');
     }, 3000);
 }
 
-function validateField(element, errorElement, errorMessage) {
-    const value = element.value.trim();
-    if (value === '') {
-        element.classList.add('error');
-        errorElement.textContent = errorMessage;
-        errorElement.classList.add('show');
-        return false;
-    } else {
-        element.classList.remove('error');
-        errorElement.classList.remove('show');
-        return true;
-    }
-}
-
-function getGradeEmoji(grade) {
-    if (grade >= 9) return '🥳';
-    if (grade >= 7) return '😊';
-    if (grade >= 5) return '😕';
-    if (grade >= 3) return '🙁';
-    return '😞';
-}
-
-// Navigation Functions
 function switchTab(tabId) {
     // Remove active class from all items
     elements.navItems.forEach(item => item.classList.remove('active'));
-    elements.contents.forEach(content => content.classList.remove('active'));
+    elements.tabContents.forEach(content => content.classList.remove('active'));
     
     // Add active class to selected item
     const activeNavItem = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
@@ -220,234 +78,276 @@ function switchTab(tabId) {
         activeContent.classList.add('active');
     }
     
-    // Update content
+    currentTab = tabId;
     updateContent();
+}
+
+function openModal(modalId) {
+    document.getElementById('modal-overlay').style.display = 'flex';
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function populateStudentDropdown() {
+    const students = api.getStudents();
+    elements.gradeStudent.innerHTML = '<option value="">Выберите ученика</option>';
+    
+    students.forEach(student => {
+        const option = document.createElement('option');
+        option.value = student.id;
+        option.textContent = `${student.name} (${student.class})`;
+        elements.gradeStudent.appendChild(option);
+    });
 }
 
 // Content Update Functions
 function updateContent() {
-    const activeTab = document.querySelector('.nav-item.active').getAttribute('data-tab');
-    
-    switch(activeTab) {
-        case 'home':
-            updateHomeContent();
+    const user = api.getCurrentUser();
+    if (!user) return;
+
+    switch(currentTab) {
+        case 'dashboard':
+            updateDashboard();
             break;
         case 'grades':
-            updateGradesContent();
+            updateGrades();
+            break;
+        case 'students':
+            updateStudents();
             break;
         case 'goals':
-            updateGoalsContent();
+            updateGoals();
             break;
         case 'achievements':
-            updateAchievementsContent();
+            updateAchievements();
             break;
         case 'export':
-            updateExportContent();
+            updateExport();
+            break;
+        case 'profile':
+            updateProfile();
             break;
     }
 }
 
-function updateHomeContent() {
-    // Recent grades
-    const recentGradesContainer = document.getElementById('recent-grades');
-    recentGradesContainer.innerHTML = '';
+function updateDashboard() {
+    // Update stats
+    const stats = api.getStatistics();
+    elements.totalGrades.textContent = stats.totalGrades;
+    elements.averageScore.textContent = stats.averageScore;
     
-    const studentGrades = appData.grades.filter(grade => grade.studentId === 1).slice(0, 3);
-    if (studentGrades.length === 0) {
-        recentGradesContainer.innerHTML = `
-            <div style="text-align: center; padding: 20px; color: #6b7280;">
-                <div style="font-size: 2rem;">📚</div>
-                <div>${getTranslation('noGrades')}</div>
-            </div>
-        `;
-    } else {
-        studentGrades.forEach(grade => {
-            const gradeElement = document.createElement('div');
-            gradeElement.className = `grade-item grade-${grade.grade}`;
-            gradeElement.innerHTML = `
-                <div class="grade-info">
-                    <span class="grade-number">${grade.grade}</span>
-                    <div>
-                        <div class="grade-subject">${grade.subject}</div>
-                        <div class="grade-date">${grade.date}</div>
-                    </div>
-                </div>
-                <span class="grade-emoji">${getGradeEmoji(grade.grade)}</span>
-            `;
-            recentGradesContainer.appendChild(gradeElement);
-        });
-    }
-
-    // Active goals
-    const activeGoalsContainer = document.getElementById('active-goals');
-    activeGoalsContainer.innerHTML = '';
+    // Update goals count
+    const goals = api.getGoals();
+    elements.activeGoals.textContent = goals.filter(g => !g.completed).length;
     
-    const studentGoals = appData.goals.filter(goal => goal.studentId === 1 && !goal.completed);
-    if (studentGoals.length === 0) {
-        activeGoalsContainer.innerHTML = `
-            <div style="text-align: center; padding: 20px; color: #6b7280;">
-                <div style="font-size: 2rem;">🎉</div>
-                <div>${getTranslation('allGoalsCompleted')}</div>
-            </div>
-        `;
-    } else {
-        studentGoals.slice(0, 3).forEach(goal => {
-            const goalElement = document.createElement('div');
-            goalElement.className = 'grade-item';
-            goalElement.innerHTML = `
-                <span style="font-size: 1.5rem; margin-right: 10px;">🎯</span>
-                <span style="color: #333;">${goal.text}</span>
-            `;
-            activeGoalsContainer.appendChild(goalElement);
-        });
-    }
+    // Update achievements count
+    const achievements = api.getAchievements();
+    elements.achievementsCount.textContent = achievements.length;
+    
+    // Update recent activity
+    updateRecentActivity();
 }
 
-function updateGradesContent() {
-    // Update grade value display
-    const gradeValueElement = document.getElementById('grade-value');
-    if (gradeValueElement) {
-        gradeValueElement.textContent = elements.grade.value;
-    }
+function updateRecentActivity() {
+    const grades = api.getGrades();
+    const sortedGrades = [...grades].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const recentGrades = sortedGrades.slice(0, 3);
     
-    if (elements.rangeValue) {
-        elements.rangeValue.textContent = elements.grade.value;
-    }
-
-    elements.grade.addEventListener('input', () => {
-        if (gradeValueElement) {
-            gradeValueElement.textContent = elements.grade.value;
-        }
-        if (elements.rangeValue) {
-            elements.rangeValue.textContent = elements.grade.value;
-        }
-    });
-
-    // All grades
-    const allGradesContainer = document.getElementById('all-grades');
-    allGradesContainer.innerHTML = '';
+    elements.recentActivity.innerHTML = '';
     
-    const studentGrades = appData.grades.filter(grade => grade.studentId === 1);
-    if (studentGrades.length === 0) {
-        allGradesContainer.innerHTML = `
-            <div style="text-align: center; padding: 20px; color: #6b7280;">
-                <div style="font-size: 2rem;">📚</div>
-                <div>${getTranslation('noGrades')}</div>
+    recentGrades.forEach(grade => {
+        const student = api.students.find(s => s.id === grade.studentId);
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+            <div class="activity-icon">📝</div>
+            <div class="activity-content">
+                <div class="activity-title">Новая оценка: ${grade.score} по ${grade.subject}</div>
+                <div class="activity-date">${grade.date} • ${student ? student.name : 'Ученик'}</div>
             </div>
         `;
-    } else {
-        studentGrades.forEach(grade => {
-            const teacher = appData.teachers.find(t => t.id === grade.teacherId);
-            const teacherName = teacher ? teacher.name : '';
-            
-            const gradeElement = document.createElement('div');
-            gradeElement.className = `grade-item grade-${grade.grade}`;
-            gradeElement.innerHTML = `
-                <div class="grade-info">
-                    <span class="grade-number">${grade.grade}</span>
-                    <div>
-                        <div class="grade-subject">${grade.subject}</div>
-                        <div class="grade-date">${grade.date} • ${teacherName}</div>
-                    </div>
-                </div>
-                <span class="grade-emoji">${getGradeEmoji(grade.grade)}</span>
-            `;
-            allGradesContainer.appendChild(gradeElement);
-        });
-    }
-
-    // Update chart
-    updateChart();
+        elements.recentActivity.appendChild(activityItem);
+    });
 }
 
-function updateGoalsContent() {
-    const goalsList = document.getElementById('goals-list');
-    goalsList.innerHTML = '';
+function updateGrades() {
+    const grades = api.getGrades();
+    elements.gradesBody.innerHTML = '';
     
-    const studentGoals = appData.goals.filter(goal => goal.studentId === 1);
-    studentGoals.forEach(goal => {
-        const goalElement = document.createElement('div');
-        goalElement.className = 'goal-item';
-        goalElement.innerHTML = `
-            <div class="goal-checkbox ${goal.completed ? 'checked' : ''}">
-                ${goal.completed ? '<i data-lucide="check" style="color: white; font-size: 14px;"></i>' : ''}
-            </div>
-            <div class="goal-text ${goal.completed ? 'completed' : ''}">${goal.text}</div>
+    if (grades.length === 0) {
+        elements.gradesBody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align: center; padding: 40px; color: var(--gray);">
+                    Нет оценок
+                </td>
+            </tr>
         `;
-        
-        goalElement.addEventListener('click', () => {
-            goal.completed = !goal.completed;
-            updateContent();
-            
-            if (!goal.completed) {
-                showNotification(getTranslation('notificationGoalCompleted'));
-            }
-        });
-        
-        goalsList.appendChild(goalElement);
+        return;
+    }
+    
+    grades.forEach(grade => {
+        const student = api.students.find(s => s.id === grade.studentId);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${student ? student.name : 'Неизвестно'}</td>
+            <td>${student ? student.class : '—'}</td>
+            <td>${grade.subject}</td>
+            <td>${grade.work}</td>
+            <td>${grade.date}</td>
+            <td><strong style="color: ${getGradeColor(grade.score)}">${grade.score}</strong></td>
+            <td>${grade.teacher}</td>
+            <td>
+                <button class="btn btn-small edit-grade" data-id="${grade.id}">
+                    <i data-lucide="edit"></i>
+                </button>
+            </td>
+        `;
+        elements.gradesBody.appendChild(row);
     });
-
-    // Initialize Lucide icons in dynamically created elements
+    
     lucide.createIcons();
 }
 
-function updateAchievementsContent() {
-    const achievementsGrid = document.getElementById('achievements-grid');
-    achievementsGrid.innerHTML = '';
+function updateStudents() {
+    const students = api.getStudents();
+    elements.studentsBody.innerHTML = '';
     
-    const studentAchievements = appData.achievements.filter(achievement => achievement.studentId === 1);
-    if (studentAchievements.length === 0) {
-        achievementsGrid.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #6b7280;">
-                <div style="font-size: 2rem;">🏆</div>
-                <div>${getTranslation('noAchievements')}</div>
+    if (students.length === 0) {
+        elements.studentsBody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 40px; color: var(--gray);">
+                    Нет учеников
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    students.forEach(student => {
+        const grades = api.grades.filter(g => g.studentId === student.id);
+        const average = grades.length > 0 ? 
+            (grades.reduce((sum, g) => sum + g.score, 0) / grades.length).toFixed(1) : '—';
+            
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${student.name}</td>
+            <td>${student.class}</td>
+            <td>${student.contact || '—'}</td>
+            <td><strong style="color: ${getGradeColor(parseFloat(average))}">${average}</strong></td>
+            <td>
+                <button class="btn btn-small view-grades" data-id="${student.id}">
+                    <i data-lucide="book-open"></i>
+                </button>
+            </td>
+        `;
+        elements.studentsBody.appendChild(row);
+    });
+    
+    lucide.createIcons();
+}
+
+function updateGoals() {
+    const goals = api.getGoals();
+    elements.goalsList.innerHTML = '';
+    
+    if (goals.length === 0) {
+        elements.goalsList.innerHTML = `
+            <div class="card" style="text-align: center; padding: 40px;">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🎯</div>
+                <h3>Нет целей</h3>
+                <p style="color: var(--gray);">Добавьте свою первую цель</p>
             </div>
         `;
-    } else {
-        studentAchievements.forEach(achievement => {
-            const achievementElement = document.createElement('div');
-            achievementElement.className = 'achievement-card';
-            
-            // Random emoji based on context
-            const emojis = ['🎉', '🏆', '⭐', '🏅', '🎯', '📚', '🔬', '🎨', '⚽'];
-            const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-            
-            let starsHTML = '';
-            for (let i = 0; i < achievement.stars; i++) {
-                starsHTML += '<span class="star">⭐</span>';
-            }
-            
-            achievementElement.innerHTML = `
+        return;
+    }
+    
+    goals.forEach(goal => {
+        const student = api.students.find(s => s.id === goal.studentId);
+        const goalCard = document.createElement('div');
+        goalCard.className = 'goal-card';
+        goalCard.innerHTML = `
+            <div class="goal-content">
+                <div class="goal-title">${goal.text}</div>
+                <div class="goal-status">
+                    <div class="goal-date">До ${goal.targetDate}</div>
+                    <div class="goal-checkbox ${goal.completed ? 'checked' : ''}" data-id="${goal.id}">
+                        ${goal.completed ? '<i data-lucide="check"></i>' : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+        elements.goalsList.appendChild(goalCard);
+    });
+    
+    lucide.createIcons();
+    
+    // Add event listeners to checkboxes
+    document.querySelectorAll('.goal-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('click', () => {
+            const goalId = checkbox.getAttribute('data-id');
+            showNotification('Статус цели обновлен!');
+        });
+    });
+}
+
+function updateAchievements() {
+    const achievements = api.getAchievements();
+    elements.achievementsGrid.innerHTML = '';
+    
+    if (achievements.length === 0) {
+        elements.achievementsGrid.innerHTML = `
+            <div class="card" style="text-align: center; padding: 40px;">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🏆</div>
+                <h3>Нет достижений</h3>
+                <p style="color: var(--gray);">Добавьте первое достижение</p>
+            </div>
+        `;
+        return;
+    }
+    
+    achievements.forEach(achievement => {
+        const student = api.students.find(s => s.id === achievement.studentId);
+        const achievementCard = document.createElement('div');
+        achievementCard.className = 'achievement-card';
+        
+        const emojis = ['🏆', '🏅', '⭐', '🎉', '🌟', '💫', '✨'];
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        achievementCard.innerHTML = `
+            <div class="achievement-content">
                 <div class="achievement-emoji">${emoji}</div>
                 <div class="achievement-title">${achievement.title}</div>
                 <div class="achievement-desc">${achievement.description}</div>
-                <div class="stars">${starsHTML}</div>
-                <div style="font-size: 0.7rem; color: #6b7280; margin-top: 5px;">${achievement.date}</div>
-            `;
-            
-            achievementsGrid.appendChild(achievementElement);
-        });
-    }
+                <div style="font-size: 0.8rem; color: var(--gray);">${achievement.date}</div>
+            </div>
+        `;
+        elements.achievementsGrid.appendChild(achievementCard);
+    });
 }
 
-function updateExportContent() {
-    // This function can be expanded with actual export functionality
-    console.log('Export content updated');
+function updateExport() {
+    // Export functionality will be implemented here
+    console.log('Export tab updated');
 }
 
-function updateChart() {
-    // Simple text representation since we can't use full Chart.js
-    const progressText = document.createElement('div');
-    progressText.style.textAlign = 'center';
-    progressText.style.padding = '20px';
-    progressText.style.color = '#6b7280';
-    progressText.innerHTML = 'График прогресса<br><small>В реальной версии здесь будет интерактивный график</small>';
+function updateProfile() {
+    const user = api.getCurrentUser();
+    if (!user) return;
     
-    const chartContainer = document.getElementById('progress-chart');
-    if (chartContainer) {
-        chartContainer.innerHTML = '';
-        chartContainer.appendChild(progressText);
-    }
+    // Profile is updated in auth.js
+}
+
+// Helper Functions
+function getGradeColor(score) {
+    if (score >= 9) return '#8b5cf6'; // purple
+    if (score >= 7) return '#06b6d4'; // cyan
+    if (score >= 5) return '#f97316'; // orange
+    if (score >= 3) return '#ef4444'; // red
+    return '#6b7280'; // gray
 }
 
 // Event Listeners
@@ -460,124 +360,148 @@ function setupEventListeners() {
         });
     });
 
-    // Language switch
-    elements.languageSwitch.addEventListener('change', () => {
-        appData.currentLanguage = elements.languageSwitch.value;
-        updateTextContent();
-        showNotification('Язык изменён!');
+    // Modal buttons
+    document.querySelectorAll('.close-btn, .close-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-modal') || btn.closest('.modal').id;
+            closeModal(modalId);
+        });
     });
 
-    // Add Grade
-    elements.addGradeBtn.addEventListener('click', () => {
-        const subject = elements.subject.value.trim();
-        const grade = parseInt(elements.grade.value);
-        
-        // Validate fields
-        const isSubjectValid = validateField(
-            elements.subject, 
-            elements.subjectError, 
-            getTranslation('errorEmpty')
-        );
-        
-        if (!isSubjectValid) return;
-        
-        if (!isNaN(grade)) {
-            const newGrade = {
-                id: appData.nextId++,
-                studentId: 1,
-                subject: subject,
-                grade: grade,
-                date: new Date().toLocaleDateString('ru-RU'),
-                teacherId: 1
+    // Modal overlay click
+    elements.modalOverlay.addEventListener('click', () => {
+        document.querySelectorAll('.modal').forEach(modal => {
+            if (modal.style.display === 'block') {
+                closeModal(modal.id);
+            }
+        });
+    });
+
+    // Add buttons
+    if (elements.addGradeBtn) {
+        elements.addGradeBtn.addEventListener('click', () => {
+            populateStudentDropdown();
+            openModal('add-grade-modal');
+        });
+    }
+
+    if (elements.addStudentBtn) {
+        elements.addStudentBtn.addEventListener('click', () => {
+            openModal('add-student-modal');
+        });
+    }
+
+    if (elements.addGoalBtn) {
+        elements.addGoalBtn.addEventListener('click', () => {
+            showNotification('Цели можно добавлять только ученику');
+        });
+    }
+
+    if (elements.addAchievementBtn) {
+        elements.addAchievementBtn.addEventListener('click', () => {
+            showNotification('Достижения можно добавлять только учителю');
+        });
+    }
+
+    // Form submissions
+    if (elements.addGradeForm) {
+        elements.addGradeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const gradeData = {
+                studentId: parseInt(formData.get('grade-student')),
+                subject: formData.get('grade-subject'),
+                work: formData.get('grade-work'),
+                score: parseInt(formData.get('grade-score')),
+                comment: formData.get('grade-comment'),
+                weight: parseFloat(formData.get('grade-weight'))
             };
             
-            appData.grades.unshift(newGrade);
-            elements.subject.value = '';
-            elements.grade.value = 5;
-            document.getElementById('grade-value').textContent = 5;
-            elements.rangeValue.textContent = 5;
+            const result = api.addGrade(gradeData);
+            if (result.success) {
+                showNotification('Оценка добавлена успешно!');
+                closeModal('add-grade-modal');
+                e.target.reset();
+                updateContent();
+            } else {
+                showNotification(result.error);
+            }
+        });
+    }
+
+    if (elements.addStudentForm) {
+        elements.addStudentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const studentData = {
+                name: formData.get('student-name'),
+                class: formData.get('student-class'),
+                contact: formData.get('student-contact'),
+                username: formData.get('student-username'),
+                password: formData.get('student-password')
+            };
             
-            showNotification(getTranslation('notificationGradeAdded'));
-            updateContent();
-        }
-    });
+            const result = api.addStudent(studentData);
+            if (result.success) {
+                showNotification('Ученик добавлен успешно!');
+                closeModal('add-student-modal');
+                e.target.reset();
+                updateContent();
+            } else {
+                showNotification(result.error);
+            }
+        });
+    }
 
-    // Add Achievement
-    elements.addAchievementBtn.addEventListener('click', () => {
-        const title = elements.achievementTitle.value.trim();
-        const desc = elements.achievementDesc.value.trim();
-        
-        // Validate fields
-        const isTitleValid = validateField(
-            elements.achievementTitle, 
-            elements.achievementTitleError, 
-            getTranslation('errorEmpty')
-        );
-        
-        const isDescValid = validateField(
-            elements.achievementDesc, 
-            elements.achievementDescError, 
-            getTranslation('errorEmpty')
-        );
-        
-        if (!isTitleValid || !isDescValid) return;
-        
-        const newAchievement = {
-            id: appData.nextId++,
-            studentId: 1,
-            title: title,
-            description: desc,
-            stars: Math.floor(Math.random() * 5) + 1,
-            date: new Date().toLocaleDateString('ru-RU')
-        };
-        
-        appData.achievements.unshift(newAchievement);
-        elements.achievementTitle.value = '';
-        elements.achievementDesc.value = '';
-        
-        showNotification(getTranslation('notificationAchievementAdded'));
-        updateContent();
-    });
+    // Export buttons
+    if (elements.exportPdfBtn) {
+        elements.exportPdfBtn.addEventListener('click', () => {
+            showNotification('Экспорт в PDF реализован в полной версии');
+        });
+    }
 
-    // Export functionality
-    elements.exportPdf.addEventListener('click', () => {
-        showNotification(getTranslation('notificationExportPdf'));
-    });
+    if (elements.exportExcelBtn) {
+        elements.exportExcelBtn.addEventListener('click', () => {
+            showNotification('Экспорт в Excel реализован в полной версии');
+        });
+    }
 
-    elements.exportExcel.addEventListener('click', () => {
-        showNotification(getTranslation('notificationExportExcel'));
-    });
+    if (elements.exportStatsBtn) {
+        elements.exportStatsBtn.addEventListener('click', () => {
+            showNotification('Экспорт статистики реализован в полной версии');
+        });
+    }
 
-    // Real-time validation
-    elements.subject.addEventListener('blur', () => {
-        validateField(elements.subject, elements.subjectError, getTranslation('errorEmpty'));
-    });
+    // Filter changes
+    if (elements.classFilter) {
+        elements.classFilter.addEventListener('change', updateContent);
+    }
 
-    elements.achievementTitle.addEventListener('blur', () => {
-        validateField(elements.achievementTitle, elements.achievementTitleError, getTranslation('errorEmpty'));
-    });
+    if (elements.subjectFilter) {
+        elements.subjectFilter.addEventListener('change', updateContent);
+    }
 
-    elements.achievementDesc.addEventListener('blur', () => {
-        validateField(elements.achievementDesc, elements.achievementDescError, getTranslation('errorEmpty'));
-    });
+    if (elements.studentClassFilter) {
+        elements.studentClassFilter.addEventListener('change', updateContent);
+    }
 }
 
 // Initialize app
 function initApp() {
-    // Set current user name
-    elements.userName.textContent = appData.currentUser.name;
+    // Check if user is logged in
+    const user = api.getCurrentUser();
+    if (user) {
+        auth.showMainApp();
+        updateContent();
+    } else {
+        auth.showLoginPage();
+    }
     
-    // Initialize language
-    updateTextContent();
-    
-    // Set up event listeners
+    // Setup event listeners
     setupEventListeners();
     
     // Initial content update
     updateContent();
-    
-    // Initialize Lucide icons
-    lucide.createIcons();
 }
 
 // Start the app when page loads
