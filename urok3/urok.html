@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перспективы развития систем компьютеров</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        
+        .slide-indicators {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .slide-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #334155;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slide-indicator.active {
+            background-color: #3b82f6;
+            transform: scale(1.3);
+        }
+        
+        .slide-container {
+            position: relative;
+            margin-bottom: 40px;
+            height: 600px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+        
+        .slide-title {
+            font-size: 2.5rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slide-subtitle {
+            font-size: 1.5rem;
+            color: #64748b;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .slide-content {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            flex-grow: 1;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            text-align: center;
+        }
+        
+        .note {
+            background: rgba(96, 165, 250, 0.1);
+            border-left: 4px solid #60a5fa;
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .question {
+            background: rgba(156, 163, 183, 0.1);
+            border-left: 4px solid #a8b2d1;
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.3rem;
+            overflow-x: auto;
+            white-space: pre;
+            text-align: center;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .code-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: #334155;
+            border-radius: 5px 5px 0 0;
+            justify-content: center;
+        }
+        
+        .code-header div {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .code-header .red { background-color: #ef4444; }
+        .code-header .yellow { background-color: #fbbf24; }
+        .code-header .green { background-color: #10b981; }
+        
+        .code-text {
+            color: #10b981;
+            line-height: 1.6;
+            font-size: 1.3rem;
+        }
+        
+        .calculator-container {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            text-align: center;
+        }
+        
+        .calculator-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 1.3rem;
+        }
+        
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #e2e8f0;
+            font-size: 1.3rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #2563eb;
+        }
+        
+        .result {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 20px;
+            color: #10b981;
+            display: none;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(30, 41, 59, 0.5);
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #60a5fa;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        /* Decorative shapes */
+        .shape {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .shape-circle {
+            background-color: #60a5fa;
+        }
+        
+        .shape-square {
+            background-color: #10b981;
+            border-radius: 8px;
+        }
+        
+        .shape-triangle {
+            background-color: #f59e0b;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        
+        .shape-diamond {
+            background-color: #8b5cf6;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+        
+        /* Position shapes on different slides */
+        .slide:nth-child(1) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(1) .shape-2 { bottom: 15%; right: 10%; }
+        .slide:nth-child(1) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(2) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(2) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(2) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(3) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(3) .shape-2 { bottom: 10%; right: 10%; }
+        .slide:nth-child(3) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(4) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(4) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(4) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(5) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(5) .shape-2 { bottom: 15%; right: 10%; }
+        .slide:nth-child(5) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(6) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(6) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(6) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(7) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(7) .shape-2 { bottom: 10%; right: 10%; }
+        .slide:nth-child(7) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(8) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(8) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(8) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(9) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(9) .shape-2 { bottom: 15%; right: 10%; }
+        .slide:nth-child(9) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(10) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(10) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(10) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(11) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(11) .shape-2 { bottom: 10%; right: 10%; }
+        .slide:nth-child(11) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(12) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(12) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(12) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(13) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(13) .shape-2 { bottom: 15%; right: 10%; }
+        .slide:nth-child(13) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(14) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(14) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(14) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(15) .shape-1 { top: 10%; left: 10%; }
+        .slide:nth-child(15) .shape-2 { bottom: 10%; right: 10%; }
+        .slide:nth-child(15) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        .slide:nth-child(16) .shape-1 { top: 20%; right: 15%; }
+        .slide:nth-child(16) .shape-2 { bottom: 20%; left: 15%; }
+        .slide:nth-child(16) .shape-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .slide-content {
+                font-size: 1.3rem;
+                padding: 20px;
+            }
+            
+            .code-block {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+            
+            .form-group label,
+            .form-control,
+            .btn,
+            .result {
+                font-size: 1.2rem;
+            }
+            
+            .slide-container {
+                height: 500px;
+            }
+            
+            .calculator-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Перспективы развития систем компьютеров</h1>
+            <div class="slide-indicators" id="slideIndicators"></div>
+        </div>
+        
+        <div class="slide-container">
+            <!-- Slides will be generated by JavaScript -->
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                Назад
+            </button>
+            <button class="nav-btn" id="nextBtn">
+                Вперед
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="footer">
+            Урок по информатике для 9 класса • Перспективы развития компьютерных систем
+        </div>
+    </div>
+
+    <script>
+        const slidesData = [
+            {
+                title: "Перспективы развития систем компьютеров",
+                subtitle: "Основная тема: Ввод/вывод. Калькулятор",
+                content: ""
+            },
+            {
+                title: "Цели урока",
+                subtitle: "",
+                content: "• Понять, что такое ввод и вывод данных\n• Узнать перспективы развития компьютерных систем\n• Научиться писать калькулятор сложения и вычитания на Python"
+            },
+            {
+                title: "Что такое ввод данных?",
+                subtitle: "",
+                content: "Ввод — это получение информации пользователем от клавиатуры, мыши, микрофона.\n\nВ Python ввод осуществляется командой input()."
+            },
+            {
+                title: "Что такое вывод данных?",
+                subtitle: "",
+                content: "Вывод — это отображение информации пользователю.\n\nВ Python вывод выполняется командой print()."
+            },
+            {
+                title: "Пример ввода/вывода",
+                subtitle: "",
+                code: `name = input("Введите ваше имя: ")\nprint("Привет,", name)`
+            },
+            {
+                title: "Перспективы развития компьютерных систем",
+                subtitle: "",
+                content: "• Увеличение скорости обработки данных\n• Развитие искусственного интеллекта\n• Квантовые компьютеры\n• Миниатюризация и мобильность"
+            },
+            {
+                title: "Почему важно знать ввод и вывод?",
+                subtitle: "",
+                content: "Ввод и вывод — основа общения человека с компьютером\n\nВсе программы работают с информацией: получают → обрабатывают → показывают"
+            },
+            {
+                title: "Задача: калькулятор",
+                subtitle: "",
+                content: "Мы создадим калькулятор, который выполняет сложение и вычитание."
+            },
+            {
+                title: "Код калькулятора (начало)",
+                subtitle: "",
+                code: `a = int(input("Введите первое число: "))\nb = int(input("Введите второе число: "))\n\nprint("Сложение:", a + b)\nprint("Вычитание:", a - b)`
+            },
+            {
+                title: "Объяснение кода",
+                subtitle: "",
+                content: "• int() переводит ввод в число\n• + выполняет сложение\n• - выполняет вычитание\n• print() выводит результат"
+            },
+            {
+                title: "Улучшенный калькулятор",
+                subtitle: "",
+                code: `a = int(input("Введите первое число: "))\nb = int(input("Введите второе число: "))\noperation = input("Выберите операцию (+ или -): ")\n\nif operation == "+":\n    print("Результат:", a + b)\nelif operation == "-":\n    print("Результат:", a - b)\nelse:\n    print("Неизвестная операция")`
+            },
+            {
+                title: "Практическая работа (15 минут)",
+                subtitle: "",
+                content: "Напишите код калькулятора в Python\n\nЗапустите его\n\nПроверьте с разными числами"
+            },
+            {
+                title: "Перспективы калькуляторов",
+                subtitle: "",
+                content: "• Онлайн-калькуляторы\n• Инженерные калькуляторы\n• Интеграция в смартфоны и ПК\n• Голосовое управление"
+            },
+            {
+                title: "Значение темы для будущего",
+                subtitle: "",
+                content: "Знание основ ввода/вывода полезно для любого программиста\n\nПонимание простых калькуляторов — шаг к созданию сложных систем"
+            },
+            {
+                title: "Итоги урока",
+                subtitle: "",
+                content: "• Узнали, что такое ввод и вывод\n• Написали калькулятор сложения и вычитания\n• Рассмотрели перспективы развития компьютерных систем"
+            },
+            {
+                title: "Домашнее задание",
+                subtitle: "",
+                content: "1. Добавить в калькулятор умножение.\n\n2. Написать программу:\n\n   Ввести имя и возраст.\n   Вывести сообщение:\n   \"Тебе N лет, через 5 лет тебе будет N+5.\""
+            }
+        ];
+
+        // Initialize variables
+        let currentSlideIndex = 0;
+        const slideContainer = document.querySelector('.slide-container');
+        const slideIndicators = document.getElementById('slideIndicators');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        // Create slide indicators
+        slidesData.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.className = 'slide-indicator';
+            if (index === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(index));
+            slideIndicators.appendChild(indicator);
+        });
+        
+        // Render initial slide
+        renderSlide(currentSlideIndex);
+        
+        // Function to render a specific slide
+        function renderSlide(index) {
+            const slideData = slidesData[index];
+            const slideHTML = `
+                <div class="slide ${index === currentSlideIndex ? 'active' : ''}">
+                    ${createDecorativeShapes()}
+                    <h2 class="slide-title">${slideData.title}</h2>
+                    ${slideData.subtitle ? `<p class="slide-subtitle">${slideData.subtitle}</p>` : ''}
+                    
+                    ${slideData.content ? `<div class="slide-content">${slideData.content.replace(/\n/g, '<br>')}</div>` : ''}
+                    
+                    ${slideData.note ? `<div class="note">💡 ${slideData.note.replace(/\n/g, '<br>')}</div>` : ''}
+                    
+                    ${slideData.question ? `<div class="question">❓ ${slideData.question}</div>` : ''}
+                    
+                    ${slideData.code ? `
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <span>Python код</span>
+                            </div>
+                            <pre class="code-text">${slideData.code.replace(/\n/g, '<br>')}</pre>
+                        </div>
+                    ` : ''}
+                    
+                    ${index === 11 ? `
+                        <div class="calculator-container">
+                            <h3 class="slide-title">Практический калькулятор</h3>
+                            <form id="calculatorForm">
+                                <div class="calculator-form">
+                                    <div class="form-group">
+                                        <label for="num1">Первое число:</label>
+                                        <input type="number" id="num1" class="form-control" placeholder="Введите число">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="num2">Второе число:</label>
+                                        <input type="number" id="num2" class="form-control" placeholder="Введите число">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="operation">Операция:</label>
+                                        <select id="operation" class="form-control">
+                                            <option value="+">+</option>
+                                            <option value="-">-</option>
+                                            <option value="*">*</option>
+                                            <option value="/">/</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn">Вычислить</button>
+                            </form>
+                            <div id="result" class="result"></div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Clear container and add new slide
+            slideContainer.innerHTML = '';
+            slideContainer.innerHTML = slideHTML;
+            
+            // Update active indicator
+            document.querySelectorAll('.slide-indicator').forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+            
+            // Add event listeners for calculator
+            if (index === 11) {
+                const calcForm = document.getElementById('calculatorForm');
+                const resultDiv = document.getElementById('result');
+                
+                calcForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const num1 = parseFloat(document.getElementById('num1').value);
+                    const num2 = parseFloat(document.getElementById('num2').value);
+                    const operation = document.getElementById('operation').value;
+                    
+                    let result;
+                    switch(operation) {
+                        case '+':
+                            result = num1 + num2;
+                            break;
+                        case '-':
+                            result = num1 - num2;
+                            break;
+                        case '*':
+                            result = num1 * num2;
+                            break;
+                        case '/':
+                            result = num2 !== 0 ? num1 / num2 : 'Ошибка: деление на ноль';
+                            break;
+                        default:
+                            result = 'Неизвестная операция';
+                    }
+                    
+                    resultDiv.textContent = `Результат: ${result}`;
+                    resultDiv.style.display = 'block';
+                });
+            }
+        }
+        
+        // Function to create decorative shapes for each slide
+        function createDecorativeShapes() {
+            return `
+                <div class="shape shape-circle shape-1"></div>
+                <div class="shape shape-square shape-2"></div>
+                <div class="shape shape-diamond shape-3"></div>
+            `;
+        }
+        
+        // Navigation functions
+        function goToSlide(index) {
+            if (index >= 0 && index < slidesData.length) {
+                currentSlideIndex = index;
+                renderSlide(currentSlideIndex);
+            }
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentSlideIndex > 0) {
+                goToSlide(currentSlideIndex - 1);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlideIndex < slidesData.length - 1) {
+                goToSlide(currentSlideIndex + 1);
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

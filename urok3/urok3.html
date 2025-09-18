@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перспективы развития систем компьютеров - Школьная презентация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #4a86e8, #3a76d9);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(to right, #ff6b6b, #ff8e53);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .slide-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slide-indicator.active {
+            background-color: #4a86e8;
+            transform: scale(1.3);
+        }
+        
+        .slide-container {
+            position: relative;
+            margin-bottom: 20px;
+            height: 500px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #4a86e8;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 25px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+        
+        .slide-title {
+            font-size: 1.8rem;
+            color: #4a86e8;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-align: center;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 10px;
+        }
+        
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .slide-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slide-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #4a86e8;
+        }
+        
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #4a86e8;
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        
+        .question {
+            background: #fff0e0;
+            border-left: 4px solid #ff8e53;
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre;
+            color: #f8f8f2;
+        }
+        
+        .code-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: #444;
+            border-radius: 5px 5px 0 0;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .code-header div {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .code-header .red { background-color: #ff5f56; }
+        .code-header .yellow { background-color: #ffbd2e; }
+        .code-header .green { background-color: #27ca3f; }
+        
+        .code-text {
+            color: #f8f8f2;
+            line-height: 1.5;
+        }
+        
+        .calculator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calculator-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            color: #4a86e8;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            color: #333;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #4a86e8;
+            box-shadow: 0 0 0 2px rgba(74, 134, 232, 0.3);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #4a86e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #3a76d9;
+        }
+        
+        .result {
+            background: #e7f7e7;
+            border: 1px solid #5cb85c;
+            border-radius: 5px;
+            padding: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 15px;
+            color: #5cb85c;
+            display: none;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: #4a86e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .nav-btn:hover {
+            background: #3a76d9;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .slide-title {
+                font-size: 1.5rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .slide-content {
+                font-size: 1rem;
+            }
+            
+            .slide-container {
+                height: 450px;
+            }
+            
+            .calculator-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Перспективы развития систем компьютеров. Ввод/вывод данных. Калькулятор</h1>
+            <div class="slide-indicators" id="slideIndicators"></div>
+        </div>
+        
+        <div class="slide-container">
+            <!-- Slides will be generated by JavaScript -->
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                Назад
+            </button>
+            <button class="nav-btn" id="nextBtn">
+                Вперед
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="footer">
+            Урок по информатике для 9 класса • Перспективы развития компьютерных систем
+        </div>
+    </div>
+
+    <script>
+        const slidesData = [
+            {
+                title: "Перспективы развития систем компьютеров. Ввод/вывод данных. Калькулятор",
+                subtitle: "Класс: 9",
+                content: "",
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=Школьный+урок+информатики"
+            },
+            {
+                title: "Введение",
+                subtitle: "",
+                content: "Компьютер — это универсальное устройство для обработки информации.\n\nОн используется в школе, на работе, в науке, в быту.\n\nВ будущем компьютеры будут ещё мощнее и умнее.",
+                question: "Какой компьютер вы используете чаще всего?",
+                image: "https://placehold.co/800x400/ff6b6b/ffffff?text=Введение+в+тему"
+            },
+            {
+                title: "История компьютеров",
+                subtitle: "",
+                content: "Первые компьютеры занимали целые комнаты.\n\nОни были очень дорогие и использовались только в науке.\n\nСегодня компьютер может поместиться в кармане (смартфон).",
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=История+компьютеров"
+            },
+            {
+                title: "Перспективы развития",
+                subtitle: "",
+                content: "Квантовые компьютеры — сверхбыстрые вычисления.\n\nИскусственный интеллект — умные помощники.\n\nНейрокомпьютеры — связь с мозгом человека.",
+                note: "Важно: будущее компьютеров — это развитие вместе с человеком.",
+                image: "https://placehold.co/800x400/ff8e53/ffffff?text=Перспективы+развития"
+            },
+            {
+                title: "Устройства ввода",
+                subtitle: "",
+                content: "• Клавиатура\n• Мышь\n• Микрофон\n• Сенсорный экран",
+                note: "В Python ввод данных делается с помощью команды input().",
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=Устройства+ввода"
+            },
+            {
+                title: "Устройства вывода",
+                subtitle: "",
+                content: "• Монитор\n• Принтер\n• Колонки",
+                note: "В Python вывод данных делается с помощью команды print().",
+                image: "https://placehold.co/800x400/ff6b6b/ffffff?text=Устройства+вывода"
+            },
+            {
+                title: "Первый пример",
+                subtitle: "",
+                content: "name = input(\"Введите ваше имя: \")\nprint(\"Привет,\", name)",
+                note: "input() — пользователь вводит текст.\nprint() — компьютер выводит результат.",
+                code: `name = input("Введите ваше имя: ")\nprint("Привет,", name)`,
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=Первый+пример+кода"
+            },
+            {
+                title: "Ошибка новичка",
+                subtitle: "",
+                content: "❌ Если забыть преобразовать строку в число:\n\na = input(\"Введите число: \")\nb = input(\"Введите число: \")\nprint(a + b)  # Это будет склеивание строк!",
+                note: "✅ Правильный вариант:\n\na = int(input(\"Введите число: \"))\nb = int(input(\"Введите число: \"))\nprint(a + b)",
+                code: `# Ошибка:\na = input("Введите число: ")\nb = input("Введите число: ")\nprint(a + b)  # Склеивание строк!\n\n# Правильно:\na = int(input("Введите число: "))\nb = int(input("Введите число: "))\nprint(a + b)`,
+                image: "https://placehold.co/800x400/ff6b6b/ffffff?text=Ошибка+новичка"
+            },
+            {
+                title: "Простой калькулятор",
+                subtitle: "",
+                content: "print(\"Калькулятор\")\na = int(input(\"Введите первое число: \"))\nb = int(input(\"Введите второе число: \"))\n\nprint(\"Сумма:\", a + b)\nprint(\"Разность:\", a - b)",
+                code: `print("Калькулятор")\na = int(input("Введите первое число: "))\nb = int(input("Введите второе число: "))\n\nprint("Сумма:", a + b)\nprint("Разность:", a - b)`,
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=Простой+калькулятор"
+            },
+            {
+                title: "Логика калькулятора",
+                subtitle: "",
+                content: "1. Вводим два числа.\n2. Выбираем операцию.\n3. Получаем результат.",
+                question: "Как думаете, можно ли добавить умножение и деление?",
+                image: "https://placehold.co/800x400/ff8e53/ffffff?text=Логика+калькулятора"
+            },
+            {
+                title: "Калькулятор с выбором операции",
+                subtitle: "",
+                content: "a = int(input(\"Первое число: \"))\nb = int(input(\"Второе число: \"))\nop = input(\"Операция (+ или -): \")\n\nif op == \"+\":\n    print(\"Результат:\", a + b)\nelif op == \"-\":\n    print(\"Результат:\", a - b)\nelse:\n    print(\"Неизвестная операция\")",
+                code: `a = int(input("Первое число: "))\nb = int(input("Второе число: "))\nop = input("Операция (+ или -): ")\n\nif op == "+":\n    print("Результат:", a + b)\nelif op == "-":\n    print("Результат:", a - b)\nelse:\n    print("Неизвестная операция")`,
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=Калькулятор+с+выбором"
+            },
+            {
+                title: "Практическая работа 🖥",
+                subtitle: "",
+                content: "Задание для учеников:\n\nНапишите калькулятор, который умеет:\n• Складывать\n• Вычитать\n\nПрограмма должна спрашивать числа и операцию.",
+                image: "https://placehold.co/800x400/ff6b6b/ffffff?text=Практическая+работа"
+            },
+            {
+                title: "Перспективы для программирования",
+                subtitle: "",
+                content: "Современные языки (Python, JavaScript) просты и удобны.\n\nPython используют в науке, медицине, бизнесе.\n\nДаже простой калькулятор — это шаг к большим проектам.",
+                image: "https://placehold.co/800x400/ff8e53/ffffff?text=Перспективы+программирования"
+            },
+            {
+                title: "Итоги урока",
+                subtitle: "",
+                content: "Сегодня мы узнали:\n\n✅ Будущее компьютерных систем (квантовые, ИИ).\n✅ Что такое ввод и вывод данных.\n✅ Как написать калькулятор сложения и вычитания.",
+                image: "https://placehold.co/800x400/4a86e8/ffffff?text=Итоги+урока"
+            },
+            {
+                title: "Домашнее задание",
+                subtitle: "",
+                content: "1. Добавить в калькулятор умножение.\n\n2. Написать программу:\n\n   Ввести имя и возраст.\n   Вывести сообщение:\n   \"Тебе N лет, через 5 лет тебе будет N+5.\"",
+                image: "https://placehold.co/800x400/ff6b6b/ffffff?text=Домашнее+задание"
+            }
+        ];
+
+        // Initialize variables
+        let currentSlideIndex = 0;
+        const slideContainer = document.querySelector('.slide-container');
+        const slideIndicators = document.getElementById('slideIndicators');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        // Create slide indicators
+        slidesData.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.className = 'slide-indicator';
+            if (index === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(index));
+            slideIndicators.appendChild(indicator);
+        });
+        
+        // Render initial slide
+        renderSlide(currentSlideIndex);
+        
+        // Function to render a specific slide
+        function renderSlide(index) {
+            const slideData = slidesData[index];
+            const slideHTML = `
+                <div class="slide ${index === currentSlideIndex ? 'active' : ''}">
+                    <h2 class="slide-title">${slideData.title}</h2>
+                    ${slideData.subtitle ? `<p class="slide-subtitle">${slideData.subtitle}</p>` : ''}
+                    
+                    ${slideData.image ? `<img src="${slideData.image}" alt="Slide illustration" class="slide-image">` : ''}
+                    
+                    ${slideData.content ? `<div class="slide-content">${slideData.content.replace(/\n/g, '<br>')}</div>` : ''}
+                    
+                    ${slideData.note ? `<div class="note">💡 ${slideData.note.replace(/\n/g, '<br>')}</div>` : ''}
+                    
+                    ${slideData.question ? `<div class="question">❓ ${slideData.question}</div>` : ''}
+                    
+                    ${slideData.code ? `
+                        <div class="code-block">
+                            <div class="code-header">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <span>Python код</span>
+                            </div>
+                            <pre class="code-text">${slideData.code}</pre>
+                        </div>
+                    ` : ''}
+                    
+                    ${index === 10 ? `
+                        <div class="calculator-container">
+                            <h3 class="slide-title">Практический калькулятор</h3>
+                            <form id="calculatorForm">
+                                <div class="calculator-form">
+                                    <div class="form-group">
+                                        <label for="num1">Первое число:</label>
+                                        <input type="number" id="num1" class="form-control" placeholder="Введите число">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="num2">Второе число:</label>
+                                        <input type="number" id="num2" class="form-control" placeholder="Введите число">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="operation">Операция:</label>
+                                        <select id="operation" class="form-control">
+                                            <option value="+">+</option>
+                                            <option value="-">-</option>
+                                            <option value="*">*</option>
+                                            <option value="/">/</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn">Вычислить</button>
+                            </form>
+                            <div id="result" class="result"></div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Clear container and add new slide
+            slideContainer.innerHTML = '';
+            slideContainer.innerHTML = slideHTML;
+            
+            // Update active indicator
+            document.querySelectorAll('.slide-indicator').forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+            
+            // Add event listeners for calculator
+            if (index === 10) {
+                const calcForm = document.getElementById('calculatorForm');
+                const resultDiv = document.getElementById('result');
+                
+                calcForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const num1 = parseFloat(document.getElementById('num1').value);
+                    const num2 = parseFloat(document.getElementById('num2').value);
+                    const operation = document.getElementById('operation').value;
+                    
+                    let result;
+                    switch(operation) {
+                        case '+':
+                            result = num1 + num2;
+                            break;
+                        case '-':
+                            result = num1 - num2;
+                            break;
+                        case '*':
+                            result = num1 * num2;
+                            break;
+                        case '/':
+                            result = num2 !== 0 ? num1 / num2 : 'Ошибка: деление на ноль';
+                            break;
+                        default:
+                            result = 'Неизвестная операция';
+                    }
+                    
+                    resultDiv.textContent = `Результат: ${result}`;
+                    resultDiv.style.display = 'block';
+                });
+            }
+        }
+        
+        // Navigation functions
+        function goToSlide(index) {
+            if (index >= 0 && index < slidesData.length) {
+                currentSlideIndex = index;
+                renderSlide(currentSlideIndex);
+            }
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentSlideIndex > 0) {
+                goToSlide(currentSlideIndex - 1);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlideIndex < slidesData.length - 1) {
+                goToSlide(currentSlideIndex + 1);
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
