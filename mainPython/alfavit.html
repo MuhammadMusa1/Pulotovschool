@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полный словарь Python для начинающих</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ff6b6b, #ffd166);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        h2 {
+            color: #118ab2;
+            margin: 25px 0 18px;
+            border-bottom: 3px dotted #ffd166;
+            padding-bottom: 12px;
+            font-size: 1.8rem;
+        }
+        
+        .alphabet-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+        }
+        
+        .letter-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .letter-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff6b6b, #ffd166);
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            background-color: #f0f7ff;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .glossary {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .term-card {
+            background: linear-gradient(135deg, #f9f7f7, #dbe2ef);
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid;
+        }
+        
+        .term-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .term-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .term-card p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 1.1rem;
+        }
+        
+        .example {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin-top: 15px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+        
+        .show-example {
+            background-color: #ffd166;
+            color: #333;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .show-example:hover {
+            background-color: #ffb74d;
+            transform: scale(1.05);
+        }
+        
+        .letter-section {
+            margin-top: 40px;
+        }
+        
+        .letter-header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .letter-icon {
+            font-size: 3rem;
+            margin-right: 20px;
+            background: white;
+            color: #0984e3;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 45px;
+            padding: 25px;
+            color: #6b7280;
+            background-color: #f0f7ff;
+            border-radius: 15px;
+        }
+        
+        .emoji {
+            font-size: 1.7rem;
+            margin-right: 12px;
+        }
+        
+        .hint {
+            background-color: #ffeaa7;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #fdcb6e;
+        }
+        
+        @media (max-width: 768px) {
+            .glossary {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .alphabet-nav {
+                gap: 5px;
+            }
+            
+            .letter-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Азбука Python для школьников 🐍</h1>
+            <p>Полный словарь терминов от А до Я</p>
+        </header>
+        
+        <div class="intro">
+            <p>Изучай Python по алфавиту! Нажимай на буквы для быстрой навигации и на кнопки "Пример" чтобы увидеть код в действии.</p>
+        </div>
+        
+        <div class="alphabet-nav">
+            <button class="letter-btn" onclick="scrollToLetter('А')">А</button>
+            <button class="letter-btn" onclick="scrollToLetter('Б')">Б</button>
+            <button class="letter-btn" onclick="scrollToLetter('К')">К</button>
+            <button class="letter-btn" onclick="scrollToLetter('М')">М</button>
+            <button class="letter-btn" onclick="scrollToLetter('П')">П</button>
+            <button class="letter-btn" onclick="scrollToLetter('С')">С</button>
+            <button class="letter-btn" onclick="scrollToLetter('У')">У</button>
+            <button class="letter-btn" onclick="scrollToLetter('Ф')">Ф</button>
+            <button class="letter-btn" onclick="scrollToLetter('Ц')">Ц</button>
+        </div>
+
+        <!-- А -->
+        <div class="letter-section" id="А">
+            <div class="letter-header">
+                <div class="letter-icon">А</div>
+                <h2>Термины на букву А</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #ff6b6b;">
+                    <h3><span class="emoji">📨</span> Аргумент</h3>
+                    <p>Значение, которое передается в функцию при ее вызове.</p>
+                    <button class="show-example" onclick="toggleExample('argument-example')">Показать пример</button>
+                    <div id="argument-example" class="example">
+# "Привет, мир!" - это аргумент функции print()
+print("Привет, мир!")
+
+# Числа 5 и 3 - аргументы функции сложения
+результат = sum([5, 3])
+
+def приветствие(имя):  # имя - параметр
+    print("Привет,", имя)
+
+приветствие("Саша")    # "Саша" - аргумент
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Б -->
+        <div class="letter-section" id="Б">
+            <div class="letter-header">
+                <div class="letter-icon">Б</div>
+                <h2>Термины на букву Б</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #74b9ff;">
+                    <h3><span class="emoji">📚</span> Библиотека</h3>
+                    <p>Сборник готового кода, который можно использовать в своих программах.</p>
+                    <button class="show-example" onclick="toggleExample('library-example')">Показать пример</button>
+                    <div id="library-example" class="example">
+# Импортируем библиотеку для работы со случайными числами
+import random
+
+# Используем функцию из библиотеки
+число = random.randint(1, 10)
+print("Случайное число:", число)
+
+# Другие полезные библиотеки
+import math
+import datetime
+import turtle  # для рисования
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #74b9ff;">
+                    <h3><span class="emoji">✅❌</span> Булевый тип</h3>
+                    <p>Тип данных, который может иметь только два значения: True (истина) или False (ложь).</p>
+                    <button class="show-example" onclick="toggleExample('boolean-example')">Показать пример</button>
+                    <div id="boolean-example" class="example">
+# Булевые значения
+правда = True
+ложь = False
+
+# Булевы выражения (возвращают True или False)
+print(5 > 3)    # True
+print(5 == 3)   # False
+print(5 != 3)   # True
+
+# Использование в условиях
+деньги_есть = True
+if деньги_есть:
+    print("Можно купить мороженое!")
+else:
+    print("Нужно накопить денег.")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- К -->
+        <div class="letter-section" id="К">
+            <div class="letter-header">
+                <div class="letter-icon">К</div>
+                <h2>Термины на букву К</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #fdcb6e;">
+                    <h3><span class="emoji">🏗️</span> Класс</h3>
+                    <p>"Чертеж" или шаблон для создания объектов с одинаковыми свойствами и поведением.</p>
+                    <button class="show-example" onclick="toggleExample('class-example')">Показать пример</button>
+                    <div id="class-example" class="example">
+# Создаем класс "Машина"
+class Машина:
+    def __init__(self, цвет, марка):
+        self.цвет = цвет    # свойство цвета
+        self.марка = марка  # свойство марки
+    
+    def сигналить(self):    # метод сигналить
+        print("Би-бип!")
+    
+    def описание(self):     # метод описание
+        return f"{self.цвет} {self.марка}"
+
+# Создаем объекты на основе класса
+машина1 = Машина("красная", "Тойота")
+машина2 = Машина("синяя", "Форд")
+
+print(машина1.описание())  # красная Тойота
+машина2.сигналить()        # Би-бип!
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #fdcb6e;">
+                    <h3><span class="emoji">💬</span> Комментарий</h3>
+                    <p>Текст в коде, который игнорируется компьютером и служит для пояснений.</p>
+                    <button class="show-example" onclick="toggleExample('comment-example')">Показать пример</button>
+                    <div id="comment-example" class="example">
+# Это однострочный комментарий - Python его игнорирует
+имя = "Маша"  # а это комментарий в конце строки
+
+"""
+Это многострочный комментарий.
+Он может занимать несколько строк.
+Очень полезен для больших объяснений.
+"""
+
+# Комментарии помогают:
+# 1. Объяснять сложный код
+# 2. Отключать код без удаления
+# 3. Делать программу понятнее для других
+
+print(имя)  # Эта строка выведет имя
+# print("Этот код не выполнится")  # Закомментировано
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #fdcb6e;">
+                    <h3><span class="emoji">🔒</span> Кортеж</h3>
+                    <p>Коллекция элементов, которую нельзя изменить после создания.</p>
+                    <button class="show-example" onclick="toggleExample('tuple-example')">Показать пример</button>
+                    <div id="tuple-example" class="example">
+# Создаем кортеж (неизменяемый список)
+координаты = (10, 20)
+дни_недели = ("пн", "вт", "ср", "чт", "пт", "сб", "вс")
+
+print(координаты[0])    # 10
+print(дни_недели[2])    # ср
+
+# Кортежи нельзя изменять:
+# дни_недели[0] = "понед"  # ❌ Ошибка!
+
+# Но можно создавать новые кортежи
+новые_координаты = координаты + (30,)
+print(новые_координаты)  # (10, 20, 30)
+
+# Кортежи полезны для константных данных
+разрешения_экрана = ((1920, 1080), (1366, 768), (1280, 720))
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- М -->
+        <div class="letter-section" id="М">
+            <div class="letter-header">
+                <div class="letter-icon">М</div>
+                <h2>Термины на букву М</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #a29bfe;">
+                    <h3><span class="emoji">🔧</span> Метод</h3>
+                    <p>Функция, которая принадлежит объекту и работает с его данными.</p>
+                    <button class="show-example" onclick="toggleExample('method-example')">Показать пример</button>
+                    <div id="method-example" class="example">
+# Методы строк
+строка = "привет мир"
+print(строка.upper())      # ПРИВЕТ МИР
+print(строка.capitalize()) # Привет мир
+print(строка.replace("мир", "друг"))  # привет друг
+
+# Методы списков
+числа = [1, 2, 3]
+числа.append(4)      # добавляет элемент [1, 2, 3, 4]
+числа.pop()          # удаляет последний элемент [1, 2, 3]
+числа.sort()         # сортирует список
+
+# Методы словарей
+студент = {"имя": "Аня", "возраст": 20}
+print(студент.keys())   # dict_keys(['имя', 'возраст'])
+print(студент.values()) # dict_values(['Аня', 20])
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #a29bfe;">
+                    <h3><span class="emoji">🎯</span> Множество</h3>
+                    <p>Коллекция уникальных элементов без определенного порядка.</p>
+                    <button class="show-example" onclick="toggleExample('set-example')">Показать пример</button>
+                    <div id="set-example" class="example">
+# Создаем множество (удаляет дубликаты)
+цифры = {1, 2, 2, 3, 4, 4, 4}
+print(цифры)  # {1, 2, 3, 4}
+
+# Операции с множествами
+А = {1, 2, 3, 4}
+Б = {3, 4, 5, 6}
+
+print(А | Б)  # объединение: {1, 2, 3, 4, 5, 6}
+print(А & Б)  # пересечение: {3, 4}
+print(А - Б)  # разность: {1, 2}
+
+# Полезно для удаления дубликатов из списка
+список = [1, 2, 2, 3, 3, 3, 4]
+уникальные = set(список)
+print(уникальные)  # {1, 2, 3, 4}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- П -->
+        <div class="letter-section" id="П">
+            <div class="letter-header">
+                <div class="letter-icon">П</div>
+                <h2>Термины на букву П</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #55efc4;">
+                    <h3><span class="emoji">📦</span> Переменная</h3>
+                    <p>Контейнер для хранения данных. У каждой переменной есть имя и значение.</p>
+                    <button class="show-example" onclick="toggleExample('variable-example')">Показать пример</button>
+                    <div id="variable-example" class="example">
+# Создаем переменные
+имя = "Аня"
+возраст = 25
+рост = 1.75
+студент = True
+
+print(имя)      # Аня
+print(возраст)  # 25
+print(рост)     # 1.75
+print(студент)  # True
+
+# Можно менять значения переменных
+счетчик = 0
+счетчик = счетчик + 1
+счетчик += 1  # то же самое
+print(счетчик)  # 2
+
+# Правильные имена переменных:
+хорошее_имя = "правильно"
+хорошееИмя = "тожеПравильно"
+# 123плохое = "неправильно"  # не может начинаться с цифры
+# плохое-имя = "неправильно" # нельзя использовать дефисы
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- С -->
+        <div class="letter-section" id="С">
+            <div class="letter-header">
+                <div class="letter-icon">С</div>
+                <h2>Термины на букву С</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #ff7675;">
+                    <h3><span class="emoji">📝</span> Список</h3>
+                    <p>Упорядоченная коллекция элементов, которую можно изменять.</p>
+                    <button class="show-example" onclick="toggleExample('list-example')">Показать пример</button>
+                    <div id="list-example" class="example">
+# Создаем список
+фрукты = ["яблоко", "банан", "апельсин"]
+числа = [1, 2, 3, 4, 5]
+разное = [1, "текст", True, 3.14]
+
+print(фрукты[0])  # яблоко (первый элемент)
+print(фрукты[-1]) # апельсин (последний элемент)
+
+# Изменяем список
+фрукты.append("груша")    # добавляем в конец
+фрукты.insert(1, "киви")  # вставляем на позицию 1
+фрукты.remove("банан")    # удаляем элемент
+фрукты.pop()              # удаляем последний элемент
+
+# Полезные операции
+print(len(фрукты))    # количество элементов
+print(фрукты[1:3])    # срез: элементы с 1 по 2
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #ff7675;">
+                    <h3><span class="emoji">📖</span> Словарь</h3>
+                    <p>Коллекция пар "ключ-значение". Как телефонная книга.</p>
+                    <button class="show-example" onclick="toggleExample('dict-example')">Показать пример</button>
+                    <div id="dict-example" class="example">
+# Создаем словарь
+человек = {
+    "имя": "Иван",
+    "возраст": 30,
+    "город": "Москва",
+    "хобби": ["чтение", "спорт"]
+}
+
+print(человек["имя"])      # Иван
+print(человек["возраст"])  # 30
+
+# Работа со словарем
+человек["профессия"] = "программист"  # добавляем
+человек["возраст"] = 31               # изменяем
+del человек["город"]                  # удаляем
+
+# Полезные методы
+print(человек.keys())   # все ключи
+print(человек.values()) # все значения
+print(человек.items())  # все пары ключ-значение
+
+# Словари внутри списков
+люди = [
+    {"имя": "Аня", "возраст": 25},
+    {"имя": "Петя", "возраст": 30}
+]
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #ff7675;">
+                    <h3><span class="emoji">🔤</span> Строка</h3>
+                    <p>Текст, заключенный в кавычки. Можно использовать одинарные или двойные.</p>
+                    <button class="show-example" onclick="toggleExample('string-example')">Показать пример</button>
+                    <div id="string-example" class="example">
+# Создаем строки
+имя = "Анна"
+сообщение = 'Привет, мир!'
+многострочный = """Это
+многострочная
+строка"""
+
+# Операции со строками
+print(имя + " " + сообщение)  # конкатенация
+print(имя * 3)                # повторение
+print(len(имя))               # длина строки
+
+# Индексация и срезы
+текст = "Python"
+print(текст[0])    # P (первый символ)
+print(текст[-1])   # n (последний символ)
+print(текст[1:4])  # yth (срез)
+
+# f-строки (форматирование)
+возраст = 25
+print(f"Меня зовут {имя}, мне {возраст} лет")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- У -->
+        <div class="letter-section" id="У">
+            <div class="letter-header">
+                <div class="letter-icon">У</div>
+                <h2>Термины на букву У</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #f9ca24;">
+                    <h3><span class="emoji">🎯</span> Условный оператор</h3>
+                    <p>Выполняет код только если условие истинно (True).</p>
+                    <button class="show-example" onclick="toggleExample('conditional-example')">Показать пример</button>
+                    <div id="conditional-example" class="example">
+# Простое условие
+возраст = 18
+if возраст >= 18:
+    print("Вы совершеннолетний.")
+else:
+    print("Вы еще не достигли совершеннолетия.")
+
+# Несколько условий
+оценка = 4
+if оценка == 5:
+    print("Отлично! 🎉")
+elif оценка == 4:
+    print("Хорошо! 👍")
+elif оценка == 3:
+    print("Удовлетворительно 👌")
+else:
+    print("Нужно подтянуть знания 📚")
+
+# Сложные условия
+температура = 25
+погода = "солнечно"
+
+if температура > 20 and погода == "солнечно":
+    print("Идеальный день для прогулки! ☀️")
+elif температура > 15 or погода == "ясно":
+    print("Можно погулять 🌤️")
+else:
+    print("Лучше остаться дома 🌧️")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ф -->
+        <div class="letter-section" id="Ф">
+            <div class="letter-header">
+                <div class="letter-icon">Ф</div>
+                <h2>Термины на букву Ф</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #eb4d4b;">
+                    <h3><span class="emoji">⚙️</span> Функция</h3>
+                    <p>Блок кода, который выполняет конкретную задачу и может быть вызван по имени.</p>
+                    <button class="show-example" onclick="toggleExample('function-example')">Показать пример</button>
+                    <div id="function-example" class="example">
+# Создаем функцию
+def приветствие(имя):
+    """Функция приветствия пользователя"""
+    print(f"Привет, {имя}! Рад тебя видеть!")
+
+# Вызываем функцию
+приветствие("Катя")
+приветствие("Максим")
+
+# Функция с возвращаемым значением
+def сложить(a, b):
+    return a + b
+
+результат = сложить(5, 3)
+print(результат)  # 8
+
+# Функция с значением по умолчанию
+def показать_инфо(имя, возраст=18):
+    print(f"{имя}, {возраст} лет")
+
+показать_инфо("Аня", 25)
+показать_инфо("Петя")  # возраст = 18 по умолчанию
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ц -->
+        <div class="letter-section" id="Ц">
+            <div class="letter-header">
+                <div class="letter-icon">Ц</div>
+                <h2>Термины на букву Ц</h2>
+            </div>
+            
+            <div class="glossary">
+                <div class="term-card" style="border-left-color: #6c5ce7;">
+                    <h3><span class="emoji">🔄</span> Цикл for</h3>
+                    <p>Повторяет код для каждого элемента в коллекции (списке, строке и т.д.).</p>
+                    <button class="show-example" onclick="toggleExample('for-example')">Показать пример</button>
+                    <div id="for-example" class="example">
+# Цикл по списку
+фрукты = ["яблоко", "банан", "апельсин"]
+for фрукт in фрукты:
+    print(f"Я люблю {фрукт}")
+
+# Цикл по строке
+слово = "Python"
+for буква in слово:
+    print(буква)
+
+# Цикл с range() для чисел
+for i in range(5):          # 0, 1, 2, 3, 4
+    print(f"Номер: {i}")
+
+for i in range(1, 6):       # 1, 2, 3, 4, 5
+    print(f"Счет: {i}")
+
+for i in range(0, 10, 2):   # 0, 2, 4, 6, 8
+    print(f"Четное: {i}")
+
+# Цикл по словарю
+студент = {"имя": "Аня", "возраст": 20, "город": "Москва"}
+for ключ, значение in студент.items():
+    print(f"{ключ}: {значение}")
+                    </div>
+                </div>
+                
+                <div class="term-card" style="border-left-color: #6c5ce7;">
+                    <h3><span class="emoji">⏱️</span> Цикл while</h3>
+                    <p>Повторяет код, пока условие истинно (True).</p>
+                    <button class="show-example" onclick="toggleExample('while-example')">Показать пример</button>
+                    <div id="while-example" class="example">
+# Простой цикл while
+счетчик = 1
+while счетчик <= 5:
+    print(f"Счетчик: {счетчик}")
+    счетчик += 1  # важно изменять условие!
+
+# Цикл с break (прерывание)
+while True:
+    ответ = input("Введите 'стоп' для выхода: ")
+    if ответ == "стоп":
+        print("Выход из цикла!")
+        break
+    print(f"Вы ввели: {ответ}")
+
+# Цикл с continue (пропуск итерации)
+число = 0
+while число < 10:
+    число += 1
+    if число % 2 == 0:  # если четное
+        continue        # пропускаем остаток цикла
+    print(f"Нечетное: {число}")
+
+# Цикл с else (выполняется после нормального завершения)
+попытка = 1
+while попытка <= 3:
+    print(f"Попытка {попытка}")
+    попытка += 1
+else:
+    print("Все попытки использованы!")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🐍 Учи Python с удовольствием! 🎉 | Полный словарь терминов от А до Я</p>
+            <p>✨ Теперь ты знаешь все основные понятия Python для начинающих!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Функция для показа/скрытия примеров кода
+        function toggleExample(id) {
+            const example = document.getElementById(id);
+            const button = example.previousElementSibling;
+            
+            if (example.style.display === 'block') {
+                example.style.display = 'none';
+                button.textContent = 'Показать пример';
+            } else {
+                example.style.display = 'block';
+                button.textContent = 'Скрыть пример';
+            }
+        }
+        
+        // Функция для прокрутки к букве
+        function scrollToLetter(letter) {
+            document.getElementById(letter).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        // Показываем первый пример при загрузке страницы
+        window.onload = function() {
+            toggleExample('argument-example');
+        };
+    </script>
+</body>
+</html>
