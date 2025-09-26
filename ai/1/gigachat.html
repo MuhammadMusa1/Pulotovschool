@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Искусственный Интеллект: Двигатель Будущего</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1b1c1d;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            min-height: 100vh;
+            text-align: center;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1;
+            transition: all 0.5s ease-in-out;
+        }
+        
+        .active-slide {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+        }
+        
+        h1, p {
+            margin-bottom: 2rem;
+        }
+        
+        /* Стили кнопок */
+        button {
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        button.prev-btn {
+            background-color: #ffa500;
+            color: black;
+        }
+        
+        button.next-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    
+<div class="slide-container">
+    <!-- Титульный слайд -->
+    <div id="slide1" class="slide active-slide">
+        <h1 style="font-size: 4em;">Искусственный интеллект:<br>код, который изменит мир!</h1>
+        <p>Представьте себе будущее, где ваш смартфон думает сам, автомобиль водит вас домой, а врач ставит диагноз за секунды.</p>
+        <button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <!-- Остальные слайды -->
+    <div id="slide2" class="slide">
+        <h1>Что такое ИИ?</h1>
+        <p>Это способность машин думать, учиться и принимать решения. А ещё — творчество и вдохновение.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide3" class="slide">
+        <h1>Три столпа ИИ:</h1>
+        <ul>
+            <li>Машинное обучение (ML)</li>
+            <li>Глубокое обучение (DL)</li>
+            <li>Компьютерное зрение & NLP</li>
+        </ul>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide4" class="slide">
+        <h1>Революция уже здесь!</h1>
+        <p>Новые лекарства, искусство и транспортные средства управляются ИИ. Мир меняется каждый день.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide5" class="slide">
+        <h1>Творчество и искусство</h1>
+        <p>Нейросети пишут музыку, рисуют картины, придумывают сюжеты книг.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide6" class="slide">
+        <h1>Автопилоты</h1>
+        <p>Автономные автомобили уже среди нас. Мы едем в будущее на машинах, которыми управляют нейросети.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide7" class="slide">
+        <h1>Будущее профессий</h1>
+        <p>Одни профессии уйдут, другие родятся заново. Нужно готовиться заранее.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide8" class="slide">
+        <h1>Новые профессии</h1>
+        <p>Дата-сайентисты, инженеры по машинному обучению, этики ИИ — это наше будущее.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide9" class="slide">
+        <h1>Темная сторона ИИ</h1>
+        <p>Предвзятость данных, риски атак, этические дилеммы — всё это требует внимания.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide10" class="slide">
+        <h1>Наше будущее</h1>
+        <p>Умные города, персональная медицина, путешествия в космос — будущее ближе, чем кажется.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide11" class="slide">
+        <h1>Начало пути</h1>
+        <p>Начните с Python, изучайте Machine Learning, смотрите курсы DataCamp и Udacity.</p>
+        <button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button>
+    </div>
+
+    <div id="slide12" class="slide">
+        <h1>Стань частью будущего!</h1>
+        <p>Какой проблемой решишь заняться с помощью ИИ? Решайся менять мир!</p>
+        <button onclick="prevSlide()">← Назад</button>
+    </div>
+</div>
+
+<script>
+let currentSlideIndex = 1;
+const slides = document.querySelectorAll('.slide');
+
+// Переключаем активный слайд
+function showSlide(index) {
+    for(let i = 0; i < slides.length; i++) {
+        if(i === index) {
+            slides[i].classList.add('active-slide');
+        } else {
+            slides[i].classList.remove('active-slide');
+        }
+    }
+}
+
+// Переход вперед
+function nextSlide() {
+    if(currentSlideIndex >= slides.length - 1) return;
+    currentSlideIndex++;
+    showSlide(currentSlideIndex);
+}
+
+// Переход назад
+function prevSlide() {
+    if(currentSlideIndex <= 1) return;
+    currentSlideIndex--;
+    showSlide(currentSlideIndex);
+}
+
+showSlide(currentSlideIndex); // Показ первого слайда сразу после загрузки страницы
+</script>
+
+</body>
+</html>

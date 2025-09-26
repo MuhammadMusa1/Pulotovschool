@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Искусственный Интеллект: Двигатель Будущего</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f23;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .slide.previous {
+            transform: translateX(-100%);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .slide-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #00ffff, #7b68ee, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .slide-list {
+            list-style: none;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .slide-item {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .slide-item::before {
+            content: "•";
+            color: #00ffff;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.5em;
+        }
+
+        /* Navigation Controls */
+        .nav-controls {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .prev-btn {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+        }
+
+        .prev-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            transform: translateY(-2px);
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+        }
+
+        .next-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #7c3aed, #9333ea);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress Indicator */
+        .progress {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        /* Navigation Dots */
+        .dots-container {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #00ffff;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Background Images */
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .slide-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.9) 0%, rgba(123, 104, 238, 0.1) 50%, rgba(0, 255, 255, 0.1) 100%);
+            z-index: 0;
+        }
+
+        /* Special styling for title slide */
+        .title-slide .slide-content {
+            justify-content: center;
+        }
+
+        .title-slide .subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .title-slide .speaker {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: #00ffff;
+            font-weight: 600;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+            
+            .slide-item {
+                font-size: clamp(1rem, 3vw, 1.2rem);
+                padding: 1rem;
+            }
+            
+            .nav-controls {
+                top: 0.5rem;
+                left: 0.5rem;
+            }
+            
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .progress {
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn prev-btn" id="prevBtn">← Назад</button>
+        <button class="nav-btn next-btn" id="nextBtn">Вперёд →</button>
+    </div>
+    
+    <div class="progress" id="progress">1 / 12</div>
+    
+    <div class="dots-container" id="dotsContainer"></div>
+
+    <!-- Slides -->
+    <div class="slide active" data-slide="0">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/0f0f23/00ffff?text=Neural+Network');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content title-slide">
+            <h1 class="slide-title">Искусственный Интеллект: Код, Который Изменит Ваш Мир.</h1>
+            
+        </div>
+    </div>
+
+    <div class="slide" data-slide="1">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/1a1a2e/7b68ee?text=AI+Everyday');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Не просто робот: Что такое ИИ на самом деле?</h1>
+            <ul class="slide-list">
+                <li class="slide-item">ИИ – это программа, которая учится и принимает решения (автономное обучение).</li>
+                <li class="slide-item">Разница между старым кодом (инструкция) и ИИ (способность к выводам).</li>
+                <li class="slide-item">Вы уже используете ИИ: от TikTok до банковских приложений.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="2">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/0d0d1a/00ffff?text=Neural+Network+Animation');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Три Суперсилы ИИ: Как он работает?</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Машинное обучение (ML): обучение на данных.</li>
+                <li class="slide-item">Глубокое обучение (DL): нейронные сети, имитирующие мозг.</li>
+                <li class="slide-item">Обработка Естественного Языка (NLP): ИИ «понимает» и генерирует речь.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="3">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/16213e/ff00ff?text=AI+Art+Gallery');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Революция: ИИ — творец.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">ИИ пишет музыку, создает искусство и генерирует уникальный дизайн.</li>
+                <li class="slide-item">Пример: Картины, созданные ИИ, продаются за сотни тысяч долларов.</li>
+                <li class="slide-item">ИИ как инструмент для художников и дизайнеров, а не их замена.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="4">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/0a0a1a/00ffcc?text=AI+Medical+Scan');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Незримый спасатель: ИИ в медицине.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Помогает врачам ставить диагнозы точнее и быстрее, чем человек (особенно рак).</li>
+                <li class="slide-item">Персонализированная медицина: ИИ подбирает лечение под геном пациента.</li>
+                <li class="slide-item">Ускоряет разработку новых лекарств.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="5">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/0c0c1a/7b68ee?text=Autonomous+Future');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Автономная планета.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Беспилотные автомобили и дроны: безопасность и эффективность.</li>
+                <li class="slide-item">Оптимизация логистики и транспорта в масштабах города.</li>
+                <li class="slide-item">ИИ в освоении космоса (роботы-исследователи).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="6">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/121224/00ffff?text=Future+Jobs+1');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Профессии Будущего: Сценарий 1.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">ИИ заменит рутинные задачи, а не людей (анализ документов, обработка данных).</li>
+                <li class="slide-item">Профессии, основанные на рутине, под угрозой (например, некоторые виды бухгалтерии, юридический анализ).</li>
+                <li class="slide-item">Вывод: человеку нужно переключиться на творчество и критическое мышление.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="7">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/0e0e1c/ff00ff?text=Future+Jobs+2');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Профессии Будущего: Сценарий 2.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Появятся новые, высокооплачиваемые роли: Data Scientist, Инженер по ML, Этик ИИ.</li>
+                <li class="slide-item">Главный навык: умение работать с ИИ и задавать ему правильные вопросы.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="8">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/0b0b16/ff6b6b?text=AI+Ethics');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Тёмная Сторона: Этика и Риски.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Проблема предвзятости данных (Bias): ИИ отражает ошибки человека.</li>
+                <li class="slide-item">Вопросы контроля и безопасности: кто отвечает за решения ИИ?</li>
+                <li class="slide-item">Необходимость создания «человечных» правил для технологий.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="9">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/090914/00ffff?text=Singularity');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Технологический Сингулярность.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Гипотеза о точке, когда ИИ превзойдет человеческий интеллект.</li>
+                <li class="slide-item">Почему это не повод для страха, а стимул к развитию.</li>
+                <li class="slide-item">ИИ как усилитель, помогающий решать глобальные проблемы (климат, голод).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="10">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/141428/7b68ee?text=Start+Learning');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Твой вход в ИИ: С чего начать?</h1>
+            <ul class="slide-list">
+                <li class="slide-item">Учите Python – основной язык ИИ.</li>
+                <li class="slide-item">Осваивайте основы статистики и линейной алгебры.</li>
+                <li class="slide-item">Изучайте онлайн-курсы и участвуйте в хакатонах.</li>
+                <li class="slide-item">Главное: Начните экспериментировать и творить.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="11">
+        <div class="slide-bg" style="background-image: url('https://placehold.co/1200x800/080810/00ffcc?text=Future+Architects');"></div>
+        <div class="slide-gradient"></div>
+        <div class="slide-content">
+            <h1 class="slide-title">Заключение: Вы — Архитекторы Будущего.</h1>
+            <ul class="slide-list">
+                <li class="slide-item">ИИ — это самый мощный инструмент в истории человечества.</li>
+                <li class="slide-item">Не бойся его, а научись им управлять.</li>
+                <li class="slide-item">Какую великую проблему ты решишь с помощью ИИ? (Призыв к действию).</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class Presentation {
+            constructor() {
+                this.currentSlide = 0;
+                this.totalSlides = document.querySelectorAll('.slide').length;
+                this.slides = document.querySelectorAll('.slide');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.progress = document.getElementById('progress');
+                this.dotsContainer = document.getElementById('dotsContainer');
+                
+                this.init();
+            }
+            
+            init() {
+                this.createDots();
+                this.updateUI();
+                this.bindEvents();
+                this.setupKeyboardNavigation();
+            }
+            
+            createDots() {
+                this.dotsContainer.innerHTML = '';
+                for (let i = 0; i < this.totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    dot.dataset.index = i;
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.dotsContainer.appendChild(dot);
+                }
+            }
+            
+            updateUI() {
+                // Update progress text
+                this.progress.textContent = `${this.currentSlide + 1} / ${this.totalSlides}`;
+                
+                // Update dots
+                document.querySelectorAll('.dot').forEach((dot, index) => {
+                    if (index === this.currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                // Update button states
+                this.prevBtn.disabled = this.currentSlide === 0;
+                this.nextBtn.disabled = this.currentSlide === this.totalSlides - 1;
+                
+                // Update slide classes
+                this.slides.forEach((slide, index) => {
+                    slide.classList.remove('active', 'previous');
+                    if (index === this.currentSlide) {
+                        slide.classList.add('active');
+                    } else if (index < this.currentSlide) {
+                        slide.classList.add('previous');
+                    }
+                });
+            }
+            
+            goToSlide(index) {
+                if (index >= 0 && index < this.totalSlides) {
+                    this.currentSlide = index;
+                    this.updateUI();
+                }
+            }
+            
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.currentSlide++;
+                    this.updateUI();
+                }
+            }
+            
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.currentSlide--;
+                    this.updateUI();
+                }
+            }
+            
+            bindEvents() {
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                
+                // Click anywhere to advance (except on buttons)
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.nav-controls') && !e.target.closest('.dots-container')) {
+                        if (this.currentSlide < this.totalSlides - 1) {
+                            this.nextSlide();
+                        }
+                    }
+                });
+            }
+            
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    } else if (e.key >= '1' && e.key <= '9') {
+                        const slideNum = parseInt(e.key) - 1;
+                        if (slideNum < this.totalSlides) {
+                            this.goToSlide(slideNum);
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Initialize presentation when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new Presentation();
+        });
+    </script>
+</body>
+</html>

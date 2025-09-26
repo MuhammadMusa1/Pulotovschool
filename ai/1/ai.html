@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Искусственный интеллект: двигатель будущего</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #0a0a23;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: flex;
+        }
+        h1 {
+            font-size: 4rem;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 2.5rem;
+            color: #ff00ff;
+            text-shadow: 0 0 8px #ff00ff;
+        }
+        p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background: #00d4ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #0a0a23;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #ff00ff;
+            color: #ffffff;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container slide active" id="slide0">
+        <h1>Искусственный интеллект: код, который изменит мир</h1>
+        <p>Погрузитесь в будущее, где машины учатся, думают и творят!</p>
+    </div>
+    <div class="container slide" id="slide1">
+        <h2>Что такое ИИ в 21 веке?</h2>
+        <p>ИИ — это не просто программы. Это системы, которые учатся, адаптируются и принимают решения самостоятельно.<br><br>
+        <em>"ИИ — это последнее изобретение человечества, которое изменит всё." — Илон Маск</em></p>
+    </div>
+    <div class="container slide" id="slide2">
+        <h2>Три столпа ИИ</h2>
+        <p><strong>Машинное обучение (ML):</strong> ИИ учится на данных, находя закономерности.<br>
+        <strong>Глубокое обучение (DL):</strong> Нейронные сети, вдохновленные человеческим мозгом.<br>
+        <strong>Компьютерное зрение и NLP:</strong> ИИ, который видит мир и понимает язык.</p>
+    </div>
+    <div class="container slide" id="slide3">
+        <h2>Революция уже здесь</h2>
+        <p>ИИ уже меняет мир:<br>
+        - Открывает новые лекарства.<br>
+        - Прогнозирует ураганы и землетрясения.<br>
+        - Создаёт фотореалистичные изображения (Midjourney, DALL-E).</p>
+    </div>
+    <div class="container slide" id="slide4">
+        <h2>ИИ в творчестве</h2>
+        <p>ИИ пишет музыку, рисует картины и создаёт фильмы.<br>
+        Пример: картина, созданная ИИ, продана на аукционе за $432,500!</p>
+    </div>
+    <div class="container slide" id="slide5">
+        <h2>Автопилот: от фантастики к реальности</h2>
+        <p>ИИ управляет автомобилями и дронами, делая транспорт безопаснее и быстрее.</p>
+    </div>
+    <div class="container slide" id="slide6">
+        <h2>Будущее профессий</h2>
+        <p>ИИ заменит рутину: бухгалтеров, аналитиков, юристов.<br>
+        Но он создаёт новые возможности, освобождая время для творчества!</p>
+    </div>
+    <div class="container slide" id="slide7">
+        <h2>Новые профессии</h2>
+        <p>Будущее за:<br>
+        - Дата-сайентистами.<br>
+        - Инженерами по машинному обучению.<br>
+        - Этиками ИИ.</p>
+    </div>
+    <div class="container slide" id="slide8">
+        <h2>ИИ: тёмная сторона?</h2>
+        <p>Этика, контроль, предвзятость данных — вызовы, которые мы должны решить.</p>
+    </div>
+    <div class="container slide" id="slide9">
+        <h2>Будущее: что нас ждёт?</h2>
+        <p>Персонализированная медицина, умные города, колонизация Марса с помощью ИИ-роботов.</p>
+    </div>
+    <div class="container slide" id="slide10">
+        <h2>Как войти в мир ИИ?</h2>
+        <p>Начни с Python.<br>
+        Изучай курсы на Coursera, edX или Stepik.<br>
+        Экспериментируй с нейросетями!</p>
+    </div>
+    <div class="container slide" id="slide11">
+        <h2>Ты можешь стать частью этого!</h2>
+        <p>ИИ — это не только технология, но и новая сфера для твоих талантов.<br>
+        <strong>Какую проблему ты хочешь решить с помощью ИИ?</strong></p>
+    </div>
+    <div class="controls">
+        <button onclick="prevSlide()">Назад</button>
+        <button onclick="nextSlide()">Вперёд</button>
+    </div>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const backgrounds = [
+            'https://images.unsplash.com/photo-1620712943542-24033b3b3c7f', // Титульный слайд
+            'https://images.unsplash.com/photo-1516321310762-37f3d7a01d67', // Что такое ИИ
+            'https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d', // Три столпа
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c', // Революция
+            'https://images.unsplash.com/photo-1617791160588-241658c0f566', // Творчество
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c', // Автопилот
+            'https://images.unsplash.com/photo-1593642634315-48f5414c3ad9', // Профессии
+            'https://images.unsplash.com/photo-1516321310762-37f3d7a01d67', // Новые профессии
+            'https://images.unsplash.com/photo-1620712943542-24033b3b3c7f', // Тёмная сторона
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c', // Будущее
+            'https://images.unsplash.com/photo-1633613286848-e6f43bbafb8d', // Как войти
+            'https://images.unsplash.com/photo-1617791160588-241658c0f566'  // Итог
+        ];
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            document.querySelector('.background').style.backgroundImage = `url(${backgrounds[index]})`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИИ: двигатель будущего</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Orbitron', sans-serif; background: #0b0b0f; color: #fff; overflow:hidden; }
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+  .slide {
+    display:none;
+    width:100vw; height:100vh;
+    padding:50px;
+    position:absolute; top:0; left:0;
+    transition: all 1s ease;
+    background-size:cover;
+    background-position:center;
+    color:#fff;
+    text-shadow:0 0 10px #0ff;
+    overflow-y:auto;
+  }
+
+  .active { display:block; }
+
+  h1 { font-size:3em; color:#0ff; text-shadow:0 0 20px #0ff,0 0 40px #0ff,0 0 60px #0ff; animation: glow 2s infinite alternate; }
+  h2 { font-size:2em; color:#9b59b6; margin-bottom:20px; text-shadow:0 0 10px #9b59b6; }
+  p, li { font-size:1.3em; line-height:1.6; color:#ccc; margin-bottom:10px; }
+  ul { margin-left:20px; }
+  .image { max-width:80%; margin-top:20px; border:2px solid #0ff; border-radius:15px; box-shadow:0 0 40px #0ff; }
+  video { max-width:80%; border-radius:15px; box-shadow:0 0 40px #0ff; margin-top:20px; }
+
+  .nav { position:fixed; bottom:30px; width:100%; text-align:center; }
+  .nav button { background:#0ff; border:none; padding:12px 25px; margin:0 10px; font-size:1em; color:#000; cursor:pointer; border-radius:8px; transition:0.3s; }
+  .nav button:hover { background:#0cf; }
+
+  @keyframes glow {
+    0% { text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff; }
+    100% { text-shadow:0 0 20px #0ff,0 0 40px #0ff,0 0 60px #0ff; }
+  }
+
+  /* Фоны с футуристическим стилем */
+  .bg-1 { background: url('https://images.unsplash.com/photo-1611078484854-7e86b5be3f1d?auto=format&fit=crop&w=1470&q=80') center/cover no-repeat; }
+  .bg-2 { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); }
+</style>
+</head>
+<body>
+
+<!-- Слайды -->
+<div class="slide active bg-1">
+  <h1>Искусственный интеллект: код, который изменит мир</h1>
+  <p>Добро пожаловать в будущее, где машины думают, учатся и творят.</p>
+  <img class="image" src="https://images.unsplash.com/photo-1611078484854-7e86b5be3f1d?auto=format&fit=crop&w=1200&q=80" alt="ИИ">
+</div>
+
+<div class="slide bg-2">
+  <h2>Что такое ИИ в 21 веке?</h2>
+  <p>ИИ — это не просто программа. Это система, способная учиться, анализировать и принимать решения сама.</p>
+  <p class="neon-text">"ИИ — последняя технология, которую человечество изобретет" — футуролог</p>
+</div>
+
+<div class="slide bg-2">
+  <h2>Три столпа ИИ</h2>
+  <p><strong>Машинное обучение (ML):</strong> ИИ учится на данных.</p>
+  <p><strong>Глубокое обучение (DL):</strong> ИИ думает как мозг — нейронные сети.</p>
+  <p><strong>Компьютерное зрение / NLP:</strong> ИИ видит, слышит и понимает текст.</p>
+</div>
+
+<div class="slide bg-2">
+  <h2>Революция уже здесь</h2>
+  <ul>
+    <li>ИИ находит лекарства быстрее людей</li>
+    <li>Предсказывает катастрофы и спасает жизни</li>
+    <li>Создает изображения и видео, которые кажутся реальными</li>
+  </ul>
+</div>
+
+<div class="slide bg-2">
+  <h2>ИИ в творчестве</h2>
+  <p>ИИ рисует, пишет музыку и даже создает фильмы. Искусство нового века уже здесь.</p>
+  <img class="image" src="https://images.unsplash.com/photo-1628195082221-391edce4edaa?auto=format&fit=crop&w=1200&q=80" alt="ИИ творит">
+</div>
+
+<div class="slide bg-2">
+  <h2>Автопилот: фантастика превращается в реальность</h2>
+  <p>ИИ управляет машинами и дронами, делая дороги безопаснее и транспорт умнее.</p>
+  <video controls>
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="slide bg-2">
+  <h2>Будущее профессий</h2>
+  <p>ИИ меняет работу: рутинные задачи исчезают, а новые возможности появляются.</p>
+</div>
+
+<div class="slide bg-2">
+  <h2>Новые профессии</h2>
+  <ul>
+    <li>Дата-сайентист — магия данных</li>
+    <li>Инженер по машинному обучению — создатель умных систем</li>
+    <li>Этик ИИ — охранник морали технологий</li>
+  </ul>
+</div>
+
+<div class="slide bg-2">
+  <h2>Тёмная сторона ИИ</h2>
+  <p>Этика, контроль, предвзятость данных — ИИ нужно использовать ответственно.</p>
+</div>
+
+<div class="slide bg-2">
+  <h2>Будущее: что нас ждёт?</h2>
+  <p>Умные города, персонализированная медицина, роботы на других планетах — ИИ творит будущее.</p>
+  <img class="image" src="https://images.unsplash.com/photo-1601597112129-2c6cd53a1d3c?auto=format&fit=crop&w=1200&q=80" alt="Футуристический город">
+</div>
+
+<div class="slide bg-2">
+  <h2>Как войти в мир ИИ?</h2>
+  <p>Изучай Python, машинное обучение, создавай проекты. Начни свой путь уже сегодня!</p>
+</div>
+
+<div class="slide bg-2">
+  <h2>Итог</h2>
+  <p class="neon-text">ИИ — это не только технология. Это новая сфера для твоих талантов. Какую проблему ты хочешь решить с его помощью?</p>
+</div>
+
+<!-- Навигация -->
+<div class="nav">
+  <button onclick="prevSlide()">← Назад</button>
+  <button onclick="nextSlide()">Вперед →</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+
+  function showSlide(index) {
+    slides.forEach((s,i)=>s.classList.remove('active'));
+    slides[index].classList.add('active');
+  }
+
+  function nextSlide() {
+    current = (current+1)%slides.length;
+    showSlide(current);
+  }
+
+  function prevSlide() {
+    current = (current-1+slides.length)%slides.length;
+    showSlide(current);
+  }
+
+  document.addEventListener('keydown', e => {
+    if(e.key==='ArrowRight') nextSlide();
+    if(e.key==='ArrowLeft') prevSlide();
+  });
+</script>
+</body>
+</html>
