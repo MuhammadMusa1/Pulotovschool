@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок - Компьютерные сети и Python</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color: #fff; min-height: 100vh; padding: 0; display: flex; flex-direction: column;}
+    
+    .header {
+      background-color: rgba(0,0,0,0.3);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 5px solid #ffcc00;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    
+    .header h1 {
+      color: #ffcc00;
+      font-size: 36px;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px #000;
+      font-weight: 800;
+    }
+    
+    .header p {
+      color: #e0e0e0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    
+    .slide-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      overflow: hidden;
+    }
+    
+    .slide {
+      display: none;
+      width: 90%;
+      max-width: 1000px;
+      height: auto;
+      padding: 40px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 30px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.9);
+      border: 3px solid #ffcc00;
+      animation: fadeIn 0.8s ease;
+      position: relative;
+      overflow: visible;
+    }
+    
+    .slide.active {
+      display: block;
+    }
+    
+    h1, h2 {
+      color: #ffcc00;
+      margin-bottom: 25px;
+      font-size: 42px;
+      text-shadow: 3px 3px 6px #000;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+    
+    h1 {
+      font-size: 48px;
+    }
+    
+    p, li {
+      font-size: 32px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      color: #e0e0e0;
+    }
+    
+    ul {
+      margin-left: 40px;
+      margin-bottom: 30px;
+    }
+    
+    li {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    li:before {
+      content: "•";
+      color: #ffcc00;
+      font-size: 40px;
+      position: absolute;
+      left: 0;
+      top: -5px;
+    }
+    
+    pre {
+      background: #111;
+      padding: 25px;
+      border-radius: 20px;
+      font-size: 28px;
+      overflow-x: auto;
+      border-left: 5px solid #ffcc00;
+      margin: 30px 0;
+      white-space: pre-wrap;
+    }
+    
+    code {
+      background: #222;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+    
+    .figure {
+      margin: 30px 0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .figure div {
+      display: inline-flex;
+      width: 150px;
+      height: 150px;
+      margin: 15px;
+      border-radius: 25px;
+      background: #ffcc00;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      border: 3px solid #333;
+      text-shadow: 1px 1px 2px #fff;
+    }
+    
+    .controls {
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      background-color: rgba(0,0,0,0.3);
+      border-top: 5px solid #ffcc00;
+    }
+    
+    button {
+      padding: 20px 40px;
+      font-size: 28px;
+      border: none;
+      border-radius: 25px;
+      background: #ffcc00;
+      color: #000;
+      cursor: pointer;
+      font-weight: 800;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      transition: all 0.3s ease;
+      min-width: 200px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: 3px solid #ffcc00;
+    }
+    
+    button:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 0 25px rgba(255,204,0,0.8);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .slide-info {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.8);
+      color: #ffcc00;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    
+    .contrast-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    /* High contrast mode */
+    .high-contrast body {
+      background: #000;
+      color: #fff;
+    }
+    
+    .high-contrast .slide {
+      background: #000;
+      border-color: #fff;
+    }
+    
+    .high-contrast h1, .high-contrast h2 {
+      color: #fff;
+      text-shadow: none;
+    }
+    
+    .high-contrast .figure div {
+      background: #fff;
+      color: #000;
+      border-color: #000;
+    }
+    
+    .high-contrast .controls button {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+    
+    .high-contrast .header {
+      background-color: rgba(0,0,0,0.5);
+      border-bottom-color: #fff;
+    }
+    
+    .high-contrast .header h1, .high-contrast .header p {
+      color: #fff;
+      text-shadow: none;
+    }
+    
+    .high-contrast .slide-info {
+      background: rgba(255,255,255,0.8);
+      color: #000;
+      border-color: #000;
+    }
+    
+    /* Large text mode */
+    .large-text h1, .large-text h2 {
+      font-size: 60px !important;
+    }
+    
+    .large-text p, .large-text li {
+      font-size: 40px !important;
+    }
+    
+    .large-text pre {
+      font-size: 36px !important;
+    }
+    
+    .large-text .figure div {
+      font-size: 40px !important;
+      width: 180px !important;
+      height: 180px !important;
+    }
+    
+    .large-text button {
+      font-size: 36px !important;
+      padding: 25px 50px !important;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      h1, h2 {
+        font-size: 36px;
+      }
+      
+      p, li {
+        font-size: 28px;
+      }
+      
+      .figure div {
+        width: 120px;
+        height: 120px;
+        font-size: 24px;
+      }
+      
+      button {
+        font-size: 24px;
+        padding: 15px 30px;
+        min-width: 160px;
+      }
+      
+      .slide-info {
+        font-size: 20px;
+        padding: 8px 15px;
+      }
+      
+      .controls {
+        padding: 20px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 28px;
+      }
+      
+      .header p {
+        font-size: 18px;
+      }
+      
+      h1, h2 {
+        font-size: 30px;
+      }
+      
+      p, li {
+        font-size: 24px;
+      }
+      
+      .figure div {
+        width: 100px;
+        height: 100px;
+        font-size: 20px;
+      }
+      
+      button {
+        font-size: 20px;
+        padding: 12px 25px;
+        min-width: 140px;
+      }
+      
+      .slide-info {
+        font-size: 18px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Урок по информатике</h1>
+    <p>Виды компьютерных сетей. Арифметические операторы в Python</p>
+  </div>
+  
+  <div class="slide-container">
+    <div id="slides">
+      <div class="slide active">
+        <h1>Тема урока</h1>
+        <p>Виды компьютерных сетей. Арифметические операторы в Python<br><b>Класс: 9</b></p>
+        <div class="slide-info">Слайд 1/15</div>
+      </div>
+      <div class="slide">
+        <h2>Цели урока</h2>
+        <ul>
+          <li>Познакомиться с видами компьютерных сетей</li>
+          <li>Узнать назначение LAN, MAN, WAN</li>
+          <li>Освоить арифметические операторы в Python</li>
+          <li>Выполнить практическую работу</li>
+        </ul>
+        <div class="slide-info">Слайд 2/15</div>
+      </div>
+      <div class="slide">
+        <h2>Что такое сеть?</h2>
+        <p>Компьютерная сеть — это объединение компьютеров для обмена данными и совместной работы.</p>
+        <div class="slide-info">Слайд 3/15</div>
+      </div>
+      <div class="slide">
+        <h2>Виды сетей</h2>
+        <div class="figure">
+          <div>LAN</div>
+          <div>MAN</div>
+          <div>WAN</div>
+        </div>
+        <div class="slide-info">Слайд 4/15</div>
+      </div>
+      <div class="slide">
+        <h2>LAN</h2>
+        <ul>
+          <li>Маленькая территория (здание, школа, дом)</li>
+          <li>Высокая скорость</li>
+          <li>Пример: школьная компьютерная сеть</li>
+        </ul>
+        <div class="slide-info">Слайд 5/15</div>
+      </div>
+      <div class="slide">
+        <h2>WAN</h2>
+        <ul>
+          <li>Охватывает города, страны и континенты</li>
+          <li>Пример: Интернет</li>
+          <li>Соединяет миллионы устройств</li>
+        </ul>
+        <div class="slide-info">Слайд 6/15</div>
+      </div>
+      <div class="slide">
+        <h2>Для чего нужны сети?</h2>
+        <ul>
+          <li>Передача файлов</li>
+          <li>Электронная почта и соцсети</li>
+          <li>Видеозвонки</li>
+          <li>Совместная работа</li>
+        </ul>
+        <div class="slide-info">Слайд 7/15</div>
+      </div>
+      <div class="slide">
+        <h2>Переход к Python</h2>
+        <p>В программировании мы тоже обмениваемся данными:<br><b>Ввод</b> (<code>input()</code>) — как «передача информации в сеть»<br><b>Вывод</b> (<code>print()</code>) — как «ответ компьютера»</p>
+        <div class="slide-info">Слайд 8/15</div>
+      </div>
+      <div class="slide">
+        <h2>Арифметические операторы</h2>
+        <ul>
+          <li>+ — сложение</li>
+          <li>- — вычитание</li>
+          <li>* — умножение</li>
+          <li>/ — деление</li>
+        </ul>
+        <div class="slide-info">Слайд 9/15</div>
+      </div>
+      <div class="slide">
+        <h2>Дополнительные операторы</h2>
+        <ul>
+          <li>// — целочисленное деление</li>
+          <li>% — остаток от деления</li>
+          <li>** — возведение в степень</li>
+        </ul>
+        <div class="slide-info">Слайд 10/15</div>
+      </div>
+      <div class="slide">
+        <h2>Пример кода</h2>
+        <pre>a = 10
+b = 3
+print("Сумма:", a + b)
+print("Разность:", a - b)
+print("Произведение:", a * b)
+print("Деление:", a / b)</pre>
+        <div class="slide-info">Слайд 11/15</div>
+      </div>
+      <div class="slide">
+        <h2>Практическое задание №1</h2>
+        <p>Написать программу:<br>Запросить у пользователя два числа<br>Вывести их сумму, разность и произведение</p>
+        <div class="slide-info">Слайд 12/15</div>
+      </div>
+      <div class="slide">
+        <h2>Практическое задание №2</h2>
+        <p>Расширить программу:<br>Добавить деление /<br>Вывести результат целочисленного деления // и остаток %</p>
+        <div class="slide-info">Слайд 13/15</div>
+      </div>
+      <div class="slide">
+        <h2>Практическое задание №3</h2>
+        <p>Сделать мини-калькулятор:<br>Пользователь вводит два числа<br>Выводятся все операции: +, -, *, /, //, %, **</p>
+        <div class="slide-info">Слайд 14/15</div>
+      </div>
+      <div class="slide">
+        <h2>Итоги</h2>
+        <ul>
+          <li>Виды компьютерных сетей (LAN, MAN, WAN)</li>
+          <li>Назначение сетей в жизни</li>
+          <li>Арифметические операторы в Python</li>
+          <li>Как создать мини-калькулятор</li>
+        </ul>
+        <div class="slide-info">Слайд 15/15</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="controls">
+    <button id="prev-btn" onclick="prevSlide()">⬅ Назад</button>
+    <button id="next-btn" onclick="nextSlide()">Вперед ➡</button>
+  </div>
+
+  <button class="contrast-toggle" id="contrast-toggle" title="Переключить высокий контраст">⚫</button>
+  
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const contrastToggle = document.getElementById('contrast-toggle');
+    const totalSlides = slides.length;
+
+    function updateSlideInfo() {
+      const slideInfo = document.querySelectorAll('.slide-info');
+      slideInfo.forEach((info, index) => {
+        if (index === current) {
+          info.textContent = `Слайд ${current + 1}/${totalSlides}`;
+        }
+      });
+    }
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+      });
+      slides[index].classList.add('active');
+      current = index;
+      updateSlideInfo();
+      
+      // Update button states
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === totalSlides - 1;
+    }
+
+    function nextSlide() {
+      current = (current + 1) % totalSlides;
+      showSlide(current);
+    }
+
+    function prevSlide() {
+      current = (current - 1 + totalSlides) % totalSlides;
+      showSlide(current);
+    }
+
+    // Initialize
+    showSlide(current);
+
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    // High contrast toggle
+    contrastToggle.addEventListener('click', () => {
+      document.body.classList.toggle('high-contrast');
+      if (document.body.classList.contains('high-contrast')) {
+        contrastToggle.textContent = '☀️';
+        contrastToggle.title = 'Вернуть обычный режим';
+      } else {
+        contrastToggle.textContent = '⚫';
+        contrastToggle.title = 'Включить высокий контраст';
+      }
+    });
+
+    // Large text toggle with Ctrl+L
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'l') {
+        e.preventDefault();
+        document.body.classList.toggle('large-text');
+      }
+    });
+
+    // Accessibility improvements
+    prevBtn.setAttribute('aria-label', 'Предыдущий слайд');
+    nextBtn.setAttribute('aria-label', 'Следующий слайд');
+    contrastToggle.setAttribute('aria-label', 'Переключить режим высокого контраста');
+
+    // Make buttons accessible via keyboard
+    [prevBtn, nextBtn, contrastToggle].forEach(button => {
+      button.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          button.click();
+        }
+      });
+    });
+
+    // Add focus styles for better accessibility
+    document.addEventListener('focus', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        e.target.style.outline = '3px solid #ffcc00';
+      }
+    }, true);
+  </script>
+</body>
+</html>
