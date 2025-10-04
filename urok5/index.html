@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Презентация: Как работает компьютерная сеть и Python</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e6e6e6;
+        }
+        .slider-container {
+            width: 85%;
+            max-width: 1000px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 50px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 36px;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+        p, li {
+            font-size: 24px;
+            line-height: 1.8;
+            color: #333;
+        }
+        ul {
+            text-align: left;
+            margin: 30px auto;
+            max-width: 700px;
+            list-style: none;
+        }
+        ul li:before {
+            content: "➔";
+            color: #007bff;
+            font-size: 28px;
+            margin-right: 15px;
+        }
+        .nav-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        .nav-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 24px;
+            border-radius: 5px;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        .code-block {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            margin: 30px auto;
+            max-width: 700px;
+            border: 2px solid #007bff;
+        }
+        .icon {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            display: block;
+        }
+        .divider {
+            width: 80%;
+            height: 4px;
+            background-color: #007bff;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slides">
+            <!-- Слайд 1 -->
+            <div class="slide">
+                <h1>Тема урока</h1>
+                <div class="divider"></div>
+                <h2>Как работает компьютерная сеть<br>Арифметические операторы в Python</h2>
+                <p>Класс: 9</p>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/>
+                </svg>
+            </div>
+            <!-- Слайд 2 -->
+            <div class="slide">
+                <h2>Цели урока</h2>
+                <div class="divider"></div>
+                <ul>
+                    <li>Узнать, как компьютеры обмениваются данными в сети</li>
+                    <li>Разобраться, что такое пакеты и протоколы</li>
+                    <li>Освоить арифметические операторы в Python</li>
+                    <li>Сделать простую программу-калькулятор</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M5 13h14l-7 7-7-7z"/>
+                </svg>
+            </div>
+            <!-- Слайд 3 -->
+            <div class="slide">
+                <h2>Что такое сеть?</h2>
+                <div class="divider"></div>
+                <p>Компьютерная сеть — это соединение компьютеров, которые могут «разговаривать» между собой, передавая данные.</p>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M12 2a10 10 0 0 0-10 10h4v4h12v-4h4a10 10 0 0 0-10-10z"/>
+                </svg>
+            </div>
+            <!-- Слайд 4 -->
+            <div class="slide">
+                <h2>Основной принцип работы сети</h2>
+                <div class="divider"></div>
+                <ul>
+                    <li>Один компьютер отправляет данные.</li>
+                    <li>Данные разбиваются на пакеты.</li>
+                    <li>Пакеты проходят по кабелю или Wi-Fi.</li>
+                    <li>Другой компьютер получает и собирает их обратно.</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M3 12h18m-9-9v18"/>
+                </svg>
+            </div>
+            <!-- Слайд 5 -->
+            <div class="slide">
+                <h2>Что такое пакет данных?</h2>
+                <div class="divider"></div>
+                <p>Это маленькая «часть информации», как письмо в конверте.</p>
+                <p>В пакете есть:</p>
+                <ul>
+                    <li>адрес отправителя</li>
+                    <li>адрес получателя</li>
+                    <li>кусочек данных</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M4 4h16v16H4zM6 6h12v12H6z"/>
+                </svg>
+            </div>
+            <!-- Слайд 6 -->
+            <div class="slide">
+                <h2>Протоколы — язык общения</h2>
+                <div class="divider"></div>
+                <p>Чтобы понимать друг друга, компьютеры используют «правила общения» — протоколы.</p>
+                <ul>
+                    <li>HTTP (сайты)</li>
+                    <li>SMTP (почта)</li>
+                    <li>FTP (файлы)</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M12 2a10 10 0 0 0-10 10h4v4h12v-4h4a10 10 0 0 0-10-10z"/>
+                </svg>
+            </div>
+            <!-- Слайд 7 -->
+            <div class="slide">
+                <h2>Как работает Интернет?</h2>
+                <div class="divider"></div>
+                <p>Компьютер → роутер → провайдер → сеть интернет → сервер.</p>
+                <p>Сервер обрабатывает запрос и отправляет ответ назад.</p>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M12 2a10 10 0 0 0-10 10h4v4h12v-4h4a10 10 0 0 0-10-10z"/>
+                </svg>
+            </div>
+            <!-- Слайд 8 -->
+            <div class="slide">
+                <h2>Пример для жизни</h2>
+                <div class="divider"></div>
+                <p>📩 Когда вы открываете сайт:</p>
+                <ul>
+                    <li>Вы вводите адрес (например, google.com).</li>
+                    <li>Компьютер отправляет запрос.</li>
+                    <li>Сервер Google отвечает и отправляет страницу.</li>
+                    <li>Ваш браузер показывает её на экране.</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M3 3h18v18H3z"/>
+                </svg>
+            </div>
+            <!-- Слайд 9 -->
+            <div class="slide">
+                <h2>Переход к Python</h2>
+                <div class="divider"></div>
+                <p>Сети работают с данными.</p>
+                <p>В Python мы тоже работаем с данными и числами.</p>
+                <p>Сегодня познакомимся с арифметическими операторами.</p>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/>
+                </svg>
+            </div>
+            <!-- Слайд 10 -->
+            <div class="slide">
+                <h2>Арифметика в Python</h2>
+                <div class="divider"></div>
+                <ul>
+                    <li><code>+</code> сложение</li>
+                    <li><code>-</code> вычитание</li>
+                    <li><code>*</code> умножение</li>
+                    <li><code>/</code> деление</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M6 6h12v12H6z"/>
+                </svg>
+            </div>
+            <!-- Слайд 11 -->
+            <div class="slide">
+                <h2>Дополнительные операторы</h2>
+                <div class="divider"></div>
+                <ul>
+                    <li><code>//</code> — целочисленное деление</li>
+                    <li><code>%</code> — остаток от деления</li>
+                    <li><code>**</code> — возведение в степень</li>
+                </ul>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M6 6h12v12H6z"/>
+                </svg>
+            </div>
+            <!-- Слайд 12 -->
+            <div class="slide">
+                <h2>Пример программы</h2>
+                <div class="divider"></div>
+                <div class="code-block">
+                    <pre>
+# Простой калькулятор
+a = float(input("Введите первое число: "))
+b = float(input("Введите второе число: "))
+print("Сложение:", a + b)
+print("Вычитание:", a - b)
+print("Умножение:", a * b)
+print("Деление:", a / b)
+print("Целочисленное деление:", a // b)
+print("Остаток от деления:", a % b)
+print("Возведение в степень:", a ** b)
+                    </pre>
+                </div>
+                <svg class="icon" viewBox="0 0 24 24" fill="#007bff">
+                    <path d="M3 12h18m-9-9v18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="prevSlide()">←</button>
+            <button class="nav-button" onclick="nextSlide()">→</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelector('.slides');
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function showSlide(index) {
+            if (index >= totalSlides) currentSlide = 0;
+            if (index < 0) currentSlide = totalSlides - 1;
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
