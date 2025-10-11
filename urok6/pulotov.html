@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Частная школа с углублённым английским. Приём в 1–11 классы. С 1996 года">
+  <title>Школа П.П. Пулатова — Худжанд</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --light-bg: #f5f5f5;
+      --white: #ffffff;
+      --text: #333333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text);
+      background-color: var(--white);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border: none;
+    }
+
+    .btn:hover {
+      background-color: #1a306f;
+    }
+
+    .btn-large {
+      padding: 16px 32px;
+      font-size: 18px;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    /* Hero Section */
+    .hero {
+      background-color: var(--light-bg);
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 800px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Section */
+    section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 28px;
+      color: var(--primary);
+    }
+
+    /* About, Teaching, etc. */
+    .content-block {
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .content-block h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    .content-block p {
+      margin-bottom: 16px;
+    }
+
+    .list {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .list li {
+      margin-bottom: 8px;
+    }
+
+    /* Teachers */
+    .teachers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .teacher-card {
+      text-align: center;
+      background-color: var(--white);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .teacher-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #ddd;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: #999;
+    }
+
+    .teacher-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .teacher-role {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    /* Students Gallery */
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .student-card {
+      background-color: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .student-photo {
+      width: 100%;
+      height: 200px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: #999;
+    }
+
+    .student-info {
+      padding: 16px;
+    }
+
+    .student-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .student-achievement {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* News */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .news-card {
+      background-color: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .news-photo {
+      width: 100%;
+      height: 160px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #999;
+    }
+
+    .news-content {
+      padding: 16px;
+    }
+
+    .news-date {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .news-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    /* FAQ */
+    .faq-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .faq-question {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .faq-answer {
+      color: #555;
+    }
+
+    /* Contact */
+    .contact-info {
+      margin-bottom: 40px;
+    }
+
+    .contact-info p {
+      margin-bottom: 12px;
+    }
+
+    .map-container {
+      height: 300px;
+      background-color: #ddd;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: 26px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .students-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">Школа П.П. Пулатова</div>
+      <button class="mobile-menu-btn">☰</button>
+      <nav class="nav-links">
+        <a href="#home">🏠 Главная</a>
+        <a href="#about">🏫 О школе</a>
+        <a href="#teaching">📚 Обучение</a>
+        <a href="#teachers">👩‍🏫 Преподаватели</a>
+        <a href="#students">👨‍🎓 Ученики</a>
+        <a href="#news">📰 Новости</a>
+        <a href="#faq">❓ ЧЗВ</a>
+        <a href="#contacts">📍 Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container">
+      <h1>Школа П.П. Пулатова — с 1996 года готовим учеников к жизни, а не к экзаменам</h1>
+      <p>Частная школа в Худжанде с углублённым изучением английского языка. Приём в 1–11 классы на 2025–2026 учебный год открыт.</p>
+      <div class="hero-buttons">
+        <a href="#contacts" class="btn btn-large">Записаться на пробное занятие</a>
+        <a href="https://wa.me/992525005340064261" target="_blank" class="btn btn-large">Получить консультацию по WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">История и миссия Школы П.П. Пулатова</h2>
+      <div class="content-block">
+        <p>Школа П.П. Пулатова была основана в сентябре 1996 года на основании Закона «Об образовании» по инициативе профессора Пулата Атаевича Пулатова.</p>
+        <p>С тех пор мы неизменно следуем одной цели: дать каждому ребёнку качественное, понятное и доступное образование, которое помогает не только поступить в вуз, но и успешно жить в мире.</p>
+        <p>Мы гордимся тем, что более 25 лет обучаем детей в Худжанде — с уважением к традициям, но с открытым взглядом на будущее.</p>
+        <p>Наша школа — это не просто здание. Это место, где формируются личности.</p>
+      </div>
+      <div style="text-align:center; margin-top:30px;">
+        <a href="#contacts" class="btn">Записаться на пробное занятие</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaching -->
+  <section id="teaching" style="background-color: var(--light-bg);">
+    <div class="container">
+      <h2 class="section-title">Обучение</h2>
+
+      <div class="content-block">
+        <h3>Русское отделение — 1–11 классы</h3>
+        <p>Обучение по государственной программе Таджикистана — с углублённым английским</p>
+        <p>Мы обучаем по официальной программе Министерства образования Республики Таджикистан, но усиливаем её:</p>
+        <ul class="list">
+          <li>Английский язык — 4–5 уроков в неделю с 1 класса</li>
+          <li>Математика — углублённый курс, подготовка к вузам</li>
+          <li>Естественные науки — практические работы, проекты</li>
+          <li>Русский язык и литература — глубокое изучение</li>
+        </ul>
+        <p>По окончании 11 класса выдаётся официальный сертификат таджикского образца.</p>
+        <p>Наши выпускники поступают в вузы: Москва, Санкт-Петербург, Казань, Ташкент, Душанбе</p>
+        <p><strong>Почему это работает?</strong> Мы не гонимся за модными названиями. Мы делаем реальное, проверенное, качественное образование — с 1996 года.</p>
+      </div>
+
+      <div class="content-block">
+        <h3>Английский язык — с 1 класса</h3>
+        <p>Учим говорить — не заучивать</p>
+        <p>Английский язык — это не дополнительный предмет. Это инструмент, который открывает двери.</p>
+        <p>Мы используем современные методики:</p>
+        <ul class="list">
+          <li>Диалоги и ролевые игры</li>
+          <li>Чтение книг, прослушивание аудио</li>
+          <li>Проекты и презентации</li>
+        </ul>
+        <p>К концу 6 класса ученики:</p>
+        <ul class="list">
+          <li>Свободно читают простые тексты</li>
+          <li>Пишут сочинения</li>
+          <li>Отвечают на вопросы на английском</li>
+        </ul>
+        <p>Наша цель — чтобы ребёнок не боялся говорить, а хотел говорить.</p>
+      </div>
+
+      <div style="text-align:center; margin-top:30px;">
+        <a href="#contacts" class="btn">Записаться на пробное занятие</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teachers -->
+  <section id="teachers">
+    <div class="container">
+      <h2 class="section-title">Наши преподаватели — люди, которые вдохновляют</h2>
+      <p style="text-align:center; margin-bottom:30px;">За 29 лет мы собрали команду настоящих педагогов — не просто учителей, а наставников, которые знают каждого ученика по имени.</p>
+
+      <div class="teachers-grid">
+        <div class="teacher-card">
+          <div class="teacher-photo">👤</div>
+          <div class="teacher-name">Саидова Марина Викторовна</div>
+          <div class="teacher-role">Учитель русского языка и литературы, 18 лет в школе</div>
+          <p>Выпускница ТГУ им. Н.С. Таджики. Стаж — 18 лет. Победитель областных конкурсов «Учитель года». Ученики Марину Викторовну называют «той, кто заставляет любить книги». Её уроки — это диалоги, а не лекции.</p>
+        </div>
+        <div class="teacher-card">
+          <div class="teacher-photo">👤</div>
+          <div class="teacher-name">Абдуллаев Рустам Хасанович</div>
+          <div class="teacher-role">Учитель математики и английского языка, 15 лет в школе</div>
+          <p>Окончил ХГПУ, прошёл курсы повышения квалификации в Москве. Специализируется на подготовке к вузам. Его ученики сдают ЕГЭ по математике на 85+ баллов. Говорит: «Математика — это не цифры, это логика жизни».</p>
+        </div>
+        <div class="teacher-card">
+          <div class="teacher-photo">👤</div>
+          <div class="teacher-name">Алишерова Дилфуз</div>
+          <div class="teacher-role">Учитель английского языка, 10 лет в школе</div>
+          <p>Прошла обучение по методике Cambridge, работает с детьми с 1 класса. Её ученики читают книги на английском уже в 4 классе. Личный девиз: «Не учите язык — живите им».</p>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:40px;">
+        <a href="#contacts" class="btn">Записаться на пробное занятие</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Students -->
+  <section id="students" style="background-color: var(--light-bg);">
+    <div class="container">
+      <h2 class="section-title">Их истории — наша гордость</h2>
+      <p style="text-align:center; margin-bottom:30px;">Мы не просто учим — мы видим, как растут наши дети. Вот их достижения.</p>
+
+      <div class="students-grid">
+        <div class="student-card">
+          <div class="student-photo">👧</div>
+          <div class="student-info">
+            <div class="student-name">Айдара, 6 класс</div>
+            <div class="student-achievement">читает книгу на английском «The Lion, the Witch and the Wardrobe»</div>
+          </div>
+        </div>
+        <div class="student-card">
+          <div class="student-photo">👧</div>
+          <div class="student-info">
+            <div class="student-name">Лейла, 9 класс</div>
+            <div class="student-achievement">победитель областной олимпиады по математике (2024)</div>
+          </div>
+        </div>
+        <div class="student-card">
+          <div class="student-photo">👦</div>
+          <div class="student-info">
+            <div class="student-name">Мухаммад, 11 класс</div>
+            <div class="student-achievement">поступил в МГУ, Москва</div>
+          </div>
+        </div>
+        <div class="student-card">
+          <div class="student-photo">👧</div>
+          <div class="student-info">
+            <div class="student-name">Гузаль, 8 класс</div>
+            <div class="student-achievement">выступает на школьной конференции на английском</div>
+          </div>
+        </div>
+        <div class="student-card">
+          <div class="student-photo">👦</div>
+          <div class="student-info">
+            <div class="student-name">Джамшид, 5 класс</div>
+            <div class="student-achievement">пишет сочинение на английском (тема: «Моя мечта»)</div>
+          </div>
+        </div>
+        <div class="student-card">
+          <div class="student-photo">👦</div>
+          <div class="student-info">
+            <div class="student-name">Саид, 11 класс</div>
+            <div class="student-achievement">сдаёт ЕГЭ по русскому языку — 92 балла</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:40px;">
+        <a href="#contacts" class="btn">Записаться на пробное занятие</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news">
+    <div class="container">
+      <h2 class="section-title">Последние события — наша жизнь в движении</h2>
+      <p style="text-align:center; margin-bottom:30px;">Здесь мы делимся моментами, которые делают нашу школу особенной.</p>
+
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-photo">📅</div>
+          <div class="news-content">
+            <div class="news-date">15 сентября 2025</div>
+            <div class="news-title">День открытых дверей</div>
+            <p>Более 120 родителей посетили нашу школу. Ученики провели экскурсию, показали проекты, прочитали стихи на английском.</p>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-photo">🎓</div>
+          <div class="news-content">
+            <div class="news-date">Июнь 2025</div>
+            <div class="news-title">Ученики 11 класса сдали ЕГЭ — 100% результат</div>
+            <p>Все выпускники 2025 года успешно прошли вступительные экзамены. 8 человек поступили в вузы России, 3 — в Ташкент.</p>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-photo">🏆</div>
+          <div class="news-content">
+            <div class="news-date">Март 2025</div>
+            <div class="news-title">Конкурс «Лучший проект» — победитель 6 класса</div>
+            <p>Проект «Как я учу английский» — видео, которое набрало 500 просмотров в WhatsApp. Автор — Айгуль, 6 класс.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background-color: var(--light-bg);">
+    <div class="container">
+      <h2 class="section-title">Часто задаваемые вопросы — всё, что важно знать родителям</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">Сколько стоит обучение в школе?</div>
+        <div class="faq-answer">Обучение в 1–11 классах — Х сомони в год (10 месяцев). В стоимость входят: учебники, занятия, контрольные работы, дополнительные уроки английского.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Когда начинается набор?</div>
+        <div class="faq-answer">Набор на 2025–2026 учебный год уже открыт. Приём документов — с 1 марта по 30 августа.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Как записаться?</div>
+        <div class="faq-answer">Запишитесь на бесплатное пробное занятие — приходите с ребёнком, познакомьтесь с учителями, посмотрите классы.<br>
+        Звоните: +992 5 25 00 | +992 5 34 00 | +992 6 42 61<br>
+        Или пишите в WhatsApp: <a href="https://wa.me/992525005340064261" target="_blank">написать</a></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Где находится школа?</div>
+        <div class="faq-answer">Ул. Исмоили Сомони, д. 54а, Худжанд, 28-й микрорайон.<br>Работаем: Пн–Сб, 08:00–16:00.</div>
+      </div>
+
+      <div style="text-align:center; margin-top:40px;">
+        <a href="#contacts" class="btn btn-large">Записаться на пробное занятие</a>
+        <a href="https://wa.me/992525005340064261" target="_blank" class="btn btn-large">Позвонить менеджеру (WhatsApp)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section id="contacts">
+    <div class="container">
+      <h2 class="section-title">Свяжитесь с нами — мы с радостью ответим на все вопросы</h2>
+
+      <div class="contact-info">
+        <p><strong>Адрес:</strong> Согдийская область, г. Худжанд, ул. Исмоили Сомони, д. 54а</p>
+        <p><strong>Доп. адрес:</strong> 28-й микрорайон, Худжанд</p>
+        <p><strong>Телефоны:</strong> 5 25 00 | 5 34 00 | 6 42 61</p>
+        <p><strong>Email:</strong> pulotov.khujand@bk.ru</p>
+        <p><strong>Режим работы:</strong> Понедельник – Суббота, 08:00 – 16:00</p>
+      </div>
+
+      <div class="map-container">
+        Карта: ул. Исмоили Сомони, 54а, Худжанд
+      </div>
+
+      <form id="contact-form" style="max-width:600px; margin:0 auto;">
+        <div class="form-group">
+          <label for="name">Имя</label>
+          <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input type="tel" id="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="age">Возраст ребёнка (1–11 класс)</label>
+          <select id="age" required>
+            <option value="">Выберите класс</option>
+            <option value="1">1 класс</option>
+            <option value="2">2 класс</option>
+            <option value="3">3 класс</option>
+            <option value="4">4 класс</option>
+            <option value="5">5 класс</option>
+            <option value="6">6 класс</option>
+            <option value="7">7 класс</option>
+            <option value="8">8 класс</option>
+            <option value="9">9 класс</option>
+            <option value="10">10 класс</option>
+            <option value="11">11 класс</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-large" style="width:100%;">Отправить заявку</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Школа П.П. Пулатова. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle (simplified)
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+      alert('Мобильное меню будет реализовано в продакшене');
+    });
+
+    // Form submission
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
