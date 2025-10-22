@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Визуализация пузырьковой сортировки</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      padding: 20px;
+    }
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 300px;
+      margin: 20px auto;
+      gap: 4px;
+    }
+    .bar {
+      width: 30px;
+      background: #4CAF50;
+      border: 1px solid #333;
+      transition: height 0.2s, background 0.2s;
+    }
+    .comparing {
+      background: #ff9800; /* Оранжевый — сравниваемые элементы */
+    }
+    .sorted {
+      background: #2196F3; /* Синий — уже отсортировано */
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Пузырьковая сортировка — визуализация</h1>
+  <button onclick="generateArray()">Сгенерировать новый массив</button>
+  <button onclick="startSort()">Запустить сортировку</button>
+  <div id="container"></div>
+
+  <script>
+    const container = document.getElementById('container');
+    let arr = [];
+    const ARRAY_SIZE = 15;
+    const MAX_VALUE = 100;
+
+    // Генерация случайного массива
+    function generateArray() {
+      arr = [];
+      container.innerHTML = '';
+      for (let i = 0; i < ARRAY_SIZE; i++) {
+        const val = Math.floor(Math.random() * MAX_VALUE) + 10;
+        arr.push(val);
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = `${val}%`;
+        bar.dataset.value = val;
+        container.appendChild(bar);
+      }
+    }
+
+    // Запуск сортировки
+    async function startSort() {
+      const bars = document.querySelectorAll('.bar');
+      const n = arr.length;
+
+      for (let i = 0; i < n - 1; i++) {
+        let swapped = false;
+        for (let j = 0; j < n - i - 1; j++) {
+          // Подсвечиваем сравниваемые элементы
+          bars[j].classList.add('comparing');
+          bars[j + 1].classList.add('comparing');
+
+          await sleep(300); // Задержка для визуализации
+
+          if (arr[j] > arr[j + 1]) {
+            // Меняем местами в массиве
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+
+            // Меняем высоты визуально
+            [bars[j].style.height, bars[j + 1].style.height] = 
+              [bars[j + 1].style.height, bars[j].style.height];
+
+            swapped = true;
+          }
+
+          // Убираем подсветку
+          bars[j].classList.remove('comparing');
+          bars[j + 1].classList.remove('comparing');
+        }
+
+        // Помечаем последний отсортированный элемент как "готовый"
+        bars[n - i - 1].classList.add('sorted');
+
+        if (!swapped) break;
+      }
+
+      // Помечаем все как отсортированные
+      bars.forEach(bar => bar.classList.add('sorted'));
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Генерируем первый массив при загрузке
+    generateArray();
+  </script>
+</body>
+</html>
