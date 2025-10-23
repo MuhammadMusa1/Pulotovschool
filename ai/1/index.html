@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Интерактивная визуализация 6 алгоритмов сортировки: пузырьковая, выбором, вставками, слиянием, быстрая и подсчётом. Для школьников и студентов.">
+  <title>6 алгоритмов сортировки — визуализация</title>
+  <meta property="og:title" content="6 алгоритмов сортировки — визуализация">
+  <meta property="og:description" content="Интерактивное обучение: пузырьковая, выбором, вставками, слиянием, быстрая, подсчётом.">
+  <meta property="og:type" content="website">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      text-align: center;
+      background: #fafafa;
+      margin: 0;
+      padding: 16px;
+      color: #333;
+    }
+    header h1 {
+      font-size: 1.7rem;
+      margin: 0.5em 0;
+    }
+    .intro {
+      max-width: 750px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+      color: #555;
+    }
+    #controls {
+      margin: 15px 0;
+    }
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 280px;
+      margin: 20px auto;
+      gap: 2px;
+    }
+    .bar {
+      width: calc(100% / 16 - 4px);
+      max-width: 32px;
+      background: #4CAF50;
+      border: 1px solid #333;
+      transition: height 0.2s, background-color 0.2s;
+    }
+    .comparing { background: #ff9800; }
+    .swapping   { background: #f44336; }
+    .sorted     { background: #2196F3; }
+    .processing { background: #9c27b0; } /* Фиолетовый — рекурсивная обработка */
+    button, select {
+      padding: 8px 12px;
+      font-size: 14px;
+      margin: 5px;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+    }
+    footer {
+      margin-top: 25px;
+      color: #777;
+      font-size: 0.85rem;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bar { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Визуализация 6 алгоритмов сортировки</h1>
+    <p class="intro">
+      Пузырьковая, выбором, вставками, <strong>слиянием</strong>, <strong>быстрая</strong> и <strong>подсчётом</strong>.
+      Идеально для школьников, студентов и учителей информатики.
+    </p>
+  </header>
+
+  <div id="controls" role="group" aria-label="Управление визуализацией">
+    <label for="algorithm">Алгоритм:</label>
+    <select id="algorithm" aria-label="Выберите алгоритм сортировки">
+      <option value="bubble">Пузырьковая</option>
+      <option value="selection">Выбором</option>
+      <option value="insertion">Вставками</option>
+      <option value="merge">Слиянием</option>
+      <option value="quick">Быстрая</option>
+      <option value="counting">Подсчётом</option>
+    </select>
+    <button onclick="generateArray()">Новый массив</button>
+    <button onclick="startSort()">Запустить</button>
+  </div>
+
+  <div id="container" role="region" aria-label="Визуализация массива"></div>
+
+  <footer>
+    <p>Образовательный инструмент по алгоритмам сортировки. Работает офлайн.</p>
+  </footer>
+
+  <script>
+    const container = document.getElementById('container');
+    const algoSelect = document.getElementById('algorithm');
+    let arr = [];
+    const ARRAY_SIZE = 16;
+    const MAX_VALUE = 60; // уменьшено для Counting Sort
+    let bars = [];
+
+    function generateArray() {
+      arr = Array.from({length: ARRAY_SIZE}, () => Math.floor(Math.random() * MAX_VALUE) + 5);
+      renderBars();
+    }
+
+    function renderBars() {
+      container.innerHTML = '';
+      bars = [];
+      arr.forEach(val => {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = `${(val / MAX_VALUE) * 100}%`;
+        container.appendChild(bar);
+        bars.push(bar);
+      });
+    }
+
+    function resetBars() {
+      bars.forEach(bar => bar.className = 'bar');
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // ========== Существующие алгоритмы (сокращены для краткости) ==========
+    async function bubbleSort() {
+      const n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        let swapped = false;
+        for (let j = 0; j < n - i - 1; j++) {
+          bars[j].classList.add('comparing');
+          bars[j + 1].classList.add('comparing');
+          await sleep(180);
+          if (arr[j] > arr[j + 1]) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            [bars[j].style.height, bars[j + 1].style.height] = [bars[j + 1].style.height, bars[j].style.height];
+            swapped = true;
+          }
+          bars[j].classList.remove('comparing');
+          bars[j + 1].classList.remove('comparing');
+        }
+        bars[n - i - 1].classList.add('sorted');
+        if (!swapped) break;
+      }
+      bars.forEach(b => b.classList.add('sorted'));
+    }
+
+    async function selectionSort() {
+      const n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        let min = i;
+        bars[i].classList.add('comparing');
+        for (let j = i + 1; j < n; j++) {
+          bars[j].classList.add('comparing');
+          await sleep(120);
+          if (arr[j] < arr[min]) {
+            bars[min].classList.remove('comparing');
+            min = j;
+            bars[min].classList.add('comparing');
+          } else bars[j].classList.remove('comparing');
+        }
+        if (min !== i) {
+          [arr[i], arr[min]] = [arr[min], arr[i]];
+          [bars[i].style.height, bars[min].style.height] = [bars[min].style.height, bars[i].style.height];
+        }
+        bars[i].className = 'bar sorted';
+        bars.forEach((b, idx) => { if (idx > i) b.classList.remove('comparing'); });
+      }
+      bars.forEach(b => b.classList.add('sorted'));
+    }
+
+    async function insertionSort() {
+      for (let i = 1; i < arr.length; i++) {
+        let key = arr[i], j = i - 1;
+        bars[i].classList.add('comparing');
+        await sleep(150);
+        while (j >= 0 && arr[j] > key) {
+          bars[j].classList.add('comparing');
+          await sleep(120);
+          arr[j + 1] = arr[j];
+          bars[j + 1].style.height = bars[j].style.height;
+          bars[j].classList.remove('comparing');
+          j--;
+        }
+        arr[j + 1] = key;
+        bars[j + 1].style.height = `${(key / MAX_VALUE) * 100}%`;
+        bars[i].classList.remove('comparing');
+        for (let k = 0; k <= i; k++) bars[k].classList.add('sorted');
+        for (let k = i + 1; k < arr.length; k++) bars[k].classList.remove('sorted', 'comparing');
+        await sleep(80);
+      }
+      bars.forEach(b => b.classList.add('sorted'));
+    }
+
+    // ========== НОВЫЕ АЛГОРИТМЫ ==========
+
+    // Сортировка слиянием (визуализация через рекурсивные подмассивы)
+    async function mergeSort(low = 0, high = arr.length - 1) {
+      if (low >= high) return;
+
+      const mid = Math.floor((low + high) / 2);
+      // Подсветка текущего сегмента
+      for (let i = low; i <= high; i++) bars[i].classList.add('processing');
+      await sleep(200);
+
+      await mergeSort(low, mid);
+      await mergeSort(mid + 1, high);
+      await merge(low, mid, high);
+
+      for (let i = low; i <= high; i++) bars[i].classList.remove('processing');
+      if (low === 0 && high === arr.length - 1) {
+        bars.forEach(b => b.classList.add('sorted'));
+      }
+    }
+
+    async function merge(low, mid, high) {
+      const left = arr.slice(low, mid + 1);
+      const right = arr.slice(mid + 1, high + 1);
+      let i = 0, j = 0, k = low;
+
+      while (i < left.length && j < right.length) {
+        bars[low + i].classList.add('comparing');
+        bars[mid + 1 + j].classList.add('comparing');
+        await sleep(150);
+
+        if (left[i] <= right[j]) {
+          arr[k] = left[i];
+          bars[k].style.height = `${(left[i] / MAX_VALUE) * 100}%`;
+          i++;
+        } else {
+          arr[k] = right[j];
+          bars[k].style.height = `${(right[j] / MAX_VALUE) * 100}%`;
+          j++;
+        }
+        bars[low + i - 1]?.classList.remove('comparing');
+        bars[mid + 1 + j - 1]?.classList.remove('comparing');
+        k++;
+      }
+
+      while (i < left.length) {
+        arr[k] = left[i];
+        bars[k].style.height = `${(left[i] / MAX_VALUE) * 100}%`;
+        i++; k++;
+      }
+      while (j < right.length) {
+        arr[k] = right[j];
+        bars[k].style.height = `${(right[j] / MAX_VALUE) * 100}%`;
+        j++; k++;
+      }
+    }
+
+    // Быстрая сортировка
+    async function quickSort(low = 0, high = arr.length - 1) {
+      if (low < high) {
+        for (let i = low; i <= high; i++) bars[i].classList.add('processing');
+        await sleep(180);
+
+        const pi = await partition(low, high);
+        await quickSort(low, pi - 1);
+        await quickSort(pi + 1, high);
+
+        for (let i = low; i <= high; i++) bars[i].classList.remove('processing');
+        if (low === 0 && high === arr.length - 1) {
+          bars.forEach(b => b.classList.add('sorted'));
+        }
+      }
+    }
+
+    async function partition(low, high) {
+      const pivot = arr[high];
+      let i = low - 1;
+      bars[high].classList.add('comparing'); // pivot
+
+      for (let j = low; j < high; j++) {
+        bars[j].classList.add('comparing');
+        await sleep(150);
+        if (arr[j] <= pivot) {
+          i++;
+          if (i !== j) {
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+            [bars[i].style.height, bars[j].style.height] = [bars[j].style.height, bars[i].style.height];
+          }
+        }
+        bars[j].classList.remove('comparing');
+      }
+      [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+      [bars[i + 1].style.height, bars[high].style.height] = [bars[high].style.height, bars[i + 1].style.height];
+      bars[high].classList.remove('comparing');
+      return i + 1;
+    }
+
+    // Сортировка подсчётом (только для неотрицательных целых)
+    async function countingSort() {
+      const max = Math.max(...arr);
+      const min = Math.min(...arr);
+      const range = max - min + 1;
+      const count = new Array(range).fill(0);
+      const output = new Array(arr.length);
+
+      // Подсчёт
+      for (let i = 0; i < arr.length; i++) {
+        count[arr[i] - min]++;
+        bars[i].classList.add('processing');
+        await sleep(80);
+      }
+
+      // Кумулятивная сумма
+      for (let i = 1; i < count.length; i++) {
+        count[i] += count[i - 1];
+      }
+
+      // Построение результата (справа налево для стабильности)
+      for (let i = arr.length - 1; i >= 0; i--) {
+        const val = arr[i];
+        output[count[val - min] - 1] = val;
+        count[val - min]--;
+        bars[i].classList.remove('processing');
+        await sleep(100);
+      }
+
+      // Обновление массива и визуализации
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = output[i];
+        bars[i].style.height = `${(arr[i] / MAX_VALUE) * 100}%`;
+        bars[i].classList.add('sorted');
+        await sleep(80);
+      }
+    }
+
+    // Запуск выбранного алгоритма
+    async function startSort() {
+      resetBars();
+      const algo = algoSelect.value;
+      if (algo === 'bubble') await bubbleSort();
+      else if (algo === 'selection') await selectionSort();
+      else if (algo === 'insertion') await insertionSort();
+      else if (algo === 'merge') await mergeSort();
+      else if (algo === 'quick') await quickSort();
+      else if (algo === 'counting') await countingSort();
+    }
+
+    generateArray();
+  </script>
+</body>
+</html>
