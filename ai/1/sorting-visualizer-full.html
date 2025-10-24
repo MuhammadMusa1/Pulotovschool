@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Полная визуализация 6 алгоритмов сортировки с гистограммой, пошаговым режимом, видео и экспортом PNG.">
+  <title>Сортировка Pro — полная версия</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafa;
+      margin: 0;
+      padding: 12px;
+      color: #333;
+    }
+    h1 { font-size: 1.6rem; margin: 0.5em 0; }
+    .intro { max-width: 800px; margin: 0 auto 16px; line-height: 1.5; color: #555; }
+    .controls { margin: 12px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; align-items: center; }
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 240px;
+      margin: 16px auto;
+      gap: 2px;
+    }
+    .bar {
+      width: calc(100% / 16 - 4px);
+      max-width: 32px;
+      background: #4CAF50;
+      border: 1px solid #333;
+      transition: height 0.2s, background-color 0.2s;
+    }
+    .comparing { background: #ff9800; }
+    .swapping   { background: #f44336; }
+    .sorted     { background: #2196F3; }
+    .processing { background: #9c27b0; }
+    button, select {
+      padding: 6px 12px;
+      font-size: 14px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+    }
+    #stepControl {
+      display: none;
+      margin-top: 10px;
+    }
+    #histogram {
+      margin: 20px auto;
+      max-width: 700px;
+      text-align: left;
+      position: relative;
+    }
+    .histo-bar {
+      height: 24px;
+      background: #673ab7;
+      margin: 4px 0;
+      position: relative;
+      border-radius: 3px;
+    }
+    .histo-label {
+      position: absolute;
+      left: 8px;
+      top: 3px;
+      color: white;
+      font-size: 13px;
+      text-shadow: 1px 1px 1px #000;
+    }
+    canvas { display: none; }
+    footer { margin-top: 20px; color: #777; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Сортировка Pro — полная версия</h1>
+  <p class="intro">
+    6 алгоритмов • Пошаговый режим • Видео • Гистограмма + PNG
+  </p>
+
+  <div class="controls">
+    <label for="algorithm">Алгоритм:</label>
+    <select id="algorithm">
+      <option value="bubble">Пузырьковая</option>
+      <option value="selection">Выбором</option>
+      <option value="insertion">Вставками</option>
+      <option value="merge">Слиянием</option>
+      <option value="quick">Быстрая</option>
+      <option value="counting">Подсчётом</option>
+    </select>
+    <button onclick="generateArray()">Новый массив</button>
+    <button onclick="startAuto()">Авто</button>
+    <button onclick="startStepByStep()">Шаг за шагом</button>
+    <button onclick="recordVideo()" id="recordBtn" disabled>Видео</button>
+    <button onclick="saveHistogramAsPng()" id="savePngBtn" disabled>Гистограмма PNG</button>
+  </div>
+
+  <div id="stepControl">
+    <button onclick="nextStep()">Далее</button>
+    <button onclick="cancelStepMode()">Отмена</button>
+    <span id="stepInfo">Ожидаю...</span>
+  </div>
+
+  <div id="container"></div>
+  <canvas id="recordingCanvas" width="800" height="300"></canvas>
+  <canvas id="histoCanvas" width="720" height="200" style="display:none;"></canvas>
+
+  <div id="histogram"></div>
+  <footer>Образовательный инструмент по алгоритмам сортировки. Работает офлайн.</footer>
+
+  <script>
+    // === ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
+    const container = document.getElementById('container');
+    const canvas = document.getElementById('recordingCanvas');
+    const ctx = canvas.getContext('2d');
+    const histoCanvas = document.getElementById('histoCanvas');
+    const histoCtx = histoCanvas.getContext('2d');
+    const algoSelect = document.getElementById('algorithm');
+    const stepControl = document.getElementById('stepControl');
+    const stepInfo = document.getElementById('stepInfo');
+    const recordBtn = document.getElementById('recordBtn');
+    const savePngBtn = document.getElementById('savePngBtn');
+    const histogramEl = document.getElementById('histogram');
+
+    let arr = [];
+    let bars = [];
+    const ARRAY_SIZE = 16;
+    const MAX_VALUE = 60;
+    let stepMode = false;
+    let stepQueue = [];
+    let recorder = null;
+    let recordedChunks = [];
+    let isRecording = false;
+    const timings = {}; // для гистограммы
+
+    // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
+    function generateArray() {
+      arr = Array.from({length: ARRAY_SIZE}, () => Math.floor(Math.random() * MAX_VALUE) + 5);
+      renderBars();
+      histogramEl.innerHTML = '';
+      Object.keys(timings).forEach(k => delete timings[k]);
+      recordBtn.disabled = true;
+      savePngBtn.disabled = true;
+    }
+
+    function renderBars() {
+      container.innerHTML = '';
+      bars = [];
+      arr.forEach(val => {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = `${(val / MAX_VALUE) * 100}%`;
+        container.appendChild(bar);
+        bars.push(bar);
+      });
+      if (isRecording) drawToCanvas();
+    }
+
+    function resetBars() {
+      bars.forEach(bar => bar.className = 'bar');
+      if (isRecording) drawToCanvas();
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => {
+        if (stepMode) {
+          stepQueue.push(resolve);
+        } else {
+          setTimeout(resolve, ms);
+        }
+      });
+    }
+
+    function drawToCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const barWidth = canvas.width / ARRAY_SIZE - 4;
+      const gap = 2;
+      for (let i = 0; i < bars.length; i++) {
+        const h = (arr[i] / MAX_VALUE) * (canvas.height - 20);
+        const x = i * (barWidth + gap) + gap;
+        const y = canvas.height - h;
+        const computedStyle = getComputedStyle(bars[i]);
+        ctx.fillStyle = computedStyle.backgroundColor;
+        ctx.fillRect(x, y, barWidth, h);
+        ctx.strokeStyle = '#333';
+        ctx.strokeRect(x, y, barWidth, h);
+      }
+    }
+
+    function saveHistogramAsPng() {
+      histoCtx.clearRect(0, 0, histoCanvas.width, histoCanvas.height);
+      histoCtx.fillStyle = '#ffffff';
+      histoCtx.fillRect(0, 0, histoCanvas.width, histoCanvas.height);
+      histoCtx.fillStyle = '#333333';
+      histoCtx.font = '14px Arial';
+      histoCtx.fillText('Время выполнения алгоритмов (мс)', 20, 20);
+
+      const entries = Object.entries(timings);
+      if (entries.length === 0) return;
+
+      const maxTime = Math.max(...entries.map(([, t]) => t));
+      const barHeight = 20;
+      const startY = 50;
+
+      entries.forEach(([name, time], idx) => {
+        const width = (time / maxTime) * 600;
+        histoCtx.fillStyle = '#673ab7';
+        histoCtx.fillRect(20, startY + idx * 30, width, barHeight);
+        histoCtx.fillStyle = '#ffffff';
+        histoCtx.fillText(`${name}: ${time.toFixed(1)} мс`, 25, startY + idx * 30 + 16);
+      });
+
+      const link = document.createElement('a');
+      link.download = 'histogram.png';
+      link.href = histoCanvas.toDataURL('image/png');
+      link.click();
+    }
+
+    async function recordVideo() {
+      if (isRecording) return;
+      if (!MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+        if (!MediaRecorder.isTypeSupported('video/webm')) {
+          alert('Запись видео поддерживается только в Chrome, Edge или Firefox.');
+          return;
+        }
+      }
+
+      recordedChunks = [];
+      isRecording = true;
+      recordBtn.textContent = 'Запись...';
+      recordBtn.disabled = true;
+
+      const stream = canvas.captureStream(10);
+      const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') 
+        ? 'video/webm;codecs=vp9' 
+        : 'video/webm';
+      recorder = new MediaRecorder(stream, { mimeType });
+
+      recorder.ondataavailable = e => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sorting-animation.webm';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+        isRecording = false;
+        recordBtn.textContent = 'Видео';
+      };
+
+      recorder.start();
+      drawToCanvas();
+
+      await startAuto(true);
+
+      setTimeout(() => {
+        if (recorder && isRecording) recorder.stop();
+      }, 12000);
+    }
+
+    // === УПРАВЛЕНИЕ РЕЖИМАМИ ===
+    function startAuto(force = false) {
+      if (!force && stepMode) return;
+      stepMode = false;
+      stepControl.style.display = 'none';
+      stepQueue = [];
+      return runSelectedAlgorithm();
+    }
+
+    async function startStepByStep() {
+      stepMode = true;
+      stepControl.style.display = 'block';
+      stepInfo.textContent = 'Готов к первому шагу';
+      stepQueue = [];
+      runSelectedAlgorithm();
+    }
+
+    async function nextStep() {
+      if (stepQueue.length > 0) {
+        const next = stepQueue.shift();
+        next();
+        stepInfo.textContent = `Шагов в очереди: ${stepQueue.length}`;
+      } else {
+        stepInfo.textContent = 'Алгоритм завершён';
+      }
+    }
+
+    function cancelStepMode() {
+      stepMode = false;
+      stepControl.style.display = 'none';
+      stepQueue = [];
+    }
+
+    // === АЛГОРИТМЫ СОРТИРОВКИ ===
+    async function bubbleSort() {
+      const start = performance.now();
+      const n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        let swapped = false;
+        for (let j = 0; j < n - i - 1; j++) {
+          bars[j].classList.add('comparing');
+          bars[j + 1].classList.add('comparing');
+          await sleep(150);
+          if (arr[j] > arr[j + 1]) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            [bars[j].style.height, bars[j + 1].style.height] = [bars[j + 1].style.height, bars[j].style.height];
+            swapped = true;
+          }
+          bars[j].classList.remove('comparing');
+          bars[j + 1].classList.remove('comparing');
+          if (isRecording) drawToCanvas();
+        }
+        bars[n - i - 1].classList.add('sorted');
+        if (!swapped) break;
+      }
+      bars.forEach(b => b.classList.add('sorted'));
+      const time = performance.now() - start;
+      timings['Пузырьковая'] = time;
+      showHistogram();
+      if (isRecording) recorder.stop();
+    }
+
+    async function selectionSort() {
+      const start = performance.now();
+      const n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        let minIdx = i;
+        bars[i].classList.add('comparing');
+        for (let j = i + 1; j < n; j++) {
+          bars[j].classList.add('comparing');
+          await sleep(120);
+          if (arr[j] < arr[minIdx]) {
+            bars[minIdx].classList.remove('comparing');
+            minIdx = j;
+            bars[minIdx].classList.add('comparing');
+          } else {
+            bars[j].classList.remove('comparing');
+          }
+          if (isRecording) drawToCanvas();
+        }
+        if (minIdx !== i) {
+          bars[minIdx].classList.add('swapping');
+          await sleep(150);
+          [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+          [bars[i].style.height, bars[minIdx].style.height] = [bars[minIdx].style.height, bars[i].style.height];
+          bars[minIdx].classList.remove('swapping');
+        }
+        bars[i].className = 'bar sorted';
+        bars.forEach((b, idx) => { if (idx > i) b.classList.remove('comparing'); });
+        if (isRecording) drawToCanvas();
+      }
+      bars.forEach(b => b.classList.add('sorted'));
+      const time = performance.now() - start;
+      timings['Выбором'] = time;
+      showHistogram();
+      if (isRecording) recorder.stop();
+    }
+
+    async function insertionSort() {
+      const start = performance.now();
+      for (let i = 1; i < arr.length; i++) {
+        let key = arr[i];
+        let j = i - 1;
+        bars[i].classList.add('comparing');
+        await sleep(150);
+        while (j >= 0 && arr[j] > key) {
+          bars[j].classList.add('comparing');
+          await sleep(120);
+          arr[j + 1] = arr[j];
+          bars[j + 1].style.height = bars[j].style.height;
+          bars[j].classList.remove('comparing');
+          j--;
+          if (isRecording) drawToCanvas();
+        }
+        arr[j + 1] = key;
+        bars[j + 1].style.height = `${(key / MAX_VALUE) * 100}%`;
+        bars[i].classList.remove('comparing');
+        for (let k = 0; k <= i; k++) bars[k].classList.add('sorted');
+        for (let k = i + 1; k < arr.length; k++) bars[k].classList.remove('sorted', 'comparing');
+        await sleep(80);
+        if (isRecording) drawToCanvas();
+      }
+      bars.forEach(b => b.classList.add('sorted'));
+      const time = performance.now() - start;
+      timings['Вставками'] = time;
+      showHistogram();
+      if (isRecording) recorder.stop();
+    }
+
+    async function mergeSort(low = 0, high = arr.length - 1) {
+      if (low >= high) return;
+      const start = low === 0 && high === arr.length - 1 ? performance.now() : null;
+      const mid = Math.floor((low + high) / 2);
+      for (let i = low; i <= high; i++) bars[i].classList.add('processing');
+      await sleep(200);
+      if (isRecording) drawToCanvas();
+
+      await mergeSort(low, mid);
+      await mergeSort(mid + 1, high);
+      await merge(low, mid, high);
+
+      for (let i = low; i <= high; i++) bars[i].classList.remove('processing');
+      if (low === 0 && high === arr.length - 1) {
+        bars.forEach(b => b.classList.add('sorted'));
+        const time = performance.now() - start;
+        timings['Слиянием'] = time;
+        showHistogram();
+        if (isRecording) recorder.stop();
+      }
+    }
+
+    async function merge(low, mid, high) {
+      const left = arr.slice(low, mid + 1);
+      const right = arr.slice(mid + 1, high + 1);
+      let i = 0, j = 0, k = low;
+
+      while (i < left.length && j < right.length) {
+        bars[low + i]?.classList.add('comparing');
+        bars[mid + 1 + j]?.classList.add('comparing');
+        await sleep(150);
+        if (left[i] <= right[j]) {
+          arr[k] = left[i];
+          bars[k].style.height = `${(left[i] / MAX_VALUE) * 100}%`;
+          i++;
+        } else {
+          arr[k] = right[j];
+          bars[k].style.height = `${(right[j] / MAX_VALUE) * 100}%`;
+          j++;
+        }
+        bars[low + i - 1]?.classList.remove('comparing');
+        bars[mid + 1 + j - 1]?.classList.remove('comparing');
+        k++;
+        if (isRecording) drawToCanvas();
+      }
+
+      while (i < left.length) {
+        arr[k] = left[i];
+        bars[k].style.height = `${(left[i] / MAX_VALUE) * 100}%`;
+        i++; k++;
+        if (isRecording) drawToCanvas();
+      }
+      while (j < right.length) {
+        arr[k] = right[j];
+        bars[k].style.height = `${(right[j] / MAX_VALUE) * 100}%`;
+        j++; k++;
+        if (isRecording) drawToCanvas();
+      }
+    }
+
+    async function quickSort(low = 0, high = arr.length - 1) {
+      if (low < high) {
+        const start = low === 0 && high === arr.length - 1 ? performance.now() : null;
+        for (let i = low; i <= high; i++) bars[i].classList.add('processing');
+        await sleep(180);
+        if (isRecording) drawToCanvas();
+
+        const pi = await partition(low, high);
+        await quickSort(low, pi - 1);
+        await quickSort(pi + 1, high);
+
+        for (let i = low; i <= high; i++) bars[i].classList.remove('processing');
+        if (low === 0 && high === arr.length - 1) {
+          bars.forEach(b => b.classList.add('sorted'));
+          const time = performance.now() - start;
+          timings['Быстрая'] = time;
+          showHistogram();
+          if (isRecording) recorder.stop();
+        }
+      }
+    }
+
+    async function partition(low, high) {
+      const pivot = arr[high];
+      let i = low - 1;
+      bars[high].classList.add('comparing');
+      for (let j = low; j < high; j++) {
+        bars[j].classList.add('comparing');
+        await sleep(150);
+        if (arr[j] <= pivot) {
+          i++;
+          if (i !== j) {
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+            [bars[i].style.height, bars[j].style.height] = [bars[j].style.height, bars[i].style.height];
+          }
+        }
+        bars[j].classList.remove('comparing');
+        if (isRecording) drawToCanvas();
+      }
+      [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+      [bars[i + 1].style.height, bars[high].style.height] = [bars[high].style.height, bars[i + 1].style.height];
+      bars[high].classList.remove('comparing');
+      return i + 1;
+    }
+
+    async function countingSort() {
+      const start = performance.now();
+      const max = Math.max(...arr);
+      const min = Math.min(...arr);
+      const range = max - min + 1;
+      const count = new Array(range).fill(0);
+      const output = new Array(arr.length);
+
+      for (let i = 0; i < arr.length; i++) {
+        count[arr[i] - min]++;
+        bars[i].classList.add('processing');
+        await sleep(80);
+        if (isRecording) drawToCanvas();
+      }
+
+      for (let i = 1; i < count.length; i++) {
+        count[i] += count[i - 1];
+      }
+
+      for (let i = arr.length - 1; i >= 0; i--) {
+        const val = arr[i];
+        output[count[val - min] - 1] = val;
+        count[val - min]--;
+        bars[i].classList.remove('processing');
+        await sleep(100);
+        if (isRecording) drawToCanvas();
+      }
+
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = output[i];
+        bars[i].style.height = `${(arr[i] / MAX_VALUE) * 100}%`;
+        bars[i].classList.add('sorted');
+        await sleep(80);
+        if (isRecording) drawToCanvas();
+      }
+
+      const time = performance.now() - start;
+      timings['Подсчётом'] = time;
+      showHistogram();
+      if (isRecording) recorder.stop();
+    }
+
+    function showHistogram() {
+      histogramEl.innerHTML = '';
+      Object.entries(timings).forEach(([name, time]) => {
+        const bar = document.createElement('div');
+        bar.className = 'histo-bar';
+        bar.style.width = `${Math.min(time * 2, 600)}px`;
+        bar.innerHTML = `<span class="histo-label">${name}: ${time.toFixed(1)} мс</span>`;
+        histogramEl.appendChild(bar);
+      });
+      recordBtn.disabled = false;
+      savePngBtn.disabled = Object.keys(timings).length === 0;
+    }
+
+    async function runSelectedAlgorithm() {
+      resetBars();
+      const algo = algoSelect.value;
+      if (algo === 'bubble') await bubbleSort();
+      else if (algo === 'selection') await selectionSort();
+      else if (algo === 'insertion') await insertionSort();
+      else if (algo === 'merge') await mergeSort();
+      else if (algo === 'quick') await quickSort();
+      else if (algo === 'counting') await countingSort();
+    }
+
+    // === ИНИЦИАЛИЗАЦИЯ ===
+    generateArray();
+  </script>
+</body>
+</html>
