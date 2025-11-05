@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Протоколы и логические операторы</title>
+  <style>
+    /* Основные стили */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f9faff;
+      --text: #2c3e50;
+      --accent: #3498db;
+      --slide-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: var(--font-main);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .presentation {
+      position: relative;
+      width: 90vw;
+      max-width: 900px;
+      height: 85vh;
+      perspective: 1000px;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--slide-bg);
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 8px 30px var(--shadow);
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.7s ease-in-out;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .slide.prev {
+      transform: translateX(-100%);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #2980b9;
+    }
+
+    p, ul, table {
+      font-size: 1.4rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    ul {
+      text-align: left;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      font-size: 1.2rem;
+    }
+
+    th {
+      background-color: #eaf2f8;
+    }
+
+    .emoji {
+      font-size: 1.8rem;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    button:disabled {
+      background-color: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    pre {
+      background: #f1f8ff;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+      text-align: left;
+      margin: 16px 0;
+      max-width: 600px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="presentation" id="presentation">
+    <!-- Слайд 1: Титульный -->
+    <div class="slide active" data-index="0">
+      <h1>Протоколы передачи данных и логические операторы</h1>
+      <p>Урок 9 класса — 8 ноября 2025 г.</p>
+      <p>📍 Учитель: Мусоев Мухаммаджон Насимджонович</p>
+      <p style="margin-top: 24px; font-size: 1.3rem;">
+        Сегодня мы объединим две важные темы:<br>
+        как компьютеры общаются в сети и как программы принимают решения.
+      </p>
+    </div>
+
+    <!-- Слайд 2: Что такое протокол -->
+    <div class="slide" data-index="1">
+      <h2>Что такое протокол?</h2>
+      <p>Протокол передачи данных — это набор правил, по которым компьютеры обмениваются информацией в сети.</p>
+      <p>Без протоколов устройства не смогли бы «понимать» друг друга.</p>
+      <p style="margin-top: 20px; font-style: italic;">💡 Как язык общения между людьми!</p>
+    </div>
+
+    <!-- Слайд 3: Зачем нужны протоколы -->
+    <div class="slide" data-index="2">
+      <h2>Зачем нужны протоколы?</h2>
+      <ul style="text-align: left; margin-left: 20px;">
+        <li>Определяют формат и порядок передачи данных.</li>
+        <li>Контролируют доставку пакетов.</li>
+        <li>Обеспечивают надежность и безопасность связи.</li>
+      </ul>
+      <p>Пример: браузер отправляет запрос на сервер — и получает веб-страницу.</p>
+    </div>
+
+    <!-- Слайд 4: Основные протоколы -->
+    <div class="slide" data-index="3">
+      <h2>Основные протоколы Интернета</h2>
+      <table>
+        <tr><th>Протокол</th><th>Назначение</th><th>Пример</th></tr>
+        <tr><td>HTTP / HTTPS</td><td>Передача страниц</td><td>Открытие сайта</td></tr>
+        <tr><td>FTP</td><td>Обмен файлами</td><td>Загрузка документов</td></tr>
+        <tr><td>SMTP, POP3, IMAP</td><td>Электронная почта</td><td>Отправка писем</td></tr>
+        <tr><td>TCP/IP</td><td>Базовая передача пакетов</td><td>Соединение в Интернете</td></tr>
+        <tr><td>DNS</td><td>Преобразует адрес в IP</td><td>google.com → 142.250…</td></tr>
+      </table>
+    </div>
+
+    <!-- Слайд 5: Как работает обмен -->
+    <div class="slide" data-index="4">
+      <h2>Как работает обмен данными?</h2>
+      <ol style="font-size: 1.5rem; margin-top: 20px;">
+        <li>Компьютер отправляет запрос серверу.</li>
+        <li>Сервер принимает и обрабатывает данные.</li>
+        <li>Ответ возвращается обратно пользователю.</li>
+      </ol>
+      <p style="margin-top: 24px;">Схема: <span class="emoji">🖥️</span> ⇄ <span class="emoji">🌐</span> ⇄ <span class="emoji">☁️</span> ⇄ <span class="emoji">📱</span></p>
+    </div>
+
+    <!-- Слайд 6: Telegram пример -->
+    <div class="slide" data-index="5">
+      <h2>Пример: отправка сообщения в Telegram</h2>
+      <ol style="font-size: 1.4rem; text-align: left; max-width: 600px; margin: 16px auto;">
+        <li>Телефон формирует пакет данных (текст, фото или видео).</li>
+        <li>Пакет передаётся по протоколу HTTPS (TCP/IP) на сервер Telegram.</li>
+        <li>Сервер пересылает сообщение получателю.</li>
+        <li>Ответ возвращается по тому же пути — безопасно и быстро.</li>
+      </ol>
+      <p><strong>Принцип работы:</strong></p>
+      <ul style="text-align: left; max-width: 600px; margin: 10px auto;">
+        <li>Данные делятся на пакеты;</li>
+        <li>Каждый пакет имеет IP-адрес;</li>
+        <li>Сервер проверяет и передаёт дальше;</li>
+        <li>Протокол гарантирует доставку без ошибок и в порядке.</li>
+      </ul>
+    </div>
+
+    <!-- Слайд 7: Логические операторы -->
+    <div class="slide" data-index="6">
+      <h2>Что такое логические операторы?</h2>
+      <p>Используются для проверки нескольких условий одновременно.</p>
+      <p style="font-size: 1.6rem; margin-top: 20px;">
+        <strong>and</strong> — и &nbsp; | &nbsp;
+        <strong>or</strong> — или &nbsp; | &nbsp;
+        <strong>not</strong> — не
+      </p>
+      <p style="margin-top: 16px; font-style: italic;">Пример: «Если тепло <strong>и</strong> солнечно — идём гулять»</p>
+    </div>
+
+    <!-- Слайд 8: Оператор and -->
+    <div class="slide" data-index="7">
+      <h2>Оператор <code>and</code></h2>
+      <pre>age = 16
+if age > 15 and age < 20:
+    print("Ты подросток")</pre>
+      <p>Оба условия должны быть истинны.</p>
+    </div>
+
+    <!-- Слайд 9: Операторы or и not -->
+    <div class="slide" data-index="8">
+      <h2>Операторы <code>or</code> и <code>not</code></h2>
+      <pre>t = 5
+if t > 30 or t < 10:
+    print("Погода некомфортная")
+
+rain = False
+if not rain:
+    print("Можно идти гулять")</pre>
+      <p><strong>or</strong> — достаточно одного верного условия.<br>
+         <strong>not</strong> — переворачивает результат.</p>
+    </div>
+
+    <!-- Слайд 10: Практика -->
+    <div class="slide" data-index="9">
+      <h2>Закрепление: мини-практика</h2>
+      <p>Напиши программу, которая:</p>
+      <ul style="text-align: left; max-width: 600px; margin: 12px auto;">
+        <li>спрашивает возраст и город;</li>
+        <li>если возраст > 18 и город == "Худжанд" → "Привет, земляк!";</li>
+        <li>иначе → "Здравствуйте!"</li>
+      </ul>
+      <p style="margin-top: 20px; font-style: italic;">
+        💻 Попробуй в Replit или Thonny!
+      </p>
+    </div>
+
+    <!-- Кнопки навигации -->
+    <div class="controls">
+      <button id="prev" disabled>← Назад</button>
+      <button id="next">Вперёд →</button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let currentSlide = 0;
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        slide.classList.remove('active', 'prev');
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        } else if (index < currentSlide) {
+          slide.classList.add('prev');
+        }
+      });
+
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    });
+
+    // Поддержка клавиш влево/вправо
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+        nextBtn.click();
+      } else if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+        prevBtn.click();
+      }
+    });
+
+    // Инициализация
+    updateSlides();
+  </script>
+</body>
+</html>
