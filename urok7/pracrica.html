@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Практическая работа №7 — Логические операторы</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f8fcff;
+      --text: #2d3748;
+      --accent: #3182ce;
+      --slide-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.07);
+      --font-main: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e6f4ff, #f0f9ff);
+      font-family: var(--font-main);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .presentation {
+      width: 94vw;
+      max-width: 900px;
+      height: 88vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--slide-bg);
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px var(--shadow);
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+      scroll-behavior: smooth;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      z-index: 10;
+    }
+
+    .slide.prev {
+      transform: translateX(-100%);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin: 16px 0 20px;
+      color: #2b6cb0;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin: 16px 0 12px;
+      color: #4a5568;
+    }
+
+    p, ul, ol {
+      font-size: 1.35rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    ul, ol {
+      text-align: left;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 30px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    table {
+      width: 95%;
+      max-width: 680px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-size: 1.25rem;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e0;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ebf4ff;
+      font-weight: 600;
+    }
+
+    pre {
+      background: #f0f9ff;
+      border-left: 4px solid var(--accent);
+      padding: 18px;
+      border-radius: 0 8px 8px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 1.25rem;
+      margin: 20px auto;
+      max-width: 700px;
+      text-align: left;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      background: #e6f0ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .emoji {
+      font-size: 1.4em;
+      margin: 0 4px;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 20;
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(49, 130, 206, 0.2);
+    }
+
+    button:hover:not(:disabled) {
+      background: #2a69b8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(49, 130, 206, 0.3);
+    }
+
+    button:disabled {
+      background: #a0aec0;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .slide-number {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 1rem;
+      color: #718096;
+    }
+  </style>
+</head>
+<body>
+  <div class="presentation" id="presentation">
+    <!-- Слайд 1 -->
+    <div class="slide active" data-index="0">
+      <span class="slide-number">Слайд 1</span>
+      <h1>Практическая работа №7</h1>
+      <h2>Тема: Логические операторы</h2>
+      <p><strong>Цель:</strong> Научиться использовать логические операторы <code>and</code>, <code>or</code>, <code>not</code> для построения сложных условий.</p>
+      <p><strong>Продолжительность:</strong> 45 минут</p>
+      <p style="margin-top: 24px; font-style: italic; color: #4a5568;">
+        💡 Работайте в Thonny, Replit или любом Python-редакторе.
+      </p>
+    </div>
+
+    <!-- Слайд 2 -->
+    <div class="slide" data-index="1">
+      <span class="slide-number">Слайд 2</span>
+      <h2>Теория: логические операторы в Python</h2>
+      <table>
+        <tr>
+          <th>Оператор</th>
+          <th>Значение</th>
+          <th>Пример</th>
+          <th>Результат</th>
+        </tr>
+        <tr>
+          <td><code>and</code></td>
+          <td>И (все истинно)</td>
+          <td><code>True and False</code></td>
+          <td><code>False</code></td>
+        </tr>
+        <tr>
+          <td><code>or</code></td>
+          <td>ИЛИ (хотя бы одно)</td>
+          <td><code>True or False</code></td>
+          <td><code>True</code></td>
+        </tr>
+        <tr>
+          <td><code>not</code></td>
+          <td>НЕ (инверсия)</td>
+          <td><code>not True</code></td>
+          <td><code>False</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Слайд 3 -->
+    <div class="slide" data-index="2">
+      <span class="slide-number">Слайд 3</span>
+      <h2>Пример 1 — Проверка возраста</h2>
+      <pre>age = int(input("Введите ваш возраст: "))
+
+if age >= 18 and age <= 60:
+    print("Трудоспособный возраст")
+else:
+    print("Не трудоспособный возраст")</pre>
+      <p>💡 Используется оператор <code>and</code> — оба условия должны быть выполнены.</p>
+    </div>
+
+    <!-- Слайд 4 -->
+    <div class="slide" data-index="3">
+      <span class="slide-number">Слайд 4</span>
+      <h2>Пример 2 — Проверка температуры</h2>
+      <pre>temp = int(input("Введите температуру: "))
+
+if temp < 0 or temp > 35:
+    print("Неблагоприятная погода")
+else:
+    print("Погода нормальная")</pre>
+      <p>💡 Используется оператор <code>or</code> — достаточно одного истинного условия.</p>
+    </div>
+
+    <!-- Слайд 5 -->
+    <div class="slide" data-index="4">
+      <span class="slide-number">Слайд 5</span>
+      <h2>Пример 3 — Проверка пароля</h2>
+      <pre>password = input("Введите пароль: ")
+
+if not password == "1234":
+    print("Неверный пароль!")
+else:
+    print("Пароль верный.")</pre>
+      <p>💡 Используется оператор <code>not</code> — отрицание выражения.</p>
+      <p style="font-size: 1.2rem; color: #e53e3e;">⚠️ Совет: лучше писать <code>if password != "1234"</code></p>
+    </div>
+
+    <!-- Слайд 6 -->
+    <div class="slide" data-index="5">
+      <span class="slide-number">Слайд 6</span>
+      <h2>🟥 Уровень 10 баллов — Задача 1</h2>
+      <p><strong>Условие:</strong> Программа спрашивает имя, возраст и пароль:</p>
+      <ul style="text-align: left; max-width: 650px; margin: 12px auto;">
+        <li>если имя <code>"Али"</code> и возраст ≥ 18 и пароль <code>"1234"</code> → <code>"Привет, Али!"</code></li>
+        <li>если возраст < 18 → <code>"Тебе пока рано."</code></li>
+        <li>иначе → <code>"Доступ запрещён."</code></li>
+      </ul>
+      <pre>name = input("Введите имя: ")
+age = int(input("Введите возраст: "))
+password = input("Введите пароль: ")
+
+if name == "Али" and age >= 18 and password == "1234":
+    print("Привет, Али!")
+elif age < 18:
+    print("Тебе пока рано.")
+else:
+    print("Доступ запрещён.")</pre>
+      <p>💡 Использованы: <code>and</code>, <code>elif</code>, сравнения.</p>
+    </div>
+
+    <!-- Слайд 7 -->
+    <div class="slide" data-index="6">
+      <span class="slide-number">Слайд 7</span>
+      <h2>🟦 Уровень 10 баллов — Задача 2</h2>
+      <p><strong>Условие:</strong> Программа спрашивает три числа и сообщает, все ли они положительные.</p>
+      <pre>a = int(input("Введите первое число: "))
+b = int(input("Введите второе число: "))
+c = int(input("Введите третье число: "))
+
+if a > 0 and b > 0 and c > 0:
+    print("Все числа положительные.")
+else:
+    print("Есть отрицательные или нули.")</pre>
+      <p>💡 Три условия, соединённые <code>and</code>.</p>
+    </div>
+
+    <!-- Слайд 8 -->
+    <div class="slide" data-index="7">
+      <span class="slide-number">Слайд 8</span>
+      <h2>🟩 Уровень 10 баллов — Задача 3</h2>
+      <p><strong>Условие:</strong> Программа спрашивает два числа и выводит <code>True</code>, если <strong>хотя бы одно</strong> из них <strong>чётное</strong> и <strong>больше 10</strong>.</p>
+      <pre>x = int(input("Введите первое число: "))
+y = int(input("Введите второе число: "))
+
+result = (x % 2 == 0 and x > 10) or (y % 2 == 0 and y > 10)
+print(result)</pre>
+      <p>💡 Комбинируем: <code>()</code>, <code>and</code>, <code>or</code>, <code>%</code>.</p>
+      <p>Пример: при <code>x = 12, y = 7</code> → <code>True</code> (12 — чётное и >10).</p>
+    </div>
+
+    <!-- Кнопки навигации -->
+    <div class="controls">
+      <button id="prev" disabled>← Назад</button>
+      <button id="next">Вперёд →</button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let current = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active', 'prev');
+        if (i === index) {
+          slide.classList.add('active');
+        } else if (i < index) {
+          slide.classList.add('prev');
+        }
+      });
+
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === slides.length - 1;
+
+      current = index;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (current < slides.length - 1) {
+        showSlide(current + 1);
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 0) {
+        showSlide(current - 1);
+      }
+    });
+
+    // Управление стрелками
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' && !nextBtn.disabled) nextBtn.click();
+      if (e.key === 'ArrowLeft' && !prevBtn.disabled) prevBtn.click();
+    });
+
+    // Инициализация
+    showSlide(0);
+  </script>
+</body>
+</html>
