@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет, сетевые отношения и цикл for в Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .presentation-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .slides-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1a2a6c;
+        }
+        
+        .slide-title {
+            font-size: 2.5rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+        
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #b21f1f;
+        }
+        
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .content-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #fdbb2d;
+        }
+        
+        .content-title {
+            font-size: 1.5rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+        
+        .content-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .comment {
+            color: #75715e;
+            font-style: italic;
+        }
+        
+        .keyword {
+            color: #f92672;
+        }
+        
+        .function {
+            color: #66d9ef;
+        }
+        
+        .string {
+            color: #e6db74;
+        }
+        
+        .number {
+            color: #ae81ff;
+        }
+        
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+        
+        .nav-btn {
+            background-color: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-btn:hover {
+            background-color: #b21f1f;
+            transform: translateY(-3px);
+        }
+        
+        .nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #cccccc;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .indicator-dot.active {
+            background-color: #1a2a6c;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: #fdbb2d;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .content-title {
+                font-size: 1.3rem;
+            }
+            
+            .content-text {
+                font-size: 1rem;
+            }
+            
+            .navigation {
+                padding: 0 20px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="slides-container" id="slidesContainer">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <div class="slide-header">
+                    <h1 class="slide-title">Интернет, сетевые отношения и цикл for в Python</h1>
+                    <p class="slide-subtitle">Изучаем основы сетевого взаимодействия и автоматизацию процессов</p>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <h2 class="content-title">Цели урока</h2>
+                        <p class="content-text">Понять принципы работы Интернета, изучить правила сетевого общения и освоить основы автоматизации с помощью цикла for в Python.</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">План занятия</h2>
+                        <p class="content-text">1. Основы Интернета и сетевые отношения<br>2. Безопасность в сети<br>3. Цикл for в Python<br>4. Практическое применение</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <div class="slide-header">
+                    <h1 class="slide-title">Что такое Интернет</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Глобальная компьютерная сеть</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Передача данных пакетами</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Серверы, маршрутизаторы, протоколы</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Доступ к информации и ресурсам</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text comment">«Вся эта система работает по алгоритмам, которые можно программировать»</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <div class="slide-header">
+                    <h1 class="slide-title">Основные понятия Интернета</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <h2 class="content-title">IP-адрес</h2>
+                        <p class="content-text">Уникальный идентификатор устройства в сети</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">DNS</h2>
+                        <p class="content-text">Преобразование доменных имен в IP-адреса</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Сервер</h2>
+                        <p class="content-text">Компьютер, предоставляющий услуги и данные</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Маршрутизация</h2>
+                        <p class="content-text">Поиск оптимального пути для передачи пакетов</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <div class="slide-header">
+                    <h1 class="slide-title">Сетевые отношения</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Общение через мессенджеры и социальные сети</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Цифровой след — все наши действия в сети сохраняются</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Правила поведения в онлайн-среде</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text comment">«Каждое ваше сообщение — это данные, которые можно обрабатывать»</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <div class="slide-header">
+                    <h1 class="slide-title">Сетевой этикет</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Уважать собеседников</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Не распространять оскорбления</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Не публиковать личные данные</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Проверять достоверность информации</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text comment">«Проверку информации можно автоматизировать с помощью программ»</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <div class="slide-header">
+                    <h1 class="slide-title">Опасности в сети</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Вирусы и вредоносные программы</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Фишинг — кража личных данных</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Взломы и утечки информации</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Кибербуллинг — травля в интернете</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Ложная информация (фейки)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <div class="slide-header">
+                    <h1 class="slide-title">Переход к программированию</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <h2 class="content-title">Автоматизация сетевых процессов</h2>
+                        <p class="content-text">Серверы автоматически обрабатывают тысячи запросов</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Программы проверяют данные на соответствие правилам</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Для массовой обработки информации используется <strong>цикл for</strong></p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text comment">«Проверка пароля на надежность — это посимвольный анализ»</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <div class="slide-header">
+                    <h1 class="slide-title">Что такое цикл for</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Повторяет блок кода для каждого элемента последовательности</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Работает с диапазонами чисел, строками, списками</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Автоматически перебирает все элементы</p>
+                    </div>
+                    <div class="code-block">
+                        <span class="comment"># Общая структура</span><br>
+                        <span class="keyword">for</span> <span class="function">элемент</span> <span class="keyword">in</span> <span class="function">последовательность</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># действия с элементом</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <div class="slide-header">
+                    <h1 class="slide-title">Функция range()</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text"><code>range(n)</code> → числа от 0 до n-1</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text"><code>range(a, b)</code> → числа от a до b-1</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text"><code>range(a, b, step)</code> → числа с шагом step</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Может быть с положительным и отрицательным шагом</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <div class="slide-header">
+                    <h1 class="slide-title">Примеры циклов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="code-block">
+                        <span class="comment"># Вывод чисел</span><br>
+                        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">6</span>):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(i) &nbsp;<span class="comment"># 1 2 3 4 5</span><br><br>
+                        
+                        <span class="comment"># Обратный счет</span><br>
+                        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>, <span class="number">0</span>, -<span class="number">1</span>):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(i) &nbsp;<span class="comment"># 5 4 3 2 1</span><br><br>
+                        
+                        <span class="comment"># Перебор строки</span><br>
+                        <span class="keyword">for</span> letter <span class="keyword">in</span> <span class="string">"Сеть"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(letter) &nbsp;<span class="comment"># С е т ь</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 11 -->
+            <div class="slide" id="slide11">
+                <div class="slide-header">
+                    <h1 class="slide-title">Практические примеры</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <h2 class="content-title">Пример 1: Суммирование</h2>
+                        <div class="code-block">
+                            total = <span class="number">0</span><br>
+                            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;total += i<br>
+                            <span class="function">print</span>(<span class="string">"Сумма:"</span>, total) &nbsp;<span class="comment"># Сумма: 55</span>
+                        </div>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Пример 2: Анализ текста</h2>
+                        <div class="code-block">
+                            message = <span class="string">"Привет! Как дела?"</span><br>
+                            count = <span class="number">0</span><br>
+                            <span class="keyword">for</span> char <span class="keyword">in</span> message:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> char == <span class="string">"!"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += <span class="number">1</span><br>
+                            <span class="function">print</span>(<span class="string">"Восклицаний:"</span>, count)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 12 -->
+            <div class="slide" id="slide12">
+                <div class="slide-header">
+                    <h1 class="slide-title">Связь с интернетом</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Перебор списка пользователей</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Проверка сообщений на ключевые слова</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Анализ данных пакетов</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Обработка запросов к серверу</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Пример: фильтр сообщений</h2>
+                        <div class="code-block">
+                            bad_words = [<span class="string">"оскорбление"</span>, <span class="string">"спам"</span>]<br>
+                            message = <span class="string">"Это нормальное сообщение"</span><br>
+                            <span class="keyword">for</span> word <span class="keyword">in</span> bad_words:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> word <span class="keyword">in</span> message:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Найдено запрещенное слово!"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 13 -->
+            <div class="slide" id="slide13">
+                <div class="slide-header">
+                    <h1 class="slide-title">Практическая работа</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <h2 class="content-title">Уровень 1 (5-6 баллов)</h2>
+                        <p class="content-text">• Вывод чисел в разных диапазонах<br>• Подсчет суммы чисел<br>• Перебор и вывод символов строки</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Уровень 2 (7-8 баллов)</h2>
+                        <p class="content-text">• Таблица умножения с использованием range()<br>• Подсчет количества определенных букв в тексте<br>• Генерация последовательностей с шагом</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Уровень 3 (9-10 баллов)</h2>
+                        <p class="content-text">• Поиск простых чисел в диапазоне<br>• Анализ текста на наличие заданных слов<br>• Создание "фильтра" для сообщений</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 14 -->
+            <div class="slide" id="slide14">
+                <div class="slide-header">
+                    <h1 class="slide-title">Правила безопасности</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <p class="content-text">Использовать сложные пароли</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Не передавать личные данные незнакомцам</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Проверять источники информации</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text">Быть вежливым в общении</p>
+                    </div>
+                    <div class="content-item">
+                        <p class="content-text comment">«Многие из этих правил можно проверять программами»</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 15 -->
+            <div class="slide" id="slide15">
+                <div class="slide-header">
+                    <h1 class="slide-title">Домашнее задание</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-item">
+                        <h2 class="content-title">Информатика</h2>
+                        <p class="content-text">Написать 5 правил безопасного поведения в Интернете</p>
+                    </div>
+                    <div class="content-item">
+                        <h2 class="content-title">Программирование</h2>
+                        <p class="content-text">С помощью цикла for вывести квадраты чисел от 1 до 10</p>
+                        <div class="code-block">
+                            <span class="comment"># Пример решения</span><br>
+                            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;square = i * i<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">f"Квадрат числа {i} равен {square}"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперед</button>
+        </div>
+        
+        <div class="slide-indicator" id="slideIndicator"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideIndicator = document.getElementById('slideIndicator');
+            const progressBar = document.getElementById('progressBar');
+            let currentSlide = 0;
+            
+            // Создание индикаторов слайдов
+            slides.forEach((slide, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('indicator-dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                slideIndicator.appendChild(dot);
+            });
+            
+            // Обновление индикаторов и кнопок
+            function updateUI() {
+                // Обновление индикаторов
+                document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+                
+                // Обновление кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+                
+                // Обновление прогресс-бара
+                progressBar.style.width = `${(currentSlide / (slides.length - 1)) * 100}%`;
+            }
+            
+            // Переход к определенному слайду
+            function goToSlide(slideIndex) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = slideIndex;
+                slides[currentSlide].classList.add('active');
+                updateUI();
+            }
+            
+            // Переход к следующему слайду
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            }
+            
+            // Переход к предыдущему слайду
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+            
+            // Обработчики событий для кнопок
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Обработчики событий для клавиатуры
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            });
+            
+            // Инициализация UI
+            updateUI();
+        });
+    </script>
+</body>
+</html>

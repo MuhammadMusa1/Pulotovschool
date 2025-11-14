@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Цифровой город | 9 класс</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.2.0/skulpt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.2.0/skulpt-stdlib.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f0f4f8;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .slides {
+      display: flex;
+      height: 100%;
+      scroll-snap-type: x mandatory;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    .slides::-webkit-scrollbar { display: none; }
+
+    .slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* City skyline header */
+    .slide::before {
+      content: "🏙️ Цифровой город | 9 класс";
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 14px;
+      color: #a0aec0;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      color: #e2e8f0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin: 20px 0 15px;
+      color: #94a3b8;
+    }
+    p, li {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    ul { padding-left: 30px; margin: 15px 0; }
+    li { margin-bottom: 10px; }
+
+    .highlight { background: rgba(56, 189, 248, 0.15); padding: 2px 6px; border-radius: 4px; }
+    .code { 
+      background: #0f172a; 
+      padding: 16px; 
+      border-radius: 8px; 
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+      overflow-x: auto;
+      margin: 20px 0;
+      border-left: 4px solid #38bdf8;
+    }
+    .example {
+      width: 100%;
+      margin: 25px 0;
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .example h3 {
+      color: #60a5fa;
+      margin-bottom: 12px;
+    }
+    textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: inherit;
+      font-size: 1.1rem;
+    }
+    button {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    button:hover { background: #0ea5e9; transform: translateY(-2px); }
+    #output { 
+      background: #0c1a29; 
+      min-height: 60px;
+      padding: 12px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; width: 100%; }
+    .card { background: rgba(30, 41, 59, 0.7); padding: 15px; border-radius: 8px; }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    /* Slide numbers */
+    .slide-number {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 1.1rem;
+      color: #64748b;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      p, li { font-size: 1.1rem; }
+      .slide { padding: 20px 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="slides" id="slides">
+  <!-- Слайд 1 -->
+  <div class="slide" data-slide="1">
+    <div class="slide-number">1/16</div>
+    <h1>Цифровой город:<br>Интернет, этика и цикл <span class="highlight">for</span></h1>
+    <p>🔹 Как устроен Интернет — как мегаполис</p>
+    <p>🔹 Как ваш цифровой след влияет на будущее</p>
+    <p>🔹 И как цикл <code>for</code> делает вас не пользователем, а <strong>соавтором</strong> цифрового мира</p>
+  </div>
+
+  <!-- Слайд 2 -->
+  <div class="slide" data-slide="2">
+    <div class="slide-number">2/16</div>
+    <h1>Интернет ≠ «облако».<br>Это инфраструктура.</h1>
+    <div class="grid">
+      <div class="card">
+        <strong>Почтовое отделение</strong> →<br>
+        <span class="highlight">Сервер</span>
+      </div>
+      <div class="card">
+        <strong>Индекс + дом</strong> →<br>
+        <span class="highlight">IP-адрес</span>
+      </div>
+      <div class="card">
+        <strong>Справочник ФИО→адрес</strong> →<br>
+        <span class="highlight">DNS</span>
+      </div>
+      <div class="card">
+        <strong>Почтальон</strong> →<br>
+        <span class="highlight">Маршрутизатор</span>
+      </div>
+    </div>
+    <p>💡 Без строгих правил — хаос. Как без светофоров.</p>
+  </div>
+
+  <!-- Слайд 3 -->
+  <div class="slide" data-slide="3">
+    <div class="slide-number">3/16</div>
+    <h1>Как найти «здание»?</h1>
+    <p><code>https://google.com</code> → DNS → IP → маршрутизация → сервер → ответ</p>
+    <p>🔎 Попробуйте в терминале: <code>ping google.com</code></p>
+    <p class="highlight">Задержка (ping) = время «доставки письма»</p>
+  </div>
+
+  <!-- Слайд 4 -->
+  <div class="slide" data-slide="4">
+    <div class="slide-number">4/16</div>
+    <h1>Вы — цифровой гражданин</h1>
+    <p>В 9 классе ваш цифровой след влияет на:</p>
+    <ul>
+      <li>🎓 Приём в ВУЗ (HR смотрят соцсети)</li>
+      <li>💼 Стажировки (LinkedIn, GitHub)</li>
+      <li>🧠 Мировоззрение (алгоритмы TikTok/YouTube)</li>
+    </ul>
+    <p>⚠️ Цифровой след = поиски, геолокация, лайки, время в приложениях.</p>
+  </div>
+
+  <!-- Слайд 5 -->
+  <div class="slide" data-slide="5">
+    <div class="slide-number">5/16</div>
+    <h1>Сетевой этикет: не «нельзя», а «зачем»</h1>
+    <ul>
+      <li>❌ Оскорбления → бан, репутационные потери</li>
+      <li>✅ Проверка источника → защита от манипуляций</li>
+      <li>✅ Вежливость → репутация в сообществах (игры, GitHub)</li>
+    </ul>
+    <p class="highlight">Этика — это не мораль. Это стратегия выживания.</p>
+  </div>
+
+  <!-- Слайд 6 -->
+  <div class="slide" data-slide="6">
+    <div class="slide-number">6/16</div>
+    <h1>Опасности: не страшилки, а риски</h1>
+    <ul>
+      <li>🎣 Фишинг: поддельные «письма от Минобрнауки»</li>
+      <li>🔓 Взлом через слабый пароль → спам от вашего имени</li>
+      <li>👥 Кибербуллинг → психотравма (статистика ВОЗ)</li>
+      <li>🤖 Deepfake-аудио для мошенничества</li>
+    </ul>
+    <p>🔐 Защита — базовый навык цифрового взросления.</p>
+  </div>
+
+  <!-- Слайд 7 -->
+  <div class="slide" data-slide="7">
+    <div class="slide-number">7/16</div>
+    <h1>Знать правила — недостаточно.<br>Нужно уметь их <span class="highlight">кодировать</span>.</h1>
+    <p><em>«Алгоритмы не нейтральны. Кто пишет код — тот задаёт правила игры»</em><br>— Кейт Клауфорд, исследователь ИИ</p>
+    <p>🔹 Антивирус: <code>for file in files:</code><br>
+    🔹 Telegram: <code>for word in bad_words:</code><br>
+    🔹 Банк: <code>for transaction in last_hour:</code></p>
+  </div>
+
+  <!-- Слайд 8 -->
+  <div class="slide" data-slide="8">
+    <div class="slide-number">8/16</div>
+    <h1>Цикл <code>for</code>: обработчик данных</h1>
+    <div class="code">
+for переменная in последовательность:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# действия
+    </div>
+    <p>🔹 Перебирает элементы: числа, буквы, строки, списки.<br>
+    🔹 Идеален для анализа, фильтрации, подсчёта.</p>
+  </div>
+
+  <!-- Слайд 9 -->
+  <div class="slide" data-slide="9">
+    <div class="slide-number">9/16</div>
+    <h1><code>range()</code> — генератор номеров</h1>
+    <div class="code">
+range(5)      → 0, 1, 2, 3, 4<br>
+range(1, 6)   → 1, 2, 3, 4, 5<br>
+range(10,0,-1)→ 10, 9, ..., 1<br>
+range(0,21,5) → 0, 5, 10, 15, 20
+    </div>
+    <p>⚠️ Правая граница <strong>не включается</strong>.</p>
+  </div>
+
+  <!-- Слайд 10 -->
+  <div class="slide" data-slide="10">
+    <div class="slide-number">10/16</div>
+    <h1>Пример 1: Лимит входа</h1>
+    <div class="example">
+      <div class="code">
+for attempt in range(1, 4):<br>
+&nbsp;&nbsp;if пароль_верный:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;break<br>
+else:<br>
+&nbsp;&nbsp;print("❌ Заблокировано")
+      </div>
+      <p>→ Так работают ВКонтакте, Сбербанк, школьный портал.</p>
+    </div>
+  </div>
+
+  <!-- Слайд 11 -->
+  <div class="slide" data-slide="11">
+    <div class="slide-number">11/16</div>
+    <h1>Пример 2: Анализ пароля</h1>
+    <div class="example">
+      <div class="code">
+password = input("Пароль: ")<br>
+has_digit = False<br>
+for ch in password:<br>
+&nbsp;&nbsp;if ch.isdigit():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;has_digit = True<br>
+      </div>
+    </div>
+  </div>
+
+  <!-- Слайд 12 -->
+  <div class="slide" data-slide="12">
+    <div class="slide-number">12/16</div>
+    <h1>Пример 3: Фильтр токсичности</h1>
+    <div class="example">
+      <h3>💬 Попробуйте сами:</h3>
+      <textarea id="msgInput" placeholder="Напишите сообщение, например: 'Ты дурак!'">Ты дурак!</textarea>
+      <button onclick="runToxicFilter()">Запустить фильтр</button>
+      <div id="output1"></div>
+    </div>
+  </div>
+
+  <!-- Слайд 13 -->
+  <div class="slide" data-slide="13">
+    <div class="slide-number">13/16</div>
+    <h1>Пример 4: Сбор статистики</h1>
+    <div class="example">
+      <div class="code">
+logins = [5, 3, 7, 2, 9, 4, 6]<br>
+total = 0<br>
+for day in logins:<br>
+&nbsp;&nbsp;total += day<br>
+print("Всего:", total)
+      </div>
+      <p>→ Аналог Google Analytics, Yandex.Metrica.</p>
+    </div>
+  </div>
+
+  <!-- Слайд 14 -->
+  <div class="slide" data-slide="14">
+    <div class="slide-number">14/16</div>
+    <h1>Практика: «Цифровой инженер»</h1>
+    <p>🔹 Напишите программу, которая помогает улучшать цифровую среду.<br>
+    🔹 Используйте <code>for</code>, <code>range()</code>, перебор строки.</p>
+    
+    <div class="grid">
+      <div class="card">
+        <strong>6 баллов</strong><br>
+        Вывести дни недели
+      </div>
+      <div class="card">
+        <strong>8 баллов</strong><br>
+        Проверить цифры в нике
+      </div>
+      <div class="card">
+        <strong>10 баллов</strong><br>
+        Найти «фишинговые» слова
+      </div>
+    </div>
+  </div>
+
+  <!-- Слайд 15 -->
+  <div class="slide" data-slide="15">
+    <div class="slide-number">15/16</div>
+    <h1>Безопасность + код</h1>
+    <div class="grid">
+      <div class="card">
+        <strong>Слабый пароль</strong><br>
+        → <code>for i in range(12):</code>
+      </div>
+      <div class="card">
+        <strong>Утечка данных</strong><br>
+        → <code>for file in folder:</code>
+      </div>
+      <div class="card">
+        <strong>Кибербуллинг</strong><br>
+        → <code>for msg in chat:</code>
+      </div>
+    </div>
+    <p class="highlight">Цифровая безопасность — это literacy. Как умение читать.</p>
+  </div>
+
+  <!-- Слайд 16 -->
+  <div class="slide" data-slide="16">
+    <div class="slide-number">16/16</div>
+    <h1>Вы — не в пассажирском кресле.</h1>
+    <p>✅ Интернет — инженерная система<br>
+    ✅ Цифровой след = капитал<br>
+    ✅ Цикл <code>for</code> — инструмент влияния</p>
+    <p class="highlight" style="font-size:1.4rem; margin-top:30px;">
+      «Мир не меняют те, кто жалуется на алгоритмы.<br>
+      Мир меняют те, кто учится их писать.<br>
+      И всё начинается с одного цикла: <code>for</code>…»
+    </p>
+    <p style="margin-top:20px;">🔹 Д/з: напишите проверку надёжности пароля (длина, цифры, заглавные буквы)</p>
+  </div>
+</div>
+
+<div class="footer">
+  Урок по цифровой грамотности и основам программирования | Mukhamadjon Musoev, Bank Eschata
+</div>
+
+<script>
+  // Navigation
+  const slides = document.getElementById('slides');
+  let currentIndex = 0;
+  const totalSlides = document.querySelectorAll('.slide').length;
+
+  function goToSlide(index) {
+    if (index >= 0 && index < totalSlides) {
+      currentIndex = index;
+      slides.scrollTo({ left: index * slides.clientWidth, behavior: 'smooth' });
+    }
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+      goToSlide(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      goToSlide(currentIndex - 1);
+    }
+  });
+
+  // Click navigation
+  slides.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+  // Touch swipe
+  let startX = 0;
+  slides.addEventListener('touchstart', (e) => startX = e.touches[0].clientX);
+  slides.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) goToSlide(currentIndex + 1);
+    if (endX - startX > 50) goToSlide(currentIndex - 1);
+  });
+
+  // Skulpt output config
+  function outf(text) {
+    const output = document.getElementById('output1');
+    output.textContent += text;
+  }
+  function builtinRead(x) { return Sk.builtinFiles["files"][x] || ""; }
+
+  // Run toxic filter example
+  function runToxicFilter() {
+    const msg = document.getElementById('msgInput').value;
+    const output = document.getElementById('output1');
+    output.textContent = '';
+
+    const code = `
+bad_words = ["дурак", "чмо", "лох", "идиот"]
+message = """${msg}""".lower()
+result = message
+
+for word in bad_words:
+    if word in result:
+        result = result.replace(word, "■" * len(word))
+
+print("Отправлено:", result)
+    `;
+
+    try {
+      Sk.pre = "output1";
+      Sk.configure({ output: outf, read: builtinRead });
+      Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true));
+    } catch (err) {
+      output.textContent = "Ошибка: " + err.toString();
+    }
+  }
+
+  // Auto-run first example
+  setTimeout(() => {
+    if (document.getElementById('msgInput')) {
+      runToxicFilter();
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>
