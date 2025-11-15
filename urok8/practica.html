@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практическая работа: Цикл for</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slides-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .task-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .task-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+
+        .task-description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .code-comment { color: #75715e; }
+        .code-keyword { color: #f92672; }
+        .code-function { color: #66d9ef; }
+        .code-string { color: #e6db74; }
+        .code-number { color: #ae81ff; }
+
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .level-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .time-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .task-card {
+                padding: 15px;
+            }
+            
+            .navigation {
+                padding: 0 20px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="time-info">⏱️ 45 минут</div>
+        
+        <div class="slides-container" id="slidesContainer">
+            <!-- Слайд 1 - Титульный -->
+            <div class="slide active" id="slide1">
+                <div class="slide-header">
+                    <h1 class="slide-title">Практическая работа №7</h1>
+                    <p class="slide-subtitle">Цикл for в Python</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title">📚 Информация о работе</h2>
+                        <div class="task-description">
+                            <p><strong>Класс:</strong> 9</p>
+                            <p><strong>Тема:</strong> Цикл for</p>
+                            <p><strong>Цель:</strong> Закрепить умение использовать цикл for в Python</p>
+                            <p><strong>Время:</strong> 45 минут</p>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card">
+                        <h2 class="task-title">🎯 Структура работы</h2>
+                        <div class="task-description">
+                            <p>Работа состоит из 6 уровней сложности:</p>
+                            <p>⭐ Уровень 5 баллов (базовый)</p>
+                            <p>⭐⭐ Уровень 6 баллов</p>
+                            <p>⭐⭐⭐ Уровень 7 баллов</p>
+                            <p>⭐⭐⭐⭐ Уровень 8 баллов</p>
+                            <p>⭐⭐⭐⭐⭐ Уровень 9 баллов</p>
+                            <p>⭐⭐⭐⭐⭐⭐ Уровень 10 баллов (высший)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 2 - Уровень 5 баллов -->
+            <div class="slide" id="slide2">
+                <div class="slide-header">
+                    <h1 class="slide-title">⭐ Уровень 5 баллов</h1>
+                    <p class="slide-subtitle">Базовые задачи с циклом for</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐</span> Задача 1: Числа от 1 до 10</h2>
+                        <div class="task-description">
+                            Вывести все числа от 1 до 10 с помощью цикла for
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐</span> Задача 2: Слово "Python" 5 раз</h2>
+                        <div class="task-description">
+                            Вывести слово "Python" 5 раз с помощью цикла
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">5</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"Python"</span>)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐</span> Задача 3: Обратный порядок</h2>
+                        <div class="task-description">
+                            Вывести числа от 10 до 1 в обратном порядке
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">10</span>, <span class="code-number">0</span>, -<span class="code-number">1</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 3 - Уровень 6 баллов -->
+            <div class="slide" id="slide3">
+                <div class="slide-header">
+                    <h1 class="slide-title">⭐⭐ Уровень 6 баллов</h1>
+                    <p class="slide-subtitle">Работа с последовательностями</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐</span> Задача 1: Чётные числа</h2>
+                        <div class="task-description">
+                            Вывести только чётные числа от 1 до 20
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">2</span>, <span class="code-number">21</span>, <span class="code-number">2</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐</span> Задача 2: Таблица умножения</h2>
+                        <div class="task-description">
+                            Вывести таблицу умножения на 3 (от 1 до 10)
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"3 × {i} = {3 * i}"</span>)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐</span> Задача 3: Квадраты чисел</h2>
+                        <div class="task-description">
+                            Вывести квадраты чисел от 1 до 10
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"{i}² = {i ** 2}"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 4 - Уровень 7 баллов -->
+            <div class="slide" id="slide4">
+                <div class="slide-header">
+                    <h1 class="slide-title">⭐⭐⭐ Уровень 7 баллов</h1>
+                    <p class="slide-subtitle">Суммирование и работа со строками</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐</span> Задача 1: Сумма чисел</h2>
+                        <div class="task-description">
+                            Посчитать сумму чисел от 1 до 100
+                        </div>
+                        <div class="code-block">
+                            total = <span class="code-number">0</span><br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">101</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;total += i<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Сумма:"</span>, total)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐</span> Задача 2: Произведение чисел</h2>
+                        <div class="task-description">
+                            Посчитать произведение чисел от 1 до 5
+                        </div>
+                        <div class="code-block">
+                            product = <span class="code-number">1</span><br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">6</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;product *= i<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Произведение:"</span>, product)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐</span> Задача 3: Анализ слова</h2>
+                        <div class="task-description">
+                            Вывести каждую букву в слове, введённом пользователем
+                        </div>
+                        <div class="code-block">
+                            text = <span class="code-function">input</span>(<span class="code-string">"Введите слово: "</span>)<br>
+                            <span class="code-keyword">for</span> ch <span class="code-keyword">in</span> text:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(ch)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 5 - Уровень 8 баллов -->
+            <div class="slide" id="slide5">
+                <div class="slide-header">
+                    <h1 class="slide-title">⭐⭐⭐⭐ Уровень 8 баллов</h1>
+                    <p class="slide-subtitle">Работа с пользовательским вводом</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐</span> Задача 1: Средний балл</h2>
+                        <div class="task-description">
+                            Программа спрашивает 5 оценок ученика и считает средний балл
+                        </div>
+                        <div class="code-block">
+                            total = <span class="code-number">0</span><br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">5</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;mark = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Оценка: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;total += mark<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Средний балл:"</span>, total / <span class="code-number">5</span>)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐</span> Задача 2: Положительные числа</h2>
+                        <div class="task-description">
+                            Программа спрашивает 5 чисел и выводит только положительные
+                        </div>
+                        <div class="code-block">
+                            positive_numbers = []<br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">5</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;num = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Число: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> num > <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;positive_numbers.append(num)<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Положительные:"</span>, positive_numbers)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐</span> Задача 3: Деление на 2 и 5</h2>
+                        <div class="task-description">
+                            Вывести все числа от 1 до 50, которые делятся и на 2, и на 5
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">51</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> i % <span class="code-number">2</span> == <span class="code-number">0</span> <span class="code-keyword">and</span> i % <span class="code-number">5</span> == <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 6 - Уровень 9 баллов -->
+            <div class="slide" id="slide6">
+                <div class="slide-header">
+                    <h1 class="slide-title">⭐⭐⭐⭐⭐ Уровень 9 баллов</h1>
+                    <p class="slide-subtitle">Сложные алгоритмы</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐⭐</span> Задача 1: Список учеников</h2>
+                        <div class="task-description">
+                            Программа спрашивает количество учеников, затем их имена — выводит список
+                        </div>
+                        <div class="code-block">
+                            count = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Количество учеников: "</span>))<br>
+                            students = []<br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(count):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;name = <span class="code-function">input</span>(<span class="code-string">f"Имя ученика {i+1}: "</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;students.append(name)<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Список:"</span>, students)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐⭐</span> Задача 2: Подсчёт чётных</h2>
+                        <div class="task-description">
+                            Программа спрашивает 10 чисел и определяет, сколько из них чётные
+                        </div>
+                        <div class="code-block">
+                            count_even = <span class="code-number">0</span><br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">10</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;n = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Число: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> n % <span class="code-number">2</span> == <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count_even += <span class="code-number">1</span><br>
+                            <span class="code-function">print</span>(<span class="code-string">"Чётных чисел:"</span>, count_even)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐⭐</span> Задача 3: Сумма цифр</h2>
+                        <div class="task-description">
+                            Вывести все числа от 1 до 100, сумма цифр которых равна 5
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> number <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">101</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;digit_sum = <span class="code-number">0</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;temp = number<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">while</span> temp > <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digit_sum += temp % <span class="code-number">10</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp //= <span class="code-number">10</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> digit_sum == <span class="code-number">5</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(number)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 7 - Уровень 10 баллов -->
+            <div class="slide" id="slide7">
+                <div class="slide-header">
+                    <h1 class="slide-title">⭐⭐⭐⭐⭐⭐ Уровень 10 баллов</h1>
+                    <p class="slide-subtitle">Высший уровень сложности</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐⭐⭐</span> Задача 1: Таблица умножения</h2>
+                        <div class="task-description">
+                            Программа спрашивает число N и выводит таблицу умножения от 1 до N
+                        </div>
+                        <div class="code-block">
+                            n = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Введите N: "</span>))<br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">for</span> j <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"{i} × {j} = {i * j}"</span>)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐⭐⭐</span> Задача 2: Простые числа</h2>
+                        <div class="task-description">
+                            Программа выводит все простые числа от 2 до 100
+                        </div>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> n <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">2</span>, <span class="code-number">101</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;prime = <span class="code-keyword">True</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">for</span> d <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">2</span>, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> n % d == <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prime = <span class="code-keyword">False</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">break</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> prime:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(n)
+                        </div>
+                    </div>
+
+                    <div class="task-card">
+                        <h2 class="task-title"><span class="stars">⭐⭐⭐⭐⭐⭐</span> Задача 3: Статистика чисел</h2>
+                        <div class="task-description">
+                            Программа спрашивает 10 чисел и выводит минимум, максимум, сумму и среднее
+                        </div>
+                        <div class="code-block">
+                            numbers = []<br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">10</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;num = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Число: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;numbers.append(num)<br>
+                            <br>
+                            minimum = <span class="code-function">min</span>(numbers)<br>
+                            maximum = <span class="code-function">max</span>(numbers)<br>
+                            total = <span class="code-function">sum</span>(numbers)<br>
+                            average = total / <span class="code-function">len</span>(numbers)<br>
+                            <br>
+                            <span class="code-function">print</span>(<span class="code-string">f"Мин: {minimum}, Макс: {maximum}"</span>)<br>
+                            <span class="code-function">print</span>(<span class="code-string">f"Сумма: {total}, Среднее: {average}"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 8 - Завершение -->
+            <div class="slide" id="slide8">
+                <div class="slide-header">
+                    <h1 class="slide-title">🎉 Практическая работа завершена!</h1>
+                    <p class="slide-subtitle">Успехов в выполнении заданий!</p>
+                </div>
+                <div class="slide-content">
+                    <div class="task-card">
+                        <h2 class="task-title">📋 Итоги работы</h2>
+                        <div class="task-description">
+                            <p>Вы изучили 6 уровней сложности работы с циклом for:</p>
+                            <p>• Базовые операции с циклами</p>
+                            <p>• Работа с последовательностями</p>
+                            <p>• Суммирование и строки</p>
+                            <p>• Пользовательский ввод</p>
+                            <p>• Сложные алгоритмы</p>
+                            <p>• Статистика и анализ данных</p>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card">
+                        <h2 class="task-title">💡 Советы по выполнению</h2>
+                        <div class="task-description">
+                            <p>• Внимательно читайте условие задачи</p>
+                            <p>• Проверяйте код на разных входных данных</p>
+                            <p>• Используйте комментарии для сложных участков</p>
+                            <p>• Не забывайте про отступы в Python</p>
+                            <p>• Тестируйте каждую задачу отдельно</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+
+        <div class="level-indicator" id="levelIndicator">
+            <div class="level-dot active" data-slide="0"></div>
+            <div class="level-dot" data-slide="1"></div>
+            <div class="level-dot" data-slide="2"></div>
+            <div class="level-dot" data-slide="3"></div>
+            <div class="level-dot" data-slide="4"></div>
+            <div class="level-dot" data-slide="5"></div>
+            <div class="level-dot" data-slide="6"></div>
+            <div class="level-dot" data-slide="7"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const levelIndicator = document.getElementById('levelIndicator');
+            const progressBar = document.getElementById('progressBar');
+            let currentSlide = 0;
+
+            // Инициализация индикаторов
+            function updateUI() {
+                // Обновление индикаторов
+                document.querySelectorAll('.level-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+                
+                // Обновление кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+                
+                // Обновление прогресс-бара
+                progressBar.style.width = `${(currentSlide / (slides.length - 1)) * 100}%`;
+                
+                // Обновление текста кнопки "Вперед" на последнем слайде
+                if (currentSlide === slides.length - 1) {
+                    nextBtn.textContent = 'Завершить';
+                } else {
+                    nextBtn.textContent = 'Вперед →';
+                }
+            }
+
+            // Переход к слайду
+            function goToSlide(slideIndex) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = slideIndex;
+                slides[currentSlide].classList.add('active');
+                updateUI();
+            }
+
+            // Следующий слайд
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            }
+
+            // Предыдущий слайд
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+
+            // Обработчики событий
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            });
+
+            // Клик по индикаторам
+            document.querySelectorAll('.level-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                    goToSlide(slideIndex);
+                });
+            });
+
+            // Инициализация
+            updateUI();
+        });
+    </script>
+</body>
+</html>
