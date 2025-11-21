@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Технология WWW и цикл while</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1800px;
+            height: 96vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slides-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .content-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-content {
+            font-size: 2rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .card-content ul {
+            list-style-position: inside;
+            margin-left: 10px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        
+
+        .browser-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .www-animation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .web-element {
+            width: 80px;
+            height: 80px;
+            background: #667eea;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .slide-indicator {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content-card {
+                padding: 15px;
+            }
+            
+            .navigation {
+                padding: 0 20px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-bar" id="progressBar"></div>
+        
+        <div class="slides-container" id="slidesContainer">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <div class="slide-header">
+                    <h1 class="slide-title">Технология WWW и цикл while</h1>
+                    <p class="slide-subtitle">9 класс</p>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">🌐 Всемирная паутина (WWW)</h2>
+                            <div class="card-content">
+                                <p>Изучим основы работы интернета и веб-технологий</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🔗 Основные понятия</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>URL и браузеры</li>
+                                    <li>Гиперссылки</li>
+                                    <li>Веб-страницы</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">⚡ Цикл while</h2>
+                            <div class="card-content">
+                                <p>Освоим основы программирования с циклом while</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">💻 Практика</h2>
+                            <div class="card-content">
+                                <p>Практические задания для закрепления знаний</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <div class="slide-header">
+                    <h1 class="slide-title">Что такое WWW?</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🌍 Всемирная паутина (World Wide Web)</h2>
+                        <div class="card-content">
+                            <p>WWW - это глобальная система связанных между собой веб-страниц, доступных через интернет.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="www-animation">
+                        <div class="web-element">Сайт 1</div>
+                        <div class="web-element">Сайт 2</div>
+                        <div class="web-element">Сайт 3</div>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">📡 Как работает</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Система связанных веб-страниц</li>
+                                    <li>Работает через интернет</li>
+                                    <li>Использует протоколы HTTP/HTTPS</li>
+                                    <li>Основа современного интернета</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <div class="slide-header">
+                    <h1 class="slide-title">Основные элементы WWW</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title"><span class="browser-icon">🌐</span> Браузер</h2>
+                            <div class="card-content">
+                                <p>Программа для просмотра веб-страниц:</p>
+                                <ul>
+                                    <li>Google Chrome</li>
+                                    <li>Mozilla Firefox</li>
+                                    <li>Safari</li>
+                                    <li>Microsoft Edge</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🏠 Сайт</h2>
+                            <div class="card-content">
+                                <p>Набор связанных веб-страниц, объединенных под одним доменным именем</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📄 Веб-страница</h2>
+                            <div class="card-content">
+                                <p>Отдельный документ в сети интернет, который может содержать текст, изображения, видео</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📍 URL</h2>
+                            <div class="card-content">
+                                <p>Уникальный адрес веб-страницы в интернете</p>
+                                <p><strong>Пример:</strong> https://www.example.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🔗 Гиперссылка</h2>
+                            <div class="card-content">
+                                <p>Элемент веб-страницы для перехода на другую страницу или сайт</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <div class="slide-header">
+                    <h1 class="slide-title">Как работает WWW</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🔄 Процесс загрузки страницы</h2>
+                        <div class="card-content">
+                            <ol>
+                                <li><strong>Пользователь вводит URL</strong> в адресную строку браузера</li>
+                                <li><strong>Браузер отправляет запрос</strong> на сервер через интернет</li>
+                                <li><strong>Сервер обрабатывает запрос</strong> и находит нужную страницу</li>
+                                <li><strong>Страница возвращается</strong> браузеру в виде HTML-кода</li>
+                                <li><strong>Браузер отображает</strong> страницу пользователю</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Пример URL</span><br>
+                        https://www.wikipedia.org/wiki/Computer_science<br><br>
+                        <span class="code-comment"># Протокол Домен       Путь к странице</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <div class="slide-header">
+                    <h1 class="slide-title">Безопасность в интернете</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">🔒 Проверять HTTPS</h2>
+                            <div class="card-content">
+                                <p>Всегда убеждайтесь, что сайт использует защищенное соединение HTTPS</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🚫 Подозрительные ссылки</h2>
+                            <div class="card-content">
+                                <p>Не открывайте ссылки от незнакомых отправителей и в подозрительных сообщениях</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📝 Личные данные</h2>
+                            <div class="card-content">
+                                <p>Не вводите личную информацию на незнакомых и ненадежных сайтах</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🔑 Пароли</h2>
+                            <div class="card-content">
+                                <p>Используйте сложные пароли и не повторяйте их на разных сайтах</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ Важно:</strong> Всегда проверяйте адрес сайта перед вводом любой личной информации!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <div class="slide-header">
+                    <h1 class="slide-title">Переходим к программированию</h1>
+                    <p class="slide-subtitle">Цикл while</p>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">⚡ Для чего используется?</h2>
+                            <div class="card-content">
+                                <p>Цикл while используется для повторения действий, пока выполняется определенное условие</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🔄 Принцип работы</h2>
+                            <div class="card-content">
+                                <p>Цикл выполняется <strong>пока условие истинно (True)</strong></p>
+                                <p>Как только условие становится ложным (False) - цикл завершается</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Простой пример цикла while</span><br>
+                        counter = <span class="code-number">1</span><br>
+                        <span class="code-keyword">while</span> counter <= <span class="code-number">5</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"Повторение номер"</span>, counter)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;counter += <span class="code-number">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <div class="slide-header">
+                    <h1 class="slide-title">Синтаксис цикла while</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">📝 Основной синтаксис</h2>
+                        <div class="card-content">
+                            <p>Цикл while имеет простую структуру:</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-keyword">while</span> <span class="code-function">условие</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># блок кода, который повторяется</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">действие</span>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🔍 Пример с объяснением</h2>
+                        <div class="card-content">
+                            <p>Рассмотрим подробный пример:</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Инициализируем переменную-счетчик</span><br>
+                        i = <span class="code-number">1</span><br><br>
+                        <span class="code-comment"># Цикл выполняется пока i меньше или равно 5</span><br>
+                        <span class="code-keyword">while</span> i <= <span class="code-number">5</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Выводим текущее значение i</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Увеличиваем i на 1</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">1</span><br><br>
+                        <span class="code-comment"># Результат: 1 2 3 4 5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <div class="slide-header">
+                    <h1 class="slide-title">Где используется цикл while?</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">🧮 Повторяющиеся вычисления</h2>
+                            <div class="card-content">
+                                <p>Для многократного выполнения математических операций</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📊 Подсчёты</h2>
+                            <div class="card-content">
+                                <p>Подсчет суммы, количества элементов, статистики</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">⌨️ Обработка ввода</h2>
+                            <div class="card-content">
+                                <p>Для обработки пользовательского ввода до получения корректных данных</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📝 Работа с данными</h2>
+                            <div class="card-content">
+                                <p>Обработка текста, чисел, последовательностей данных</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Пример: обработка ввода пользователя</span><br>
+                        password = <span class="code-string">""</span><br>
+                        <span class="code-keyword">while</span> password != <span class="code-string">"secret"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;password = <span class="code-function">input</span>(<span class="code-string">"Введите пароль: "</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">"Доступ разрешен!"</span>)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <div class="slide-header">
+                    <h1 class="slide-title">Частые ошибки в while</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">♾️ Бесконечный цикл</h2>
+                            <div class="card-content">
+                                <p>Самая распространенная ошибка - когда условие всегда истинно</p>
+                                <div class="code-block">
+                                    <span class="code-comment"># ОШИБКА: бесконечный цикл!</span><br>
+                                    i = <span class="code-number">1</span><br>
+                                    <span class="code-keyword">while</span> i <= <span class="code-number">5</span>:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)<br>
+                                    <span class="code-comment"># забыли i += 1</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">❌ Неверное условие</h2>
+                            <div class="card-content">
+                                <p>Неправильно составленное условие может привести к неожиданным результатам</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📊 Неизменяемая переменная</h2>
+                            <div class="card-content">
+                                <p>Если переменная в условии не меняется, цикл никогда не завершится</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>💡 Совет:</strong> Всегда проверяйте, что переменная в условии изменяется внутри цикла!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <div class="slide-header">
+                    <h1 class="slide-title">Практическая часть</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">🎯 Цели практики</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Учимся создавать циклы while</li>
+                                    <li>Получаем навыки обработки чисел</li>
+                                    <li>Работаем с вводом пользователя</li>
+                                    <li>Учимся избегать ошибок</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">💻 Что будем делать?</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Простые счетчики</li>
+                                    <li>Обработка пользовательского ввода</li>
+                                    <li>Математические вычисления</li>
+                                    <li>Проверка условий</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Пример для начала работы</span><br>
+                        number = <span class="code-number">1</span><br>
+                        <span class="code-keyword">while</span> number <= <span class="code-number">10</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"Текущее число: {number}"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;number += <span class="code-number">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 11 -->
+            <div class="slide" id="slide11">
+                <div class="slide-header">
+                    <h1 class="slide-title">Применение в реальных задачах</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">🎮 Подсчёт попыток</h2>
+                            <div class="card-content">
+                                <p>Идеально для игр, где нужно ограничить количество попыток</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">✅ Проверка ввода</h2>
+                            <div class="card-content">
+                                <p>Для проверки корректности данных, введенных пользователем</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📈 Обработка данных</h2>
+                            <div class="card-content">
+                                <p>Для работы с последовательностями данных неизвестной длины</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">📋 Меню программ</h2>
+                            <div class="card-content">
+                                <p>Создание повторяющихся меню и интерфейсов</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Пример: меню с повторением</span><br>
+                        choice = <span class="code-string">""</span><br>
+                        <span class="code-keyword">while</span> choice != <span class="code-string">"выход"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"1. Опция 1"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"2. Опция 2"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"выход - Завершить"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;choice = <span class="code-function">input</span>(<span class="code-string">"Выберите опцию: "</span>)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 12 -->
+            <div class="slide" id="slide12">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровневые задания</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title"><span class="level-badge">5 баллов</span> Базовый уровень</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Простые счетчики</li>
+                                    <li>Вывод последовательностей</li>
+                                    <li>Базовые вычисления</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title"><span class="level-badge">6-8 баллов</span> Средний уровень</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Обработка ввода</li>
+                                    <li>Условные операции в циклах</li>
+                                    <li>Более сложные вычисления</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title"><span class="level-badge">9-10 баллов</span> Высокий уровень</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Сложные алгоритмы</li>
+                                    <li>Обработка ошибок</li>
+                                    <li>Оптимизация кода</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 13 -->
+            <div class="slide" id="slide13">
+                <div class="slide-header">
+                    <h1 class="slide-title">Мини-шпаргалка по while</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">📋 Основы синтаксиса</h2>
+                        <div class="card-content">
+                            <div class="code-block">
+                                <span class="code-keyword">while</span> <span class="code-function">условие</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">действие</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">✅ Условие → True</h2>
+                            <div class="card-content">
+                                <p>Если условие истинно - выполняется блок кода внутри цикла</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">❌ Условие → False</h2>
+                            <div class="card-content">
+                                <p>Если условие ложно - цикл завершается, программа продолжает работу</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Практический пример</span><br>
+                        count = <span class="code-number">0</span><br>
+                        <span class="code-keyword">while</span> count < <span class="code-number">3</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"Итерация {count + 1}"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;count += <span class="code-number">1</span><br>
+                        <span class="code-function">print</span>(<span class="code-string">"Цикл завершен!"</span>)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 14 -->
+            <div class="slide" id="slide14">
+                <div class="slide-header">
+                    <h1 class="slide-title">Итоги урока</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">🌐 WWW</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Как работает Всемирная паутина</li>
+                                    <li>Основные элементы и протоколы</li>
+                                    <li>Безопасность в интернете</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">🔧 Технические понятия</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>URL, браузер, гиперссылка</li>
+                                    <li>Веб-страницы и сайты</li>
+                                    <li>Процесс загрузки страниц</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">⚡ Цикл while</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Синтаксис и принцип работы</li>
+                                    <li>Практическое применение</li>
+                                    <li>Частые ошибки и их решение</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">💡 Применение</h2>
+                            <div class="card-content">
+                                <ul>
+                                    <li>Где использовать циклы</li>
+                                    <li>Реальные задачи программирования</li>
+                                    <li>Лучшие практики</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 15 -->
+            <div class="slide" id="slide15">
+                <div class="slide-header">
+                    <h1 class="slide-title">Домашнее задание</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <h2 class="card-title">📚 Часть 1: WWW</h2>
+                            <div class="card-content">
+                                <p><strong>Найти 2 сайта для учёбы и записать их URL</strong></p>
+                                <p>Примеры образовательных ресурсов:</p>
+                                <ul>
+                                    <li>Онлайн-курсы</li>
+                                    <li>Энциклопедии</li>
+                                    <li>Образовательные платформы</li>
+                                    <li>Библиотеки</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h2 class="card-title">💻 Часть 2: Программирование</h2>
+                            <div class="card-content">
+                                <p><strong>Программа: вывести чётные числа от 2 до 20 с помощью while</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># Подсказка для домашнего задания</span><br>
+                        number = <span class="code-number">2</span>  <span class="code-comment"># начинаем с первого четного числа</span><br>
+                        <span class="code-keyword">while</span> number <= <span class="code-number">20</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(number)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;number += <span class="code-number">2</span>  <span class="code-comment"># увеличиваем на 2 для следующего четного</span>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <strong>📝 Задание:</strong> Напишите программу, которая выводит все четные числа от 2 до 20 используя цикл while. Не забудьте про отступы в Python!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+
+        <div class="slide-indicator" id="slideIndicator">
+            <!-- Индикаторы будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideIndicator = document.getElementById('slideIndicator');
+            const progressBar = document.getElementById('progressBar');
+            let currentSlide = 0;
+
+            // Создание индикаторов слайдов
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('indicator-dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                slideIndicator.appendChild(dot);
+            });
+
+            // Обновление UI
+            function updateUI() {
+                // Обновление индикаторов
+                document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+                
+                // Обновление кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+                
+                // Обновление прогресс-бара
+                progressBar.style.width = `${(currentSlide / (slides.length - 1)) * 100}%`;
+                
+                // Обновление текста кнопки на последнем слайде
+                if (currentSlide === slides.length - 1) {
+                    nextBtn.textContent = 'Завершить';
+                } else {
+                    nextBtn.textContent = 'Вперед →';
+                }
+            }
+
+            // Переход к слайду
+            function goToSlide(slideIndex) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = slideIndex;
+                slides[currentSlide].classList.add('active');
+                updateUI();
+            }
+
+            // Следующий слайд
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            }
+
+            // Предыдущий слайд
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+
+            // Обработчики событий
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide;
+            });
+
+            // Инициализация
+            updateUI();
+        });
+    </script>
+</body>
+</html>
