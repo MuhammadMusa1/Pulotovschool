@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Циклы for и while</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1800px;
+            height: 95vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slides-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .content-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .card-title {
+            font-size: 1.7rem;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-content {
+            font-size: 1.7rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .card-content ul {
+            list-style-position: inside;
+            margin-left: 10px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 1.5rem;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.7rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .code-comment { color: #75715e; font-style: italic; }
+        .code-keyword { color: #f92672; }
+        .code-function { color: #66d9ef; }
+        .code-string { color: #e6db74; }
+        .code-number { color: #ae81ff; }
+
+        .level-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 2px solid #667eea;
+            font-size: 1.5rem;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .slide-indicator {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content-card {
+                padding: 15px;
+            }
+            
+            .navigation {
+                padding: 0 20px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-bar" id="progressBar"></div>
+        
+        <div class="slides-container" id="slidesContainer">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <div class="slide-header">
+                    <h1 class="slide-title">Циклы for и while</h1>
+                    <p class="slide-subtitle">Практические применения</p>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 План урока</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Повторение основ циклов</li>
+                                <li>Отличия for и while</li>
+                                <li>Примеры задач</li>
+                                <li>Практическая работа по уровням</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">💡 Цель урока</h2>
+                        <div class="card-content">
+                            <p>Научиться правильно выбирать и применять циклы for и while для решения практических задач программирования.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <div class="slide-header">
+                    <h1 class="slide-title">Что такое цикл?</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🔄 Определение</h2>
+                        <div class="card-content">
+                            <p>Цикл — это повторение действий несколько раз.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 Где используются циклы?</h2>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h3>🧮 Вычисления</h3>
+                                <p>Суммы, произведения, статистика</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>📝 Обработка текста</h3>
+                                <p>Анализ строк, поиск символов</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>📊 Работа со списками</h3>
+                                <p>Фильтрация, преобразование</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>📋 Создание таблиц</h3>
+                                <p>Таблицы умножения, данные</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>⚡ Алгоритмы</h3>
+                                <p>Поиск, сортировка, анализ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <div class="slide-header">
+                    <h1 class="slide-title">Цикл for</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 Когда использовать?</h2>
+                        <div class="card-content">
+                            <p>Используется, когда заранее известно количество повторений.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">📝 Синтаксис</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(start, stop, step):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># действие</span>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🔧 Применение</h2>
+                        <div class="card-content">
+                            <p>Применяется к:</p>
+                            <ul>
+                                <li>Диапазонам (range)</li>
+                                <li>Спискам</li>
+                                <li>Строкам</li>
+                                <li>Кортежам</li>
+                                <li>Словарям</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <div class="slide-header">
+                    <h1 class="slide-title">Цикл while</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 Когда использовать?</h2>
+                        <div class="card-content">
+                            <p>Выполняется, пока условие истинно. Используется, когда количество повторений неизвестно заранее.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">📝 Синтаксис</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">while</span> <span class="code-function">условие</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># действие</span>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🔧 Типичные сценарии</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Обработка пользовательского ввода</li>
+                                <li>Чтение данных до определённого условия</li>
+                                <li>Повторение действий до успеха</li>
+                                <li>Игры и интерактивные приложения</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <div class="slide-header">
+                    <h1 class="slide-title">Отличия for и while</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Цикл for</th>
+                                    <th>Цикл while</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Известное количество повторов</td>
+                                    <td>Работает по условию</td>
+                                </tr>
+                                <tr>
+                                    <td>Удобно для списков и range</td>
+                                    <td>Удобно для ввода пользователя</td>
+                                </tr>
+                                <tr>
+                                    <td>Меньше риск ошибки</td>
+                                    <td>Можно случайно сделать бесконечный цикл</td>
+                                </tr>
+                                <tr>
+                                    <td>Автоматическое переключение</td>
+                                    <td>Ручное управление переменной</td>
+                                </tr>
+                                <tr>
+                                    <td>Для известных последовательностей</td>
+                                    <td>Для неизвестного количества итераций</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <div class="slide-header">
+                    <h1 class="slide-title">Где используются циклы?</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h3>📊 Таблицы умножения</h3>
+                                <p>Создание математических таблиц</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>🧮 Подсчёт суммы</h3>
+                                <p>Суммирование последовательностей</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>🔍 Поиск значений</h3>
+                                <p>Поиск в массивах данных</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>⌨️ Ввод данных</h3>
+                                <p>Повторный ввод до корректности</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>📋 Фильтрация</h3>
+                                <p>Отбор элементов по условию</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>🔤 Текст</h3>
+                                <p>Обработка строк по символам</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <div class="slide-header">
+                    <h1 class="slide-title">Важные элементы циклов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h3>🔢 Счётчик (i)</h3>
+                                <p>Переменная для отслеживания прогресса</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>↗️ Шаг (i += 1)</h3>
+                                <p>Изменение счётчика</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>⚖️ Условие</h3>
+                                <p>Логическое выражение для продолжения</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>🚪 break</h3>
+                                <p>Досрочный выход из цикла</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>⏭️ continue</h3>
+                                <p>Пропуск текущей итерации</p>
+                            </div>
+                            <div class="feature-item">
+                                <h3>🔄 Вложенные циклы</h3>
+                                <p>Циклы внутри циклов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <div class="slide-header">
+                    <h1 class="slide-title">Ошибки в циклах</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <div class="warning-box">
+                            <strong>⚠️ Распространённые ошибки:</strong>
+                        </div>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>Бесконечный цикл</strong> — забыли изменить переменную условия</li>
+                                <li><strong>Неправильное условие</strong> — цикл не запускается или не останавливается</li>
+                                <li><strong>Неизменяемая переменная</strong> — счётчик не обновляется</li>
+                                <li><strong>Пропуск шага</strong> — неправильный диапазон или шаг</li>
+                                <li><strong>Заголовок цикла без тела</strong> — синтаксическая ошибка</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <div class="slide-header">
+                    <h1 class="slide-title">Примеры решения задач</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 Готовые решения</h2>
+                        <div class="card-content">
+                            <p>Ниже приведены примеры готовых решений разных уровней сложности.</p>
+                            <p>Изучите их, чтобы понять принципы работы циклов в различных ситуациях.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровень 5 баллов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="level-badge">🥉 Уровень 5 баллов — Базовый</div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">1. Числа от 1 до 10 (for)</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">2. Числа от 10 до 1 (while)</h2>
+                        <div class="code-block">
+                            i = <span class="code-number">10</span><br>
+                            <span class="code-keyword">while</span> i >= <span class="code-number">1</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i -= <span class="code-number">1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">3. Слово "Python" 5 раз</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">5</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"Python"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 11 -->
+            <div class="slide" id="slide11">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровень 6 баллов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="level-badge">🥈 Уровень 6 баллов — Средний</div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">1. Чётные числа 2–20 (while)</h2>
+                        <div class="code-block">
+                            i = <span class="code-number">2</span><br>
+                            <span class="code-keyword">while</span> i <= <span class="code-number">20</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">2</span>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">2. Таблица умножения на 3 (for)</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">11</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-number">3</span>, <span class="code-string">"*"</span>, i, <span class="code-string">"="</span>, <span class="code-number">3</span>*i)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">3. Квадраты чисел 1–10 (while)</h2>
+                        <div class="code-block">
+                            i = <span class="code-number">1</span><br>
+                            <span class="code-keyword">while</span> i <= <span class="code-number">10</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i*i)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 12 -->
+            <div class="slide" id="slide12">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровень 7 баллов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="level-badge">🎯 Уровень 7 баллов — Продвинутый</div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">1. Сумма чисел 1–100 (for)</h2>
+                        <div class="code-block">
+                            s = <span class="code-number">0</span><br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">101</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;s += i<br>
+                            <span class="code-function">print</span>(s)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">2. Произведение чисел 1–5 (while)</h2>
+                        <div class="code-block">
+                            i = <span class="code-number">1</span><br>
+                            p = <span class="code-number">1</span><br>
+                            <span class="code-keyword">while</span> i <= <span class="code-number">5</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;p *= i<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">1</span><br>
+                            <span class="code-function">print</span>(p)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">3. Символы слова (for)</h2>
+                        <div class="code-block">
+                            text = <span class="code-function">input</span>(<span class="code-string">"Введите слово: "</span>)<br>
+                            <span class="code-keyword">for</span> ch <span class="code-keyword">in</span> text:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(ch)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 13 -->
+            <div class="slide" id="slide13">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровень 8 баллов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="level-badge">🏅 Уровень 8 баллов — Сложный</div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">1. Средний балл из 5 оценок (while)</h2>
+                        <div class="code-block">
+                            total = <span class="code-number">0</span><br>
+                            i = <span class="code-number">0</span><br>
+                            <span class="code-keyword">while</span> i < <span class="code-number">5</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;mark = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Оценка: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;total += mark<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">1</span><br>
+                            <span class="code-function">print</span>(<span class="code-string">"Средний балл ="</span>, total / <span class="code-number">5</span>)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">2. Только положительные числа</h2>
+                        <div class="code-block">
+                            numbers = [<span class="code-number">3</span>, -<span class="code-number">1</span>, <span class="code-number">7</span>, <span class="code-number">0</span>, -<span class="code-number">5</span>, <span class="code-number">10</span>]<br>
+                            <span class="code-keyword">for</span> n <span class="code-keyword">in</span> numbers:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> n > <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(n)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">3. Числа, делящиеся на 2 и 5</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">51</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> i % <span class="code-number">2</span> == <span class="code-number">0</span> <span class="code-keyword">and</span> i % <span class="code-number">5</span> == <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 14 -->
+            <div class="slide" id="slide14">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровень 9 баллов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="level-badge">🥇 Уровень 9 баллов — Очень сложный</div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">1. Список учеников (while)</h2>
+                        <div class="code-block">
+                            n = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Сколько учеников? "</span>))<br>
+                            i = <span class="code-number">0</span><br>
+                            students = []<br>
+                            <span class="code-keyword">while</span> i < n:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;name = <span class="code-function">input</span>(<span class="code-string">"Имя: "</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;students.append(name)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">1</span><br>
+                            <span class="code-function">print</span>(students)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">2. Подсчёт чётных чисел</h2>
+                        <div class="code-block">
+                            count = <span class="code-number">0</span><br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">10</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;n = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Число: "</span>))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> n % <span class="code-number">2</span> == <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += <span class="code-number">1</span><br>
+                            <span class="code-function">print</span>(<span class="code-string">"Чётных:"</span>, count)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">3. Числа с суммой цифр = 7</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">1</span>, <span class="code-number">101</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (i // <span class="code-number">10</span>) + (i % <span class="code-number">10</span>) == <span class="code-number">7</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 15 -->
+            <div class="slide" id="slide15">
+                <div class="slide-header">
+                    <h1 class="slide-title">Уровень 10 баллов</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="level-badge">🏆 Уровень 10 баллов — Экспертный</div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">1. Таблица умножения до N</h2>
+                        <div class="code-block">
+                            N = <span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Введите N: "</span>))<br>
+                            i = <span class="code-number">1</span><br>
+                            <span class="code-keyword">while</span> i <= N:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;j = <span class="code-number">1</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">while</span> j <= <span class="code-number">10</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i, <span class="code-string">"*"</span>, j, <span class="code-string">"="</span>, i*j)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j += <span class="code-number">1</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;i += <span class="code-number">1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">2. Простые числа 2–100</h2>
+                        <div class="code-block">
+                            <span class="code-keyword">for</span> n <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">2</span>, <span class="code-number">101</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;prime = <span class="code-keyword">True</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">for</span> d <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">2</span>, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> n % d == <span class="code-number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prime = <span class="code-keyword">False</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">break</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> prime:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(n)
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">3. Статистика 10 чисел</h2>
+                        <div class="code-block">
+                            nums = []<br>
+                            <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">10</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;nums.append(<span class="code-function">int</span>(<span class="code-function">input</span>(<span class="code-string">"Число: "</span>)))<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Мин:"</span>, <span class="code-function">min</span>(nums))<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Макс:"</span>, <span class="code-function">max</span>(nums))<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Сумма:"</span>, <span class="code-function">sum</span>(nums))<br>
+                            <span class="code-function">print</span>(<span class="code-string">"Среднее:"</span>, <span class="code-function">sum</span>(nums)/<span class="code-number">10</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 16 -->
+            <div class="slide" id="slide16">
+                <div class="slide-header">
+                    <h1 class="slide-title">Шпаргалка по циклам</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">📋 Цикл for</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><code>range(n)</code> — от 0 до n-1</li>
+                                <li><code>range(a, b)</code> — от a до b-1</li>
+                                <li><code>range(a, b, step)</code> — с шагом step</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">📋 Цикл while</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Работает, пока условие True</li>
+                                <li>Обязательно менять переменную условия</li>
+                                <li>Проверять условие на каждой итерации</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">⚡ Команды управления</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><code>break</code> — немедленный выход из цикла</li>
+                                <li><code>continue</code> — переход к следующей итерации</li>
+                                <li><code>i += 1</code> — увеличение счётчика</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 17 -->
+            <div class="slide" id="slide17">
+                <div class="slide-header">
+                    <h1 class="slide-title">Итоги урока</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎓 Чему вы научились?</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Различать циклы for и while</li>
+                                <li>Понимать принцип работы циклов</li>
+                                <li>Решать задачи разного уровня сложности</li>
+                                <li>Избегать распространённых ошибок</li>
+                                <li>Применять циклы в практических задачах</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 18 -->
+            <div class="slide" id="slide18">
+                <div class="slide-header">
+                    <h1 class="slide-title">Домашнее задание</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">📝 Задание 1</h2>
+                        <div class="card-content">
+                            <p><strong>Программа: таблица умножения от 1 до 20</strong></p>
+                            <div class="code-block">
+                                <span class="code-comment"># Используйте вложенные циклы for</span><br>
+                                <span class="code-comment"># Выведите таблицу умножения от 1 до 20</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">📝 Задание 2</h2>
+                        <div class="card-content">
+                            <p><strong>Программа: вывести числа 1–100, пропуская кратные 7</strong></p>
+                            <div class="code-block">
+                                <span class="code-comment"># Используйте цикл for и оператор continue</span><br>
+                                <span class="code-comment"># Пропускайте числа, кратные 7</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">💡 Подсказки</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Для проверки кратности используйте оператор %</li>
+                                <li>Для пропуска итерации используйте continue</li>
+                                <li>Проверяйте работу программы на небольших диапазонах</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+
+        <div class="slide-indicator" id="slideIndicator">
+            <!-- Индикаторы будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideIndicator = document.getElementById('slideIndicator');
+            const progressBar = document.getElementById('progressBar');
+            let currentSlide = 0;
+
+            // Создание индикаторов слайдов
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('indicator-dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                slideIndicator.appendChild(dot);
+            });
+
+            // Обновление UI
+            function updateUI() {
+                document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+                
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+                
+                progressBar.style.width = `${(currentSlide / (slides.length - 1)) * 100}%`;
+                
+                if (currentSlide === slides.length - 1) {
+                    nextBtn.textContent = 'Завершить';
+                } else {
+                    nextBtn.textContent = 'Вперед →';
+                }
+            }
+
+            // Переход к слайду
+            function goToSlide(slideIndex) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = slideIndex;
+                slides[currentSlide].classList.add('active');
+                updateUI();
+            }
+
+            // Следующий слайд
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            }
+
+            // Предыдущий слайд
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+
+            // Обработчики событий
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            });
+
+            // Инициализация
+            updateUI();
+        });
+    </script>
+</body>
+</html>
