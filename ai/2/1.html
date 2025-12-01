@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python — Урок 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Fira Code', monospace;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .slide-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      text-align: center;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      color: #00f3ff;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      margin: 1.5rem 0 1rem;
+      color: #ff2a8f;
+      text-shadow: 0 0 8px rgba(255, 42, 143, 0.6);
+    }
+
+    p, li {
+      font-size: 1.8rem;
+      line-height: 1.6;
+      margin: 0.6rem 0;
+    }
+
+    ul {
+      text-align: left;
+      margin: 1.2rem auto;
+      max-width: 800px;
+    }
+
+    code {
+      background: rgba(0, 40, 80, 0.6);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 1.3rem;
+      color: #00f3ff;
+      border: 1px solid #00aaff;
+    }
+
+    .highlight {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+
+    .warn {
+      color: #ff5555;
+      font-weight: bold;
+    }
+
+    .ok {
+      color: #00ffaa;
+    }
+
+    .table {
+      margin: 1.5rem auto;
+      border-collapse: collapse;
+      font-size: 1.3rem;
+    }
+
+    .table th, .table td {
+      padding: 0.7rem 1.2rem;
+      border: 1px solid #555;
+    }
+
+    .table th {
+      background: rgba(0, 80, 150, 0.4);
+      color: #66ccff;
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      z-index: 100;
+    }
+
+    button {
+      background: rgba(10, 30, 60, 0.8);
+      color: #00f3ff;
+      border: 1px solid #00aaff;
+      padding: 0.5rem 1rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: rgba(0, 100, 200, 0.7);
+      box-shadow: 0 0 10px #00aaff;
+    }
+
+    .author {
+      font-size: 1.2rem;
+      color: #aaa;
+      margin-top: 2rem;
+      font-style: italic;
+    }
+
+    /* Cyber grid background */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        linear-gradient(rgba(0, 30, 60, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 30, 60, 0.1) 1px, transparent 1px);
+      background-size: 30px 30px;
+      z-index: -1;
+    }
+
+    /* Glowing dots */
+    .dot {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: #00f3ff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00f3ff;
+      z-index: -1;
+      animation: float 15s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(100px, 50px); }
+      50% { transform: translate(-50px, 100px); }
+      75% { transform: translate(-100px, -50px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic dots -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const body = document.body;
+      for (let i = 0; i < 25; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        dot.style.left = Math.random() * 100 + 'vw';
+        dot.style.top = Math.random() * 100 + 'vh';
+        dot.style.animationDelay = (Math.random() * 15) + 's';
+        body.appendChild(dot);
+      }
+    });
+  </script>
+
+  <div class="slide active" id="slide-1">
+    <h1>Python — Урок 2</h1>
+    <h2>Переменные. Типы данных. Ввод данных (<code>input</code>)</h2>
+    <div class="author">Автор: Мусоев Мухаммаджон</div>
+  </div>
+
+  <div class="slide" id="slide-2">
+    <h2>Что такое переменная?</h2>
+    <p>Переменная — это именованная область памяти, в которой хранится значение.</p>
+    <p>Можно представить переменную как коробку, у которой есть:</p>
+    <ul>
+      <li><span class="highlight">имя</span> (label)</li>
+      <li><span class="highlight">значение</span>, которое внутри лежит</li>
+      <li><span class="highlight">тип данных</span>, определяющий, что за объект хранится</li>
+    </ul>
+    <p>Пример:</p>
+    <code>name = "Muhammadjon"</code><br>
+    <code>age = 30</code>
+    <p>❗ Python не хранит значение <i>внутри</i> переменной — переменная хранит <span class="highlight">ссылку на объект</span> в памяти.</p>
+    <p>В Python всё — объект, даже числа и строки.</p>
+  </div>
+
+  <div class="slide" id="slide-3">
+    <h2>Правила названий переменных</h2>
+    <p>Имя переменной:</p>
+    <ul>
+      <li>может содержать буквы, цифры и <code>_</code></li>
+      <li>не может начинаться с цифры</li>
+      <li>не должно содержать пробелы</li>
+      <li>чувствительно к регистру (<code>age</code> и <code>Age</code> — разные)</li>
+      <li>нельзя использовать ключевые слова: <code>if</code>, <code>for</code>, <code>class</code>...</li>
+    </ul>
+    <p>❌ Плохие: <code>1name</code>, <code>my name</code>, <code>for</code></p>
+    <p>✅ Хорошие: <code>user_name</code>, <code>age</code>, <code>priceUSD</code></p>
+  </div>
+
+  <div class="slide" id="slide-4">
+    <h2>Типы данных в Python</h2>
+    <p>Переменная <i>не привязана</i> к типу — тип привязан к <span class="highlight">объекту</span>.</p>
+    <table class="table">
+      <tr><th>Тип</th><th>Пример</th><th>Значение</th></tr>
+      <tr><td><code>int</code></td><td><code>5</code></td><td>целое число</td></tr>
+      <tr><td><code>float</code></td><td><code>4.7</code></td><td>дробное число</td></tr>
+      <tr><td><code>str</code></td><td><code>"Hello"</code></td><td>строка</td></tr>
+      <tr><td><code>bool</code></td><td><code>True / False</code></td><td>логическое значение</td></tr>
+    </table>
+    <p>❗ Объекты неизменяемых типов (<code>int</code>, <code>str</code>, <code>bool</code>) при изменении создают <span class="highlight">новый объект</span>.</p>
+  </div>
+
+  <div class="slide" id="slide-5">
+    <h2>Проверка типа данных</h2>
+    <p>Тип можно посмотреть с помощью <code>type()</code>:</p>
+    <code>x = 10</code><br>
+    <code>print(type(x))  # &lt;class 'int'&gt;</code>
+  </div>
+
+  <div class="slide" id="slide-6">
+    <h2>Ввод данных — функция <code>input()</code></h2>
+    <p>Функция <code>input()</code> позволяет получать данные от пользователя:</p>
+    <code>name = input("Введите имя: ")</code><br>
+    <code>print("Привет,", name)</code>
+    <p class="warn">⚠️ Важно: <code>input()</code> <span class="highlight">всегда возвращает строку</span> (<code>str</code>)!</p>
+  </div>
+
+  <div class="slide" id="slide-7">
+    <h2>Преобразование типов</h2>
+    <p>Чтобы работать с числами, нужно преобразовать строку:</p>
+    <code>age = int(input("Введите возраст: "))</code><br>
+    <code>price = float(input("Цена товара: "))</code>
+    <p>❗ Если не преобразовать — будет ошибка при сложении/умножении.</p>
+  </div>
+
+  <div class="slide" id="slide-8">
+    <h2>Конкатенация строк</h2>
+    <p>Объединение строк:</p>
+    <code>name = "Ali"</code><br>
+    <code>print("Привет, " + name)</code>
+    <p>Или так:</p>
+    <code>print("Привет,", name)</code>
+  </div>
+
+  <div class="slide" id="slide-9">
+    <h2>Форматированный вывод</h2>
+    <p>Самый удобный способ — f-строки:</p>
+    <code>name = "Ali"</code><br>
+    <code>age = 21</code><br>
+    <code>print(f"Имя: {name}, возраст: {age}")</code>
+  </div>
+
+  <div class="slide" id="slide-10">
+    <h2>Ошибки начинающих</h2>
+    <p class="warn">❌ Ошибка:</p>
+    <code>age = input("Возраст: ")</code><br>
+    <code>print(age + 5)  # нельзя: строка + число!</code>
+    <p class="ok">✔️ Правильно:</p>
+    <code>age = int(input("Возраст: "))</code><br>
+    <code>print(age + 5)</code>
+  </div>
+
+  <div class="slide" id="slide-11">
+    <h2>Практическая часть</h2>
+    <p>Задания:</p>
+    <ul>
+      <li>Сохранить имя в переменную и вывести приветствие</li>
+      <li>Спросить возраст и вывести, сколько будет через 5 лет</li>
+      <li>Спросить цену товара и вывести её ×2</li>
+      <li>Создать мини-анкету:<br>
+        <code>Имя: …<br>Возраст: …<br>Город: …</code></li>
+    </ul>
+  </div>
+
+  <div class="slide" id="slide-12">
+    <h2>Уровни сложности</h2>
+    <ul>
+      <li><span class="ok">5 баллов</span> — базовый уровень<br>
+        Создать 3 переменные и вывести их</li>
+      <li><span class="ok">6–8 баллов</span> — уверенный уровень<br>
+        Запросить имя и год рождения → вычислить возраст</li>
+      <li><span class="ok">9–10 баллов</span> — высокий уровень<br>
+        Написать программу:<br>
+        <code>Введите ширину:<br>Введите высоту:<br>Площадь прямоугольника: ...</code></li>
+    </ul>
+  </div>
+
+  <div class="slide" id="slide-13">
+    <h2>Итоги урока</h2>
+    <p>Сегодня мы узнали:</p>
+    <ul>
+      <li>Что такое переменная</li>
+      <li>Как Python хранит данные в памяти</li>
+      <li>Какие типы данных существуют</li>
+      <li>Как работает <code>input()</code></li>
+      <li>Как преобразовывать данные</li>
+      <li>Как красиво выводить результаты</li>
+    </ul>
+    <p style="margin-top: 2rem; font-size: 1.6rem; color: #00ffaa;">🚀 Вперёд — к практике!</p>
+  </div>
+
+  <div class="controls">
+    <button id="prev">◂ Назад</button>
+    <button id="next">Вперёд ▸</button>
+  </div>
+
+  <script>
+    let current = 1;
+    const total = 13;
+
+    function showSlide(n) {
+      document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
+      document.getElementById(`slide-${n}`).classList.add('active');
+      current = n;
+    }
+
+    document.getElementById('prev').addEventListener('click', () => {
+      if (current > 1) showSlide(current - 1);
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+      if (current < total) showSlide(current + 1);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft' && current > 1) showSlide(current - 1);
+      if (e.key === 'ArrowRight' && current < total) showSlide(current + 1);
+      if (e.key === ' ') showSlide(current + 1); // space = next
+    });
+  </script>
+
+</body>
+</html>
