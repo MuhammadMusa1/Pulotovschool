@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Edge: Современный браузер</title>
+    <style>
+        :root {
+            --edge-blue: #0078D7;
+            --edge-light: #50E6FF;
+            --edge-dark: #005A9E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            padding: 20px;
+        }
+
+        /* Контейнер всей презентации */
+        .presentation-container {
+            width: 100%;
+            max-width: 1800px;
+            margin: auto;
+        }
+
+        /* Слайды теперь НЕ скрываются */
+        .slide {
+            width: 100%;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--edge-blue);
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            color: #333;
+        }
+
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: var(--edge-blue);
+            font-weight: bold;
+        }
+        .slide-content .timeline-item{
+            font-size: 2.2rem;
+
+        }
+
+        .edge-logo {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 70px;
+            height: 70px;
+            background: var(--edge-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 2rem;
+            box-shadow: 0 5px 15px rgba(0,120,215,0.4);
+        }
+
+        .content-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--edge-blue);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .card-content ul, 
+        .card-content ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .card-content li {
+            margin-bottom: 8px;
+            font-size: 2.2rem;
+            color: black;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 2px solid var(--edge-blue);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .timeline {
+            margin-top: 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--edge-blue);
+        }
+
+        .timeline-item {
+            margin-bottom: 20px;
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--edge-blue);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: var(--edge-blue);
+            color: white;
+            padding: 10px;
+        }
+
+        .comparison-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--edge-blue), var(--edge-light));
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .quiz-box {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--edge-blue);
+        }
+
+        .option {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background: #d7ecff;
+            border-color: var(--edge-blue);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-bar" id="progressBar"></div>
+        
+        <div class="slides-container" id="slidesContainer">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Microsoft Edge</h1>
+                    <p class="slide-subtitle">Современный браузер для Windows и не только</p>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 Цель презентации</h2>
+                        <div class="card-content">
+                            <p>Познакомиться с браузером Microsoft Edge, его особенностями, преимуществами и научиться эффективно использовать его возможности.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">📚 Что узнаем</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Историю создания и развития Edge</li>
+                                <li>Основные функции и возможности</li>
+                                <li>Преимущества перед другими браузерами</li>
+                                <li>Интеграцию с Windows и Office</li>
+                                <li>Советы по эффективному использованию</li>
+                                <li>Безопасность и приватность</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-number">3.5%</div>
+                        <div class="stat-label">Мировой доли рынка браузеров</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">История Microsoft Edge</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2015</div>
+                            <p><strong>Первая версия Edge</strong> — запущен вместе с Windows 10, замена устаревшему Internet Explorer</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2018</div>
+                            <p><strong>EdgeHTML</strong> — использование собственного движка Microsoft</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2020</div>
+                            <p><strong>Edge на Chromium</strong> — переход на движок Chromium для лучшей совместимости</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2021</div>
+                            <p><strong>Версия 89+</strong> — улучшенная производительность, вертикальные вкладки</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2023</div>
+                            <p><strong>AI интеграция</strong> — внедрение искусственного интеллекта (Copilot)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">💡 Почему перешли на Chromium?</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Лучшая совместимость с веб-стандартами</li>
+                                <li>Поддержка большего количества расширений</li>
+                                <li>Улучшенная производительность</li>
+                                <li>Более стабильная работа</li>
+                                <li>Возможность использования на macOS и Linux</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Ключевые особенности</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Высокая скорость</h3>
+                            <p>Один из самых быстрых браузеров на движке Chromium</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">🔋</div>
+                            <h3>Экономия батареи</h3>
+                            <p>Режим экономии энергии для ноутбуков</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Вертикальные вкладки</h3>
+                            <p>Уникальная функция для удобной организации</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">🤖</div>
+                            <h3>Copilot</h3>
+                            <p>Встроенный ИИ-помощник для поиска и работы</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🎨 Уникальные возможности</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>Коллекции</strong> — организация закладок, заметок и страниц</li>
+                                <li><strong>Иммерсивное чтение</strong> — режим для комфортного чтения</li>
+                                <li><strong>Веб-захват</strong> — удобное создание скриншотов</li>
+                                <li><strong>Интеграция с Office</strong> — работа с документами онлайн</li>
+                                <li><strong>Синхронизация</strong> — между всеми устройствами</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Сравнение с другими браузерами</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <div class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Характеристика</th>
+                                    <th>Microsoft Edge</th>
+                                    <th>Google Chrome</th>
+                                    <th>Mozilla Firefox</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Скорость загрузки</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐</td>
+                                </tr>
+                                <tr>
+                                    <td>Потребление памяти</td>
+                                    <td>⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐</td>
+                                </tr>
+                                <tr>
+                                    <td>Интеграция с Windows</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐</td>
+                                    <td>⭐⭐⭐</td>
+                                </tr>
+                                <tr>
+                                    <td>Расширения</td>
+                                    <td>⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐</td>
+                                </tr>
+                                <tr>
+                                    <td>Безопасность</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                </tr>
+                                <tr>
+                                    <td>Уникальные функции</td>
+                                    <td>⭐⭐⭐⭐⭐</td>
+                                    <td>⭐⭐⭐</td>
+                                    <td>⭐⭐⭐</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🏆 Преимущества Edge</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>Лучшая интеграция с Windows 10/11</li>
+                                <li>Меньшее потребление ресурсов чем Chrome</li>
+                                <li>Встроенные функции для продуктивности</li>
+                                <li>Поддержка расширений Chrome</li>
+                                <li>Режим экономии энергии</li>
+                                <li>Вертикальные вкладки</li>
+                                <li>Бесплатный VPN (ограниченный)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Интеграция с Windows и Office</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">🪟</div>
+                            <h3>Windows Search</h3>
+                            <p>Поиск в Edge через поиск Windows</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">📋</div>
+                            <h3>Clipboard</h3>
+                            <p>Синхронизация буфера обмена</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">📧</div>
+                            <h3>Outlook</h3>
+                            <p>Прямая интеграция с почтой</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">📄</div>
+                            <h3>Office Online</h3>
+                            <p>Работа с документами без установки</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">💼 Работа с Office 365</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>Word Online</strong> — редактирование документов прямо в браузере</li>
+                                <li><strong>Excel Online</strong> — работа с таблицами без Excel</li>
+                                <li><strong>PowerPoint Online</strong> — создание презентаций</li>
+                                <li><strong>OneDrive</strong> — облачное хранение и синхронизация</li>
+                                <li><strong>Teams</strong> — доступ к видеоконференциям</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Совет:</strong> Используйте сочетание клавиш <strong>Ctrl + Shift + B</strong> для быстрого доступа к панели избранного!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Безопасность и приватность</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🛡️ Уровни защиты</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>SmartScreen</strong> — защита от фишинга и вредоносных сайтов</li>
+                                <li><strong>Tracking Prevention</strong> — блокировка трекеров</li>
+                                <li><strong>InPrivate режим</strong> — просмотр без сохранения истории</li>
+                                <li><strong>Песочница</strong> — изоляция процессов для безопасности</li>
+                                <li><strong>Сертификаты</strong> — проверка SSL/TLS соединений</li>
+                                <li><strong>Управление паролями</strong> — безопасное хранение</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🔧 Настройки приватности</h2>
+                        <div class="card-content">
+                            <p>Edge предлагает три уровня защиты от отслеживания:</p>
+                            <ol>
+                                <li><strong>Базовый</strong> — минимальная блокировка трекеров</li>
+                                <li><strong>Сбалансированный</strong> — блокировка вредоносных трекеров</li>
+                                <li><strong>Строгий</strong> — максимальная защита приватности</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-box">
+                        <div class="question">Какой уровень защиты приватности рекомендуется для большинства пользователей?</div>
+                        <div class="options">
+                            <div class="option">A) Базовый</div>
+                            <div class="option">B) Сбалансированный</div>
+                            <div class="option">C) Строгий</div>
+                            <div class="option">D) Выключенный</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Советы и трюки</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">⚡ Горячие клавиши</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>Ctrl + T</strong> — новая вкладка</li>
+                                <li><strong>Ctrl + Shift + T</strong> — открыть закрытую вкладку</li>
+                                <li><strong>Ctrl + Shift + B</strong> — показать/скрыть панель избранного</li>
+                                <li><strong>Ctrl + Shift + N</strong> — новое окно InPrivate</li>
+                                <li><strong>Ctrl + Shift + E</strong> — открыть коллекции</li>
+                                <li><strong>F11</strong> — полноэкранный режим</li>
+                                <li><strong>Ctrl + F</strong> — поиск на странице</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🎯 Полезные функции</h2>
+                        <div class="card-content">
+                            <ol>
+                                <li><strong>Вертикальные вкладки</strong> — включите для экономии места</li>
+                                <li><strong>Списки для чтения</strong> — сохраните статьи для чтения позже</li>
+                                <li><strong>Коллекции</strong> — организуйте исследовательские материалы</li>
+                                <li><strong>Иммерсивное чтение</strong> — для длинных статей и документов</li>
+                                <li><strong>Веб-захват</strong> — делайте скриншоты с аннотациями</li>
+                                <li><strong>Синхронизация</strong> — настройте синхронизацию между устройствами</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Экспертная подсказка:</strong> Используйте режим <strong>"Экономия заряда батареи"</strong> на ноутбуке для продления времени работы!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Edge для образовательных целей</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎓 Почему Edge для учёбы?</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>Бесплатный Office Online</strong> — работа с документами</li>
+                                <li><strong>Иммерсивное чтение</strong> — лучшее восприятие текста</li>
+                                <li><strong>Коллекции</strong> — организация учебных материалов</li>
+                                <li><strong>Встроенный переводчик</strong> — перевод страниц на лету</li>
+                                <li><strong>Математический решатель</strong> — помощь с математикой</li>
+                                <li><strong>Синхронизация</strong> — доступ с любого устройства</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">📚 Образовательные инструменты</h2>
+                        <div class="card-content">
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon">📖</div>
+                                    <h3>Режим чтения</h3>
+                                    <p>Убирает рекламу, настраивает шрифт</p>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">📝</div>
+                                    <h3>Веб-заметки</h3>
+                                    <p>Делайте пометки на страницах</p>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">🔢</div>
+                                    <h3>Math Solver</h3>
+                                    <p>Решение математических задач</p>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <div class="feature-icon">🌐</div>
+                                    <h3>Переводчик</h3>
+                                    <p>Перевод страниц на 60+ языков</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Будущее Edge и AI</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🤖 Edge с искусственным интеллектом</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>Copilot в Edge</strong> — ИИ-помощник для поиска и работы</li>
+                                <li><strong>Умное выделение текста</strong> — автоматическое форматирование</li>
+                                <li><strong>Голосовой поиск</strong> — поиск с помощью голоса</li>
+                                <li><strong>Авто-заполнение форм</strong> — умное заполнение данных</li>
+                                <li><strong>Адаптивный интерфейс</strong> — подстройка под пользователя</li>
+                                <li><strong>Предсказание действий</strong> — ускорение работы</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🚀 Новые технологии</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li><strong>WebXR</strong> — поддержка VR и AR контента</li>
+                                <li><strong>PWA</strong> — прогрессивные веб-приложения</li>
+                                <li><strong>WebAssembly</strong> — высокая производительность веб-приложений</li>
+                                <li><strong>Интеграция с облаком</strong> — работа с Azure и Microsoft 365</li>
+                                <li><strong>Кроссплатформенность</strong> — единый опыт на всех устройствах</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-number">600+ млн</div>
+                        <div class="stat-label">Пользователей по всему миру</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <div class="edge-logo">E</div>
+                <div class="slide-header">
+                    <h1 class="slide-title">Итоги и выводы</h1>
+                    <p class="slide-subtitle">Microsoft Edge — современный выбор</p>
+                </div>
+                <div class="slide-content">
+                    <div class="content-card">
+                        <h2 class="card-title">🎓 Ключевые преимущества</h2>
+                        <div class="card-content">
+                            <ul>
+                                <li>✅ Высокая скорость и производительность</li>
+                                <li>✅ Экономия энергии и ресурсов</li>
+                                <li>✅ Лучшая интеграция с Windows</li>
+                                <li>✅ Уникальные функции продуктивности</li>
+                                <li>✅ Хорошая безопасность и приватность</li>
+                                <li>✅ Бесплатные Office инструменты</li>
+                                <li>✅ Поддержка расширений Chrome</li>
+                                <li>✅ ИИ-помощник Copilot</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">💡 Кому подходит Edge?</h2>
+                        <div class="card-content">
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <h3>👨‍🎓 Студентам</h3>
+                                    <p>Для учёбы и работы с документами</p>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <h3>💼 Офисным работникам</h3>
+                                    <p>Для работы с Office и почтой</p>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <h3>🔧 Пользователям Windows</h3>
+                                    <p>Для максимальной интеграции</p>
+                                </div>
+                                
+                                <div class="feature-item">
+                                    <h3>⚡ Всем, кто ценит скорость</h3>
+                                    <p>Для быстрого и эффективного браузинга</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h2 class="card-title">🏆 Практическое задание</h2>
+                        <div class="card-content">
+                            <p><strong>Задание 1:</strong> Установите Microsoft Edge и создайте коллекцию "Учебные ресурсы"</p>
+                            <p><strong>Задание 2:</strong> Настройте уровень защиты приватности "Сбалансированный"</p>
+                            <p><strong>Задание 3:</strong> Используйте режим иммерсивного чтения на длинной статье</p>
+                            <p><strong>Задание 4:</strong> Попробуйте вертикальные вкладки и оцените удобство</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+
+        <div class="slide-indicator" id="slideIndicator">
+            <!-- Индикаторы будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideIndicator = document.getElementById('slideIndicator');
+    const progressBar = document.getElementById('progressBar');
+    let currentSlide = 0;
+
+    // --- ФУНКЦИИ НАВИГАЦИИ ---
+    function goToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+
+        slides[currentSlide].classList.remove('active');
+        slideIndicator.children[currentSlide].classList.remove('active');
+
+        currentSlide = index;
+
+        slides[currentSlide].classList.add('active');
+        slideIndicator.children[currentSlide].classList.add('active');
+
+        updateUI();
+    }
+
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            goToSlide(currentSlide + 1);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            goToSlide(currentSlide - 1);
+        }
+    }
+
+    // Обновление UI
+    function updateUI() {
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slides.length - 1;
+
+        const progress = ((currentSlide + 1) / slides.length) * 100;
+        progressBar.style.width = progress + "%";
+    }
+
+    // --- Создание индикаторов ---
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('indicator-dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        slideIndicator.appendChild(dot);
+    });
+
+    // --- Обработка ответов ---
+    document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.style.background = 'white';
+                opt.style.borderColor = '#ddd';
+            });
+            this.style.background = '#d4edda';
+            this.style.borderColor = '#28a745';
+        });
+    });
+
+    // --- Кнопки ---
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // --- Клавиатура ---
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    updateUI();
+});
+</script>
+
+</body>
+</html>

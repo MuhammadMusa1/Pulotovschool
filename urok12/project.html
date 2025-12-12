@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мини-проект: Сумма чисел от 1 до N на Python</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2a3c7f, #4a5fcf);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+        
+        .slide {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h2 {
+            color: #2a3c7f;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #00d2ff;
+            font-size: 2rem;
+        }
+        
+        h3 {
+            color: #3a7bd5;
+            margin: 20px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .formula-box {
+            background: #f0f8ff;
+            border-left: 5px solid #3a7bd5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            overflow-x: auto;
+        }
+        
+        .python-container {
+            background: #2b2b2b;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            width: 200px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3a7bd5;
+            outline: none;
+        }
+        
+        button {
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(58, 123, 213, 0.3);
+        }
+        
+        #pythonOutput {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2a3c7f;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eef7ff;
+            border-radius: 10px;
+            display: none;
+            white-space: pre-wrap;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .visualization {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px;
+        }
+        
+        .number-box {
+            background: linear-gradient(to bottom right, #3a7bd5, #00d2ff);
+            color: white;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .plus-sign {
+            font-size: 1.5rem;
+            color: #3a7bd5;
+            font-weight: bold;
+        }
+        
+        .code-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .code-keyword {
+            color: #569cd6;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+        }
+        
+        .code-var {
+            color: #9cdcfe;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-number {
+            color: #b5cea8;
+        }
+        
+        .python-keyword {
+            color: #ff79c6;
+        }
+        
+        .python-function {
+            color: #50fa7b;
+        }
+        
+        .python-string {
+            color: #f1fa8c;
+        }
+        
+        .python-comment {
+            color: #6272a4;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #f0f8ff;
+            color: #2a3c7f;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .tech-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            font-size: 2.5rem;
+        }
+        
+        .python-icon { color: #3776ab; }
+        .html-icon { color: #e34c26; }
+        .css-icon { color: #264de4; }
+        .js-icon { color: #f0db4f; }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background-color: #f0f8ff;
+            color: #2a3c7f;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            input {
+                width: 100%;
+            }
+            
+            .tech-icons {
+                font-size: 2rem;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Мини-проект: Сумма чисел от 1 до N</h1>
+            <p class="subtitle">Решение на Python с веб-интерфейсом</p>
+            
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-slide="1">
+                    <i class="fas fa-info-circle"></i> Введение
+                </button>
+                <button class="nav-btn" data-slide="2">
+                    <i class="fab fa-python"></i> Python Решение
+                </button>
+                <button class="nav-btn" data-slide="3">
+                    <i class="fas fa-code"></i> Код Python
+                </button>
+                <button class="nav-btn" data-slide="4">
+                    <i class="fas fa-calculator"></i> Онлайн калькулятор
+                </button>
+                <button class="nav-btn" data-slide="5">
+                    <i class="fas fa-chart-bar"></i> Сравнение методов
+                </button>
+                <button class="nav-btn" data-slide="6">
+                    <i class="fas fa-star"></i> Заключение
+                </button>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- Слайд 1: Введение -->
+            <div class="slide active" id="slide1">
+                <h2>Введение в проект</h2>
+                <p>Этот мини-проект демонстрирует вычисление суммы всех натуральных чисел от 1 до N с использованием языка программирования Python.</p>
+                
+                <div class="formula-box">
+                    <p><strong>Формула Гаусса для вычисления:</strong></p>
+                    <p>S = 1 + 2 + 3 + ... + N = N × (N + 1) / 2</p>
+                </div>
+                
+                <p>История гласит, что Карл Фридрих Гаусс, будучи школьником, быстро нашел эту формулу, когда учитель попросил сложить все числа от 1 до 100.</p>
+                
+                <h3>Цели проекта на Python:</h3>
+                <ul>
+                    <li>Реализовать вычисление суммы по формуле Гаусса</li>
+                    <li>Сравнить производительность разных методов вычисления</li>
+                    <li>Создать интерактивный веб-интерфейс для Python-кода</li>
+                    <li>Визуализировать процесс вычисления</li>
+                </ul>
+                
+                <div class="tech-icons">
+                    <i class="fab fa-python python-icon"></i>
+                    <i class="fab fa-html5 html-icon"></i>
+                    <i class="fab fa-js-square js-icon"></i>
+                </div>
+            </div>
+            
+            <!-- Слайд 2: Python решение -->
+            <div class="slide" id="slide2">
+                <h2>Решение на Python</h2>
+                <p>Python предлагает несколько способов вычисления суммы чисел от 1 до N. Рассмотрим основные подходы.</p>
+                
+                <div class="python-container">
+                    <h3 style="color: #fff;">Основные методы вычисления в Python:</h3>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="python-comment"># Метод 1: Формула Гаусса (самый эффективный)</span>
+<span class="python-keyword">def</span> <span class="python-function">sum_gauss</span>(n):
+    <span class="python-keyword">return</span> n * (n + <span class="code-number">1</span>) // <span class="code-number">2</span>
+
+<span class="python-comment"># Метод 2: Использование цикла for</span>
+<span class="python-keyword">def</span> <span class="python-function">sum_for_loop</span>(n):
+    total = <span class="code-number">0</span>
+    <span class="python-keyword">for</span> i <span class="python-keyword">in</span> <span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):
+        total += i
+    <span class="python-keyword">return</span> total
+
+<span class="python-comment"># Метод 3: Использование sum() и range()</span>
+<span class="python-keyword">def</span> <span class="python-function">sum_builtin</span>(n):
+    <span class="python-keyword">return</span> <span class="python-function">sum</span>(<span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>))
+
+<span class="python-comment"># Метод 4: Рекурсивное вычисление</span>
+<span class="python-keyword">def</span> <span class="python-function">sum_recursive</span>(n):
+    <span class="python-keyword">if</span> n == <span class="code-number">1</span>:
+        <span class="python-keyword">return</span> <span class="code-number">1</span>
+    <span class="python-keyword">return</span> n + sum_recursive(n - <span class="code-number">1</span>)
+
+<span class="python-comment"># Пример использования</span>
+n = <span class="code-number">100</span>
+result = sum_gauss(n)
+<span class="python-function">print</span>(<span class="python-string">f"Сумма чисел от 1 до {n} = {result}"</span>)</code></pre>
+                    </div>
+                    
+                    <h3 style="color: #fff; margin-top: 20px;">Преимущества Python для этой задачи:</h3>
+                    <ul style="color: #fff;">
+                        <li>Простой и читаемый синтаксис</li>
+                        <li>Встроенные функции для работы с числами</li>
+                        <li>Возможность создания графического интерфейса</li>
+                        <li>Быстрая разработка и тестирование</li>
+                        <li>Кроссплатформенность</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Слайд 3: Код Python -->
+            <div class="slide" id="slide3">
+                <h2>Полный код на Python</h2>
+                <p>Рассмотрим полную реализацию мини-проекта на Python с консольным интерфейсом.</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="python-comment">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Мини-проект: Сумма чисел от 1 до N</span>
+
+<span class="python-keyword">import</span> time
+<span class="python-keyword">import</span> sys
+
+<span class="python-comment"># Основные функции вычисления</span>
+<span class="python-keyword">def</span> <span class="python-function">sum_gauss</span>(n: int) -> int:
+    <span class="python-string">"""Вычисление суммы по формуле Гаусса."""</span>
+    <span class="python-keyword">if</span> n < <span class="code-number">1</span>:
+        <span class="python-keyword">raise</span> ValueError(<span class="python-string">"N должно быть натуральным числом"</span>)
+    <span class="python-keyword">return</span> n * (n + <span class="code-number">1</span>) // <span class="code-number">2</span>
+
+<span class="python-keyword">def</span> <span class="python-function">sum_loop</span>(n: int) -> int:
+    <span class="python-string">"""Вычисление суммы через цикл."""</span>
+    <span class="python-keyword">if</span> n < <span class="code-number">1</span>:
+        <span class="python-keyword">raise</span> ValueError(<span class="python-string">"N должно быть натуральным числом"</span>)
+    total = <span class="code-number">0</span>
+    <span class="python-keyword">for</span> i <span class="python-keyword">in</span> <span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):
+        total += i
+    <span class="python-keyword">return</span> total
+
+<span class="python-keyword">def</span> <span class="python-function">sum_builtin</span>(n: int) -> int:
+    <span class="python-string">"""Вычисление суммы с помощью встроенной функции sum()."""</span>
+    <span class="python-keyword">return</span> <span class="python-function">sum</span>(<span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>))
+
+<span class="python-keyword">def</span> <span class="python-function">visualize_calculation</span>(n: int, max_show: int = <span class="code-number">20</span>) -> <span class="python-keyword">str</span>:
+    <span class="python-string">"""Визуализация вычисления суммы."""</span>
+    <span class="python-keyword">if</span> n > max_show:
+        <span class="python-keyword">return</span> <span class="python-string">f"1 + 2 + 3 + ... + {n} = {sum_gauss(n)}"</span>
+    
+    <span class="python-comment"># Создаем строку с числами</span>
+    numbers = []
+    <span class="python-keyword">for</span> i <span class="python-keyword">in</span> <span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):
+        numbers.append(<span class="python-function">str</span>(i))
+    
+    formula = <span class="python-string">" + "</span>.join(numbers)
+    result = sum_gauss(n)
+    <span class="python-keyword">return</span> <span class="python-string">f"<span class="formula">{formula} = {result}</span>"</span>
+
+<span class="python-keyword">def</span> <span class="python-function">compare_methods</span>(n: int) -> <span class="python-keyword">dict</span>:
+    <span class="python-string">"""Сравнение производительности разных методов."""</span>
+    results = {}
+    
+    <span class="python-comment"># Тестируем каждый метод</span>
+    methods = [
+        (<span class="python-string">"Формула Гаусса"</span>, sum_gauss),
+        (<span class="python-string">"Цикл for"</span>, sum_loop),
+        (<span class="python-string">"Встроенная sum()"</span>, sum_builtin)
+    ]
+    
+    <span class="python-keyword">for</span> name, func <span class="python-keyword">in</span> methods:
+        start_time = time.time()
+        <span class="python-comment"># Выполняем 10000 раз для точности измерения</span>
+        <span class="python-keyword">for</span> _ <span class="python-keyword">in</span> <span class="python-function">range</span>(<span class="code-number">10000</span>):
+            result = func(n)
+        end_time = time.time()
+        
+        results[name] = {
+            <span class="python-string">"result"</span>: result,
+            <span class="python-string">"time_ms"</span>: (end_time - start_time) * <span class="code-number">1000</span>,
+            <span class="python-string">"time_per_call"</span>: (end_time - start_time) * <span class="code-number">0.1</span>  <span class="python-comment"># мкс на вызов</span>
+        }
+    
+    <span class="python-keyword">return</span> results
+
+<span class="python-keyword">def</span> <span class="python-function">main</span>():
+    <span class="python-string">"""Основная функция программы."""</span>
+    <span class="python-function">print</span>(<span class="python-string">"="</span> * <span class="code-number">50</span>)
+    <span class="python-function">print</span>(<span class="python-string">"МИНИ-ПРОЕКТ: СУММА ЧИСЕЛ ОТ 1 ДО N"</span>)
+    <span class="python-function">print</span>(<span class="python-string">"="</span> * <span class="code-number">50</span>)
+    
+    <span class="python-keyword">while</span> <span class="python-keyword">True</span>:
+        <span class="python-function">print</span>(<span class="python-string">"\nМеню:"</span>)
+        <span class="python-function">print</span>(<span class="python-string">"1. Вычислить сумму"</span>)
+        <span class="python-function">print</span>(<span class="python-string">"2. Визуализировать вычисление"</span>)
+        <span class="python-function">print</span>(<span class="python-string">"3. Сравнить методы вычисления"</span>)
+        <span class="python-function">print</span>(<span class="python-string">"4. Примеры"</span>)
+        <span class="python-function">print</span>(<span class="python-string">"5. Выход"</span>)
+        
+        choice = <span class="python-function">input</span>(<span class="python-string">"\nВыберите действие (1-5): "</span>)
+        
+        <span class="python-keyword">if</span> choice == <span class="python-string">"1"</span>:
+            <span class="python-keyword">try</span>:
+                n = <span class="python-function">int</span>(<span class="python-function">input</span>(<span class="python-string">"Введите N: "</span>))
+                result = sum_gauss(n)
+                <span class="python-function">print</span>(<span class="python-string">f"\nСумма чисел от 1 до {n} = {result}"</span>)
+                <span class="python-function">print</span>(<span class="python-string">f"Проверка: {n} × ({n} + 1) ÷ 2 = {result}"</span>)
+            <span class="python-keyword">except</span> ValueError <span class="python-keyword">as</span> e:
+                <span class="python-function">print</span>(<span class="python-string">f"Ошибка: {e}"</span>)
+                
+        <span class="python-keyword">elif</span> choice == <span class="python-string">"2"</span>:
+            <span class="python-keyword">try</span>:
+                n = <span class="python-function">int</span>(<span class="python-function">input</span>(<span class="python-string">"Введите N (рекомендуется ≤ 20): "</span>))
+                visualization = visualize_calculation(n)
+                <span class="python-function">print</span>(<span class="python-string">f"\n{visualization}"</span>)
+            <span class="python-keyword">except</span> ValueError <span class="python-keyword">as</span> e:
+                <span class="python-function">print</span>(<span class="python-string">f"Ошибка: {e}"</span>)
+                
+        <span class="python-keyword">elif</span> choice == <span class="python-string">"3"</span>:
+            <span class="python-keyword">try</span>:
+                n = <span class="python-function">int</span>(<span class="python-function">input</span>(<span class="python-string">"Введите N для сравнения: "</span>))
+                results = compare_methods(n)
+                
+                <span class="python-function">print</span>(<span class="python-string">f"\nСравнение методов для N = {n}:"</span>)
+                <span class="python-function">print</span>(<span class="python-string">"-"</span> * <span class="code-number">60</span>)
+                <span class="python-keyword">for</span> method, data <span class="python-keyword">in</span> results.items():
+                    <span class="python-function">print</span>(<span class="python-string">f"{method}: {data['result']}"</span>)
+                    <span class="python-function">print</span>(<span class="python-string">f"  Время: {data['time_ms']:.2f} мс (10000 вызовов)"</span>)
+                    <span class="python-function">print</span>(<span class="python-string">f"  На вызов: {data['time_per_call']:.3f} мкс"</span>)
+                    
+            <span class="python-keyword">except</span> ValueError <span class="python-keyword">as</span> e:
+                <span class="python-function">print</span>(<span class="python-string">f"Ошибка: {e}"</span>)
+                
+        <span class="python-keyword">elif</span> choice == <span class="python-string">"4"</span>:
+            <span class="python-function">print</span>(<span class="python-string">"\nПримеры вычислений:"</span>)
+            examples = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">5</span>, <span class="code-number">10</span>, <span class="code-number">100</span>, <span class="code-number">1000</span>]
+            <span class="python-keyword">for</span> n <span class="python-keyword">in</span> examples:
+                result = sum_gauss(n)
+                <span class="python-function">print</span>(<span class="python-string">f"N = {n:4}: S = {result}"</span>)
+                
+        <span class="python-keyword">elif</span> choice == <span class="python-string">"5"</span>:
+            <span class="python-function">print</span>(<span class="python-string">"\nДо свидания!"</span>)
+            <span class="python-keyword">break</span>
+            
+        <span class="python-keyword">else</span>:
+            <span class="python-function">print</span>(<span class="python-string">"Неверный выбор. Попробуйте снова."</span>)
+
+<span class="python-keyword">if</span> __name__ == <span class="python-string">"__main__"</span>:
+    main()</code></pre>
+                </div>
+                
+                <h3>Особенности реализации:</h3>
+                <ul>
+                    <li><strong>Типизация</strong> - аннотации типов для лучшей читаемости</li>
+                    <li><strong>Обработка ошибок</strong> - проверка корректности ввода</li>
+                    <li><strong>Модульность</strong> - каждая функция выполняет одну задачу</li>
+                    <li><strong>Документирование</span> - строки документации для функций</li>
+                    <li><strong>Производительность</span> - сравнение разных методов вычисления</li>
+                </ul>
+            </div>
+            
+            <!-- Слайд 4: Онлайн калькулятор -->
+            <div class="slide" id="slide4">
+                <h2>Онлайн калькулятор на Python</h2>
+                <p>Попробуйте сами вычислить сумму чисел от 1 до N с помощью Python-кода, запускаемого прямо в браузере!</p>
+                
+                <div class="calculator">
+                    <div class="input-group">
+                        <label for="pythonInput"><strong>Введите число N:</strong></label>
+                        <input type="number" id="pythonInput" min="1" max="1000000" value="100" placeholder="Введите число">
+                        <button id="runPythonBtn">Запустить Python код</button>
+                        <button id="visualizePythonBtn">Визуализировать</button>
+                    </div>
+                    
+                    <div id="pythonVisualization" class="visualization">
+                        <!-- Здесь будет визуализация -->
+                    </div>
+                    
+                    <div id="pythonOutput"></div>
+                </div>
+                
+                <h3>Как работает онлайн-калькулятор:</h3>
+                <ol>
+                    <li>JavaScript получает значение N из поля ввода</li>
+                    <li>Python-код выполняется в браузере с помощью JavaScript</li>
+                    <li>Реализованы основные методы вычисления суммы</li>
+                    <li>Результат отображается с детализацией вычислений</li>
+                </ol>
+                
+                <div class="python-container">
+                    <h3 style="color: #fff;">Python-код, выполняемый в калькуляторе:</h3>
+                    <div class="code-container">
+                        <pre><code><span class="python-comment"># Python код для онлайн калькулятора</span>
+<span class="python-keyword">def</span> <span class="python-function">sum_gauss</span>(n):
+    <span class="python-keyword">return</span> n * (n + <span class="code-number">1</span>) // <span class="code-number">2</span>
+
+<span class="python-keyword">def</span> <span class="python-function">sum_loop</span>(n):
+    total = <span class="code-number">0</span>
+    <span class="python-keyword">for</span> i <span class="python-keyword">in</span> <span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):
+        total += i
+    <span class="python-keyword">return</span> total
+
+<span class="python-keyword">def</span> <span class="python-function">calculate_sum</span>(n, method=<span class="python-string">"gauss"</span>):
+    <span class="python-keyword">if</span> method == <span class="python-string">"gauss"</span>:
+        result = sum_gauss(n)
+        formula = <span class="python-string">f"{n} × ({n} + 1) ÷ 2 = {n} × {n+1} ÷ 2 = {n*(n+1)} ÷ 2 = {result}"</span>
+        <span class="python-keyword">return</span> result, formula
+    <span class="python-keyword">else</span>:
+        result = sum_loop(n)
+        steps = []
+        total = <span class="code-number">0</span>
+        <span class="python-keyword">for</span> i <span class="python-keyword">in</span> <span class="python-function">range</span>(<span class="code-number">1</span>, n + <span class="code-number">1</span>):
+            total += i
+            <span class="python-keyword">if</span> i <= <span class="code-number">10</span> <span class="python-keyword">or</span> i == n:
+                steps.append(<span class="python-string">f"Шаг {i}: 1+2+...+{i} = {total}"</span>)
+        <span class="python-keyword">return</span> result, <span class="python-string">"\n"</span>.join(steps)</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 5: Сравнение методов -->
+            <div class="slide" id="slide5">
+                <h2>Сравнение методов вычисления</h2>
+                <p>Проанализируем производительность разных подходов к вычислению суммы чисел от 1 до N.</p>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Метод</th>
+                            <th>Сложность</th>
+                            <th>Время выполнения*</th>
+                            <th>Память</th>
+                            <th>Когда использовать</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Формула Гаусса</strong></td>
+                            <td>O(1) - постоянная</td>
+                            <td>~0.001 мкс</td>
+                            <td>O(1)</td>
+                            <td>Всегда (самый эффективный)</td>
+                        </tr>
+                        <tr>
+                            <td>Цикл for</td>
+                            <td>O(n) - линейная</td>
+                            <td>~0.1 мкс на итерацию</td>
+                            <td>O(1)</td>
+                            <td>Для обучения, демонстрации</td>
+                        </tr>
+                        <tr>
+                            <td>Встроенная sum()</td>
+                            <td>O(n) - линейная</td>
+                            <td>~0.05 мкс на элемент</td>
+                            <td>O(n) для range</td>
+                            <td>Для небольших n, простой код</td>
+                        </tr>
+                        <tr>
+                            <td>Рекурсия</td>
+                            <td>O(n) - линейная</td>
+                            <td>~0.5 мкс на вызов</td>
+                            <td>O(n) - глубина стека</td>
+                            <td>Учебные примеры, n ≤ 1000</td>
+                        </tr>
+                        <tr>
+                            <td>Генератор списка</td>
+                            <td>O(n) - линейная</td>
+                            <td>~0.2 мкс на элемент</td>
+                            <td>O(n)</td>
+                            <td>Когда нужен список чисел</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.9em; margin-top: 10px;">*Примерное время для Python 3.9 на процессоре Intel i5</p>
+                
+                <h3>Пример сравнения производительности:</h3>
+                <div class="code-container">
+                    <pre><code><span class="python-comment"># Python код для сравнения производительности</span>
+<span class="python-keyword">import</span> timeit
+
+n = <span class="code-number">1000000</span>
+
+<span class="python-comment"># Формула Гаусса</span>
+gauss_time = timeit.timeit(<span class="python-string">'n*(n+1)//2'</span>, 
+                         globals={<span class="python-string">'n'</span>: n}, 
+                         number=<span class="code-number">10000</span>)
+
+<span class="python-comment"># Цикл for</span>
+loop_time = timeit.timeit(<span class="python-string">'''
+total = 0
+for i in range(1, n+1):
+    total += i
+'''</span>, globals={<span class="python-string">'n'</span>: n}, number=<span class="code-number">10</span>)
+
+<span class="python-function">print</span>(<span class="python-string">f"Формула Гаусса: {gauss_time*100:.2f} мс (10000 вызовов)"</span>)
+<span class="python-function">print</span>(<span class="python-string">f"Цикл for: {loop_time*1000:.2f} мс (10 вызовов)"</span>)
+<span class="python-function">print</span>(<span class="python-string">f"Разница: {loop_time/gauss_time*10000:.0f} раз"</span>)</code></pre>
+                </div>
+                
+                <div class="formula-box">
+                    <p><strong>Вывод:</strong> Для вычисления суммы чисел от 1 до N всегда следует использовать формулу Гаусса, так как она имеет постоянную сложность O(1) и максимальную производительность.</p>
+                </div>
+                
+                <h3>Практические рекомендации:</h3>
+                <ul>
+                    <li>Для любых вычислений используйте формулу Гаусса</li>
+                    <li>Циклы и рекурсия подходят только для учебных целей</li>
+                    <li>Для очень больших чисел (n > 10^9) используйте библиотеку decimal</li>
+                    <li>Всегда проверяйте входные данные на корректность</li>
+                </ul>
+            </div>
+            
+            <!-- Слайд 6: Заключение -->
+            <div class="slide" id="slide6">
+                <h2>Заключение</h2>
+                <p>Этот мини-проект продемонстрировал эффективное решение математической задачи с использованием Python.</p>
+                
+                <h3>Ключевые выводы:</h3>
+                <ul>
+                    <li><strong>Формула Гаусса</strong> - оптимальное решение с сложностью O(1)</li>
+                    <li><strong>Python</strong> отлично подходит для математических вычислений</li>
+                    <li><strong>Веб-интеграция</strong> позволяет демонстрировать Python-код в браузере</li>
+                    <li><strong>Сравнение методов</strong> помогает понять важность алгоритмической эффективности</li>
+                </ul>
+                
+                <div class="formula-box">
+                    <p><strong>Итоговая формула:</strong> S(N) = N × (N + 1) ÷ 2</p>
+                    <p><strong>Пример вычисления:</strong> Для N = 1,000,000: S = 1,000,000 × 1,000,001 ÷ 2 = 500,000,500,000</p>
+                    <p>Формула Гаусса вычисляет это мгновенно, в то время как циклу потребовались бы миллионы операций!</p>
+                </div>
+                
+                <h3>Расширения проекта:</h3>
+                <ul>
+                    <li>Создание GUI-приложения на Tkinter или PyQt</li>
+                    <li>Веб-сервис на Flask/Django для вычисления суммы</li>
+                    <li>Интеграция с базами данных для хранения результатов</li>
+                    <li>Создание API для удаленных вычислений</li>
+                    <li>Визуализация с помощью matplotlib или plotly</li>
+                </ul>
+                
+                <div class="tech-icons">
+                    <i class="fab fa-python python-icon"></i>
+                    <i class="fas fa-code"></i>
+                    <i class="fas fa-calculator"></i>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f0f8ff; border-radius: 10px;">
+                    <h3 style="color: #2a3c7f;">Попробуйте Python решение!</h3>
+                    <p>Скачайте полный код проекта и запустите на своем компьютере:</p>
+                    <button onclick="downloadPythonCode()" style="margin-top: 10px;">
+                        <i class="fas fa-download"></i> Скачать Python код
+                    </button>
+                </div>
+                
+                <p style="text-align: center; margin-top: 30px; font-size: 1.2rem;">
+                    <strong>Спасибо за внимание! Вопросы?</strong>
+                </p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Мини-проект: Сумма чисел от 1 до N на Python</p>
+            <p>Используемые технологии: Python 3, HTML5, CSS3, JavaScript</p>
+            <p>Презентация создана для демонстрации Python-решения математической задачи</p>
+        </footer>
+    </div>
+
+    <script>
+        // Навигация между слайдами
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const slideId = button.getAttribute('data-slide');
+                
+                // Удаляем активный класс у всех кнопок
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Добавляем активный класс текущей кнопке
+                button.classList.add('active');
+                
+                // Скрываем все слайды
+                document.querySelectorAll('.slide').forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Показываем выбранный слайд
+                document.getElementById(`slide${slideId}`).classList.add('active');
+            });
+        });
+        
+        // Эмуляция Python в JavaScript для онлайн-калькулятора
+        function pythonSumGauss(n) {
+            return n * (n + 1) / 2;
+        }
+        
+        function pythonSumLoop(n) {
+            let total = 0;
+            for (let i = 1; i <= n; i++) {
+                total += i;
+            }
+            return total;
+        }
+        
+        function visualizePython(n) {
+            const visualizationDiv = document.getElementById('pythonVisualization');
+            visualizationDiv.innerHTML = '';
+            
+            if (n > 20) {
+                visualizationDiv.innerHTML = '<p style="text-align: center; color: #666;">Для визуализации введите число ≤ 20</p>';
+                return;
+            }
+            
+            let sum = 0;
+            
+            for (let i = 1; i <= n; i++) {
+                sum += i;
+                
+                const numberBox = document.createElement('div');
+                numberBox.className = 'number-box';
+                numberBox.textContent = i;
+                numberBox.style.animation = `fadeIn 0.5s ease ${i * 0.1}s both`;
+                
+                visualizationDiv.appendChild(numberBox);
+                
+                if (i < n) {
+                    const plusSign = document.createElement('span');
+                    plusSign.className = 'plus-sign';
+                    plusSign.textContent = ' + ';
+                    visualizationDiv.appendChild(plusSign);
+                }
+            }
+            
+            const equalsSign = document.createElement('span');
+            equalsSign.className = 'plus-sign';
+            equalsSign.textContent = ' = ';
+            equalsSign.style.marginLeft = '10px';
+            equalsSign.style.marginRight = '10px';
+            visualizationDiv.appendChild(equalsSign);
+            
+            const resultBox = document.createElement('div');
+            resultBox.className = 'number-box';
+            resultBox.textContent = sum;
+            resultBox.style.background = 'linear-gradient(to bottom right, #ff416c, #ff4b2b)';
+            resultBox.style.animation = `fadeIn 0.5s ease ${(n+1) * 0.1}s both`;
+            visualizationDiv.appendChild(resultBox);
+        }
+        
+        // Обработчики для онлайн-калькулятора
+        document.getElementById('runPythonBtn').addEventListener('click', () => {
+            const n = parseInt(document.getElementById('pythonInput').value);
+            const outputDiv = document.getElementById('pythonOutput');
+            const visualizationDiv = document.getElementById('pythonVisualization');
+            
+            if (isNaN(n) || n < 1) {
+                outputDiv.innerHTML = '<strong style="color: red;">Ошибка:</strong> Введите натуральное число!';
+                outputDiv.style.display = 'block';
+                visualizationDiv.innerHTML = '';
+                return;
+            }
+            
+            // Вычисляем разными методами
+            const resultGauss = pythonSumGauss(n);
+            const resultLoop = pythonSumLoop(n);
+            
+            // Формируем вывод
+            let output = `=== РЕЗУЛЬТАТЫ ДЛЯ N = ${n} ===\n\n`;
+            output += `По формуле Гаусса: ${resultGauss}\n`;
+            output += `Через цикл: ${resultLoop}\n\n`;
+            
+            output += `Проверка формулы:\n`;
+            output += `${n} × (${n} + 1) ÷ 2 = ${n} × ${n+1} ÷ 2 = ${n*(n+1)} ÷ 2 = ${resultGauss}\n\n`;
+            
+            if (resultGauss === resultLoop) {
+                output += `✓ Результаты совпадают!\n`;
+            } else {
+                output += `✗ Результаты не совпадают!\n`;
+            }
+            
+            // Добавляем информацию о производительности
+            output += `\n=== ПРОИЗВОДИТЕЛЬНОСТЬ (примерно) ===\n`;
+            output += `Формула Гаусса: O(1) - постоянное время\n`;
+            output += `Цикл: O(n) - линейное время\n`;
+            
+            if (n > 1000) {
+                output += `\nДля N = ${n} формула Гаусса работает в тысячи раз быстрее!`;
+            }
+            
+            outputDiv.textContent = output;
+            outputDiv.style.display = 'block';
+            visualizationDiv.innerHTML = '';
+        });
+        
+        document.getElementById('visualizePythonBtn').addEventListener('click', () => {
+            const n = parseInt(document.getElementById('pythonInput').value);
+            const outputDiv = document.getElementById('pythonOutput');
+            
+            if (isNaN(n) || n < 1) {
+                outputDiv.innerHTML = '<strong style="color: red;">Ошибка:</strong> Введите натуральное число!';
+                outputDiv.style.display = 'block';
+                return;
+            }
+            
+            visualizePython(n);
+            
+            const result = pythonSumGauss(n);
+            let output = `=== ВИЗУАЛИЗАЦИЯ ДЛЯ N = ${n} ===\n\n`;
+            
+            if (n <= 20) {
+                let formula = '';
+                for (let i = 1; i <= n; i++) {
+                    formula += i;
+                    if (i < n) formula += ' + ';
+                }
+                output += `${formula} = ${result}\n\n`;
+            } else {
+                output += `1 + 2 + 3 + ... + ${n} = ${result}\n\n`;
+            }
+            
+            output += `Формула: ${n} × (${n} + 1) ÷ 2 = ${result}`;
+            
+            outputDiv.textContent = output;
+            outputDiv.style.display = 'block';
+        });
+        
+        // Функция для скачивания Python кода
+        function downloadPythonCode() {
+            const pythonCode = `#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Мини-проект: Сумма чисел от 1 до N
+# Автоматически сгенерированная версия
+
+def sum_gauss(n):
+    """Вычисление суммы по формуле Гаусса."""
+    if n < 1:
+        raise ValueError("N должно быть натуральным числом")
+    return n * (n + 1) // 2
+
+def sum_loop(n):
+    """Вычисление суммы через цикл."""
+    if n < 1:
+        raise ValueError("N должно быть натуральным числом")
+    total = 0
+    for i in range(1, n + 1):
+        total += i
+    return total
+
+def sum_builtin(n):
+    """Вычисление суммы с помощью встроенной функции sum()."""
+    return sum(range(1, n + 1))
+
+def visualize_calculation(n, max_show=20):
+    """Визуализация вычисления суммы."""
+    if n > max_show:
+        return f"1 + 2 + 3 + ... + {n} = {sum_gauss(n)}"
+    
+    numbers = []
+    for i in range(1, n + 1):
+        numbers.append(str(i))
+    
+    formula = " + ".join(numbers)
+    result = sum_gauss(n)
+    return f"{formula} = {result}"
+
+def compare_performance(n, iterations=10000):
+    """Сравнение производительности разных методов."""
+    import time
+    
+    methods = [
+        ("Формула Гаусса", sum_gauss),
+        ("Цикл for", sum_loop),
+        ("Встроенная sum()", sum_builtin)
+    ]
+    
+    results = {}
+    for name, func in methods:
+        start_time = time.time()
+        for _ in range(iterations):
+            result = func(n)
+        end_time = time.time()
+        
+        results[name] = {
+            "result": result,
+            "time_total": end_time - start_time,
+            "time_per_call": (end_time - start_time) * 1_000_000 / iterations
+        }
+    
+    return results
+
+def main():
+    """Основная функция программы."""
+    print("=" * 50)
+    print("МИНИ-ПРОЕКТ: СУММА ЧИСЕЛ ОТ 1 ДО N")
+    print("=" * 50)
+    
+    while True:
+        print("\\nМеню:")
+        print("1. Вычислить сумму")
+        print("2. Визуализировать вычисление")
+        print("3. Сравнить производительность методов")
+        print("4. Примеры вычислений")
+        print("5. Выход")
+        
+        choice = input("\\nВыберите действие (1-5): ")
+        
+        if choice == "1":
+            try:
+                n = int(input("Введите N: "))
+                result = sum_gauss(n)
+                print(f"\\nСумма чисел от 1 до {n} = {result}")
+                print(f"Проверка: {n} × ({n} + 1) ÷ 2 = {result}")
+            except ValueError as e:
+                print(f"Ошибка: {e}")
+                
+        elif choice == "2":
+            try:
+                n = int(input("Введите N (рекомендуется ≤ 20): "))
+                visualization = visualize_calculation(n)
+                print(f"\\n{visualization}")
+            except ValueError as e:
+                print(f"Ошибка: {e}")
+                
+        elif choice == "3":
+            try:
+                n = int(input("Введите N для сравнения: "))
+                results = compare_performance(n)
+                
+                print(f"\\nСравнение методов для N = {n}:")
+                print("-" * 60)
+                for method, data in results.items():
+                    print(f"{method}: {data['result']}")
+                    print(f"  Общее время: {data['time_total']:.4f} сек")
+                    print(f"  Время на вызов: {data['time_per_call']:.2f} мкс")
+                    
+            except ValueError as e:
+                print(f"Ошибка: {e}")
+                
+        elif choice == "4":
+            print("\\nПримеры вычислений:")
+            examples = [1, 2, 3, 5, 10, 100, 1000, 10000]
+            for n in examples:
+                result = sum_gauss(n)
+                print(f"N = {n:6}: S = {result}")
+                
+        elif choice == "5":
+            print("\\nСпасибо за использование программы! До свидания!")
+            break
+            
+        else:
+            print("Неверный выбор. Попробуйте снова.")
+
+if __name__ == "__main__":
+    main()`;
+            
+            const blob = new Blob([pythonCode], { type: 'text/x-python' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sum_calculator.py';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Python файл sum_calculator.py скачан! Запустите его командой: python sum_calculator.py');
+        }
+        
+        // Инициализация при загрузке
+        window.addEventListener('load', () => {
+            // Автоматически запускаем калькулятор при загрузке
+            const n = 100;
+            const result = pythonSumGauss(n);
+            const outputDiv = document.getElementById('pythonOutput');
+            
+            let output = `=== ДЕМОНСТРАЦИЯ РАБОТЫ ПРОГРАММЫ ===\n\n`;
+            output += `Пример вычисления для N = ${n}:\n`;
+            output += `Сумма чисел от 1 до ${n} = ${result}\n\n`;
+            output += `Формула Гаусса: ${n} × (${n} + 1) ÷ 2 = ${result}\n\n`;
+            output += `Попробуйте ввести своё значение N и нажмите "Запустить Python код"!`;
+            
+            outputDiv.textContent = output;
+            outputDiv.style.display = 'block';
+            
+            // Визуализируем для N=10
+            visualizePython(10);
+        });
+        
+        // Добавляем CSS анимацию
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
