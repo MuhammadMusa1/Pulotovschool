@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Функции в Python - Презентация для 9 класса</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d47a1 0%, #311b92 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            height: 95vh;
+        }
+
+        .header {
+            background: linear-gradient(to right, #1565c0, #4527a0);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            color: #ffeb3b;
+        }
+
+        .python-icon {
+            color: #3776ab;
+            font-weight: bold;
+        }
+
+        .slide-counter {
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .slides-container {
+            height: 800px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide h2 {
+            color: #1565c0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4527a0;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .text-section {
+            line-height: 1.7;
+            font-size: 2rem;
+        }
+
+        .text-section p {
+            margin-bottom: 15px;
+        }
+
+        .code-section {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #1565c0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-title {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-block {
+            background: #263238;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .keyword {
+            color: #f92672;
+            font-weight: bold;
+        }
+
+        .function {
+            color: #66d9ef;
+        }
+
+        .string {
+            color: #e6db74;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .number {
+            color: #ae81ff;
+        }
+
+        .visual-example {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #bbdefb;
+        }
+
+        .visual-example h3 {
+            color: #1565c0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: #f5f5f5;
+            border-top: 1px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #0d47a1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:disabled {
+            background: #b0b0b0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-dots {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #4527a0;
+            transform: scale(1.2);
+        }
+
+        .interactive-section {
+            background: #f1f8e9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px dashed #7cb342;
+        }
+
+        .interactive-section h3 {
+            color: #33691e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-runner {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .code-input {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid #1565c0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .run-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .run-btn:hover {
+            background: #388e3c;
+        }
+
+        .output {
+            background: #263238;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #1565c0;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .highlight {
+            background-color: #e3f2fd;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+            }
+            
+            .slide h2 {
+                font-size: 1.8rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .nav-dots {
+                order: -1;
+            }
+            
+            .slides-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="header">
+            <div class="logo">
+                <i class="fab fa-python"></i>
+                <span>Функции в <span class="python-icon">Python</span></span>
+            </div>
+            <div class="slide-counter">
+                Слайд: <span id="current-slide">1</span> из <span id="total-slides">10</span>
+            </div>
+        </div>
+        
+        <div class="slides-container">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <h2><i class="fas fa-play-circle"></i> Функции в Python</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p><span class="highlight">Функция</span> — это именованный блок кода, который выполняет определенную задачу и может быть вызван из других частей программы.</p>
+                        <p>Функции помогают:</p>
+                        <ul>
+                            <li>Структурировать код</li>
+                            <li>Избегать повторений</li>
+                            <li>Упрощать отладку и тестирование</li>
+                            <li>Делать программу более читаемой</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="visual-example">
+                        <h3><i class="fas fa-lightbulb"></i> Аналогия из жизни</h3>
+                        <p>Функция как кухонный прибор: вы загружаете ингредиенты (аргументы), нажимаете кнопку (вызов функции) и получаете результат (возвращаемое значение).</p>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Простейшая функция</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">приветствие</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">"Привет, мир!"</span>)<br><br>
+                            <span class="comment"># Вызов функции</span><br>
+                            <span class="function">приветствие</span>()  <span class="comment"># Выведет: Привет, мир!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <h2><i class="fas fa-sitemap"></i> Структура функции</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p>Функция в Python состоит из нескольких ключевых элементов:</p>
+                        <ol>
+                            <li>Ключевое слово <span class="highlight">def</span></li>
+                            <li>Имя функции (должно отражать её назначение)</li>
+                            <li>Круглые скобки с параметрами (могут быть пустыми)</li>
+                            <li>Двоеточие</li>
+                            <li>Тело функции с отступом</li>
+                            <li>Необязательное возвращение значения (return)</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Структура функции с объяснением</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">название_функции</span>(параметр1, параметр2):  <span class="comment"># Заголовок функции</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">'''Документационная строка (описание функции)'''</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;результат = параметр1 + параметр2  <span class="comment"># Тело функции</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> результат  <span class="comment"># Возврат значения</span><br><br>
+                            <span class="comment"># Вызов функции с аргументами</span><br>
+                            переменная = <span class="function">название_функции</span>(<span class="number">5</span>, <span class="number">3</span>)<br>
+                            <span class="keyword">print</span>(переменная)  <span class="comment"># Выведет: 8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <h2><i class="fas fa-exchange-alt"></i> Параметры и аргументы</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p><span class="highlight">Параметры</span> — переменные в определении функции.</p>
+                        <p><span class="highlight">Аргументы</span> — фактические значения, передаваемые при вызове функции.</p>
+                        
+                        <div class="visual-example">
+                            <h3><i class="fas fa-info-circle"></i> Типы параметров</h3>
+                            <p>1. Обязательные (позиционные)</p>
+                            <p>2. Именованные (ключевые)</p>
+                            <p>3. Параметры по умолчанию</p>
+                            <p>4. Произвольное количество аргументов (*args, **kwargs)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Примеры параметров и аргументов</div>
+                        <div class="code-block">
+                            <span class="comment"># Обязательные параметры</span><br>
+                            <span class="keyword">def</span> <span class="function">сложение</span>(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a + b<br><br>
+                            
+                            <span class="comment"># Параметры по умолчанию</span><br>
+                            <span class="keyword">def</span> <span class="function">приветствие</span>(имя, текст=<span class="string">"Привет"</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">f"{текст}, {имя}!"</span><br><br>
+                            
+                            <span class="comment"># Вызов функций</span><br>
+                            результат1 = <span class="function">сложение</span>(<span class="number">5</span>, <span class="number">3</span>)  <span class="comment"># 5 и 3 - аргументы</span><br>
+                            результат2 = <span class="function">приветствие</span>(<span class="string">"Анна"</span>)  <span class="comment"># Используется значение по умолчанию</span><br>
+                            результат3 = <span class="function">приветствие</span>(<span class="string">"Иван"</span>, <span class="string">"Здравствуй"</span>)  <span class="comment"># Переопределение значения</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <h2><i class="fas fa-undo"></i> Возврат значений (return)</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p>Оператор <span class="highlight">return</span> завершает выполнение функции и возвращает указанное значение.</p>
+                        <p>Если return отсутствует, функция возвращает <span class="highlight">None</span>.</p>
+                        
+                        <div class="visual-example">
+                            <h3><i class="fas fa-info-circle"></i> Особенности return</h3>
+                            <p>• Может возвращать любое значение (число, строку, список, другую функцию)</p>
+                            <p>• Может возвращать несколько значений (как кортеж)</p>
+                            <p>• Может использоваться для досрочного выхода из функции</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Примеры использования return</div>
+                        <div class="code-block">
+                            <span class="comment"># Возврат одного значения</span><br>
+                            <span class="keyword">def</span> <span class="function">квадрат</span>(число):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> число ** <span class="number">2</span><br><br>
+                            
+                            <span class="comment"># Возврат нескольких значений</span><br>
+                            <span class="keyword">def</span> <span class="function">мин_макс</span>(список):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="keyword">min</span>(список), <span class="keyword">max</span>(список)<br><br>
+                            
+                            <span class="comment"># Досрочный выход из функции</span><br>
+                            <span class="keyword">def</span> <span class="function">проверка_возраста</span>(возраст):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> возраст < <span class="number">0</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Некорректный возраст"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> возраст >= <span class="number">18</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Совершеннолетний"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Несовершеннолетний"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <h2><i class="fas fa-project-diagram"></i> Область видимости переменных</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p><span class="highlight">Область видимости</span> определяет, где переменная доступна для использования.</p>
+                        
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Тип области</th>
+                                <th>Описание</th>
+                                <th>Пример</th>
+                            </tr>
+                            <tr>
+                                <td>Локальная</td>
+                                <td>Переменная определена внутри функции</td>
+                                <td>Доступна только внутри этой функции</td>
+                            </tr>
+                            <tr>
+                                <td>Глобальная</td>
+                                <td>Переменная определена вне всех функций</td>
+                                <td>Доступна во всем коде</td>
+                            </tr>
+                            <tr>
+                                <td>Нелокальная</td>
+                                <td>Переменная из внешней функции (вложенные функции)</td>
+                                <td>Доступна во внутренней функции</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Пример областей видимости</div>
+                        <div class="code-block">
+                            глобальная_переменная = <span class="string">"Я глобальная"</span>  <span class="comment"># Глобальная область</span><br><br>
+                            <span class="keyword">def</span> <span class="function">моя_функция</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;локальная_переменная = <span class="string">"Я локальная"</span>  <span class="comment"># Локальная область</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(локальная_переменная)  <span class="comment"># Работает</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(глобальная_переменная)  <span class="comment"># Тоже работает</span><br><br>
+                            
+                            <span class="function">моя_функция</span>()<br>
+                            <span class="comment"># print(локальная_переменная)  # ОШИБКА! Переменная не определена</span><br>
+                            <span class="keyword">print</span>(глобальная_переменная)  <span class="comment"># Работает</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <h2><i class="fas fa-cube"></i> Встроенные и пользовательские функции</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p>В Python есть два основных типа функций:</p>
+                        
+                        <div class="visual-example">
+                            <h3><i class="fas fa-box"></i> Встроенные функции (Built-in)</h3>
+                            <p>Уже определены в Python, доступны без импорта.</p>
+                            <p>Примеры: <span class="highlight">print()</span>, <span class="highlight">len()</span>, <span class="highlight">input()</span>, <span class="highlight">type()</span>, <span class="highlight">int()</span>, <span class="highlight">str()</span></p>
+                        </div>
+                        
+                        <div class="visual-example">
+                            <h3><i class="fas fa-user-cog"></i> Пользовательские функции</h3>
+                            <p>Создаются программистом для решения конкретных задач.</p>
+                            <p>Определяются с помощью ключевого слова <span class="highlight">def</span>.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Сравнение встроенных и пользовательских функций</div>
+                        <div class="code-block">
+                            <span class="comment"># Использование встроенных функций</span><br>
+                            длина = <span class="function">len</span>(<span class="string">"Привет"</span>)  <span class="comment"># Встроенная функция</span><br>
+                            число = <span class="function">int</span>(<span class="string">"123"</span>)  <span class="comment"># Встроенная функция</span><br><br>
+                            
+                            <span class="comment"># Определение пользовательской функции</span><br>
+                            <span class="keyword">def</span> <span class="function">среднее_арифметическое</span>(числа):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="function">sum</span>(числа) / <span class="function">len</span>(числа)  <span class="comment"># sum() и len() - встроенные</span><br><br>
+                            
+                            <span class="comment"># Использование пользовательской функции</span><br>
+                            результат = <span class="function">среднее_арифметическое</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])<br>
+                            <span class="keyword">print</span>(<span class="string">f"Среднее: {результат}"</span>)  <span class="comment"># Выведет: Среднее: 3.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <h2><i class="fas fa-file-alt"></i> Документирование функций</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p><span class="highlight">Docstring</span> — строка документации, которая описывает назначение функции, её параметры и возвращаемое значение.</p>
+                        <p>Располагается сразу после заголовка функции в тройных кавычках.</p>
+                        
+                        <div class="visual-example">
+                            <h3><i class="fas fa-info-circle"></i> Зачем нужна документация?</h3>
+                            <p>1. Помогает понять, что делает функция</p>
+                            <p>2. Упрощает использование функции другими разработчиками</p>
+                            <p>3. Позволяет генерировать документацию автоматически</p>
+                            <p>4. Помогает при отладке и тестировании</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Пример документированной функции</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">площадь_прямоугольника</span>(длина, ширина):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'''</span><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;Вычисляет площадь прямоугольника.</span><br><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;Параметры:</span><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;длина (float): Длина прямоугольника</span><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;ширина (float): Ширина прямоугольника</span><br><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;Возвращает:</span><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;float: Площадь прямоугольника</span><br>
+                            <span class="string">&nbsp;&nbsp;&nbsp;&nbsp;'''</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> длина * ширина<br><br>
+                            
+                            <span class="comment"># Получение документации</span><br>
+                            <span class="keyword">print</span>(<span class="function">площадь_прямоугольника</span>.<span class="function">__doc__</span>)<br>
+                            <span class="comment"># Или с помощью help()</span><br>
+                            <span class="function">help</span>(площадь_прямоугольника)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <h2><i class="fas fa-flask"></i> Практический пример</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p>Рассмотрим практический пример — программу для работы с оценками студентов.</p>
+                    </div>
+                    
+                    <div class="code-section">
+                        <div class="code-title"><i class="fas fa-code"></i> Программа "Журнал оценок"</div>
+                        <div class="code-block">
+                            <span class="keyword">def</span> <span class="function">добавить_оценку</span>(журнал, студент, оценка):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'''Добавляет оценку студента в журнал'''</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> студент <span class="keyword">not</span> <span class="keyword">in</span> журнал:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;журнал[студент] = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;журнал[студент].append(оценка)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> журнал<br><br>
+                            
+                            <span class="keyword">def</span> <span class="function">средний_балл</span>(оценки):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'''Вычисляет средний балл по списку оценок'''</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> <span class="keyword">not</span> оценки:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="number">0</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="function">sum</span>(оценки) / <span class="function">len</span>(оценки)<br><br>
+                            
+                            <span class="keyword">def</span> <span class="function">статистика_группы</span>(журнал):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">'''Выводит статистику по всем студентам'''</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">"=== Статистика группы ==="</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> студент, оценки <span class="keyword">in</span> журнал.items():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;среднее = <span class="function">средний_балл</span>(оценки)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="string">f"{студент}: {оценки}, средний балл: {среднее:.2f}"</span>)<br><br>
+                            
+                            <span class="comment"># Использование функций</span><br>
+                            журнал_оценок = {}<br>
+                            журнал_оценок = <span class="function">добавить_оценку</span>(журнал_оценок, <span class="string">"Иванов"</span>, <span class="number">5</span>)<br>
+                            журнал_оценок = <span class="function">добавить_оценку</span>(журнал_оценок, <span class="string">"Иванов"</span>, <span class="number">4</span>)<br>
+                            журнал_оценок = <span class="function">добавить_оценку</span>(журнал_оценок, <span class="string">"Петрова"</span>, <span class="number">5</span>)<br>
+                            <span class="function">статистика_группы</span>(журнал_оценок)
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-section">
+                        <h3><i class="fas fa-play"></i> Попробуйте сами!</h3>
+                        <p>Добавьте в журнал еще одного студента с оценками и посмотрите, как изменится статистика.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <h2><i class="fas fa-code"></i> Интерактивный редактор кода</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p>Попробуйте написать свою функцию прямо здесь! Это безопасно - код выполняется в вашем браузере.</p>
+                    </div>
+                    
+                    <div class="code-runner">
+                        <h3><i class="fas fa-edit"></i> Напишите свою функцию</h3>
+                        <p>Пример: функция, которая принимает имя и возвращает приветствие</p>
+                        
+                        <textarea class="code-input" id="code-input" placeholder="Введите код Python здесь...">
+def приветствие(имя):
+    return f"Привет, {имя}!"
+
+# Проверка работы функции
+print(приветствие("Анна"))
+print(приветствие("Иван"))</textarea>
+                        
+                        <button class="run-btn" id="run-btn">
+                            <i class="fas fa-play"></i> Выполнить код
+                        </button>
+                        
+                        <div class="output" id="output">
+                            Здесь появится результат выполнения вашего кода...
+                        </div>
+                    </div>
+                    
+                    <div class="visual-example">
+                        <h3><i class="fas fa-lightbulb"></i> Идеи для экспериментов</h3>
+                        <p>1. Напишите функцию для вычисления факториала числа</p>
+                        <p>2. Создайте функцию, которая проверяет, является ли слово палиндромом</p>
+                        <p>3. Реализуйте функцию для конвертации температуры из Цельсия в Фаренгейт</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <h2><i class="fas fa-graduation-cap"></i> Итоги и полезные советы</h2>
+                <div class="slide-content">
+                    <div class="text-section">
+                        <p><span class="highlight">Ключевые моменты:</span></p>
+                        <ol>
+                            <li>Функции помогают организовать код и избежать дублирования</li>
+                            <li>Функция определяется с помощью ключевого слова <span class="highlight">def</span></li>
+                            <li>Параметры могут быть обязательными, именованными или иметь значения по умолчанию</li>
+                            <li>Для возврата значения используется оператор <span class="highlight">return</span></li>
+                            <li>Важно понимать область видимости переменных</li>
+                            <li>Документирование функций (docstring) — хороший тон программирования</li>
+                        </ol>
+                        
+                        <div class="visual-example">
+                            <h3><i class="fas fa-tips"></i> Советы начинающим</h3>
+                            <p>1. Давайте функциям понятные имена, отражающие их назначение</p>
+                            <p>2. Одна функция должна выполнять одну задачу</p>
+                            <p>3. Не делайте функции слишком длинными (желательно не более 20-30 строк)</p>
+                            <p>4. Всегда тестируйте свои функции с разными аргументами</p>
+                            <p>5. Используйте документационные строки (docstring)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-section">
+                        <h3><i class="fas fa-question-circle"></i> Что дальше?</h3>
+                        <p>Для продолжения изучения Python:</p>
+                        <p>1. Рекурсивные функции (функции, вызывающие сами себя)</p>
+                        <p>2. Анонимные функции (lambda-выражения)</p>
+                        <p>3. Декораторы функций</p>
+                        <p>4. Генераторы</p>
+                        <p style="text-align: center; margin-top: 20px; font-size: 1.3rem;"><i class="fas fa-code"></i> Удачи в изучении Python!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="nav-btn" id="prev-btn" disabled>
+                <i class="fas fa-arrow-left"></i> Назад
+            </button>
+            
+            <div class="nav-dots" id="nav-dots">
+                <!-- Точки навигации будут созданы через JS -->
+            </div>
+            
+            <button class="nav-btn" id="next-btn">
+                Вперед <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Элементы презентации
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const navDots = document.getElementById('nav-dots');
+        const currentSlideSpan = document.getElementById('current-slide');
+        const totalSlidesSpan = document.getElementById('total-slides');
+        
+        // Интерактивный редактор кода
+        const codeInput = document.getElementById('code-input');
+        const runBtn = document.getElementById('run-btn');
+        const output = document.getElementById('output');
+        
+        let currentSlide = 0;
+        totalSlidesSpan.textContent = slides.length;
+        
+        // Увеличиваем размер точек навигации для лучшей видимости
+        function createNavigationDots() {
+            navDots.innerHTML = ''; // Очищаем существующие точки
+            
+            slides.forEach((slide, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                dot.style.width = '20px'; // Увеличиваем размер точек
+                dot.style.height = '20px';
+                dot.style.cursor = 'pointer';
+                dot.title = `Перейти к слайду ${index + 1}`; // Добавляем подсказку
+                
+                if (index === 0) dot.classList.add('active');
+                dot.dataset.index = index;
+                
+                // Анимация при наведении
+                dot.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.3)';
+                    this.style.transition = 'transform 0.2s';
+                });
+                
+                dot.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'scale(1)';
+                    }
+                });
+                
+                dot.addEventListener('click', () => goToSlide(index));
+                navDots.appendChild(dot);
+            });
+        }
+        
+        // Создаем точки навигации с увеличенным размером
+        createNavigationDots();
+        
+        // Функция перехода к слайду с анимацией
+        function goToSlide(slideIndex) {
+            // Анимация перехода
+            slides[currentSlide].style.transition = 'all 0.5s ease';
+            slides[currentSlide].classList.remove('active');
+            document.querySelectorAll('.dot')[currentSlide].classList.remove('active');
+            
+            // Показываем новый слайд
+            currentSlide = slideIndex;
+            slides[currentSlide].style.transition = 'all 0.5s ease';
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+            
+            // Обновить счетчик
+            currentSlideSpan.textContent = currentSlide + 1;
+            
+            // Обновить состояние кнопок
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            // Изменяем размер кнопок навигации для акцента
+            if (currentSlide === 0) {
+                prevBtn.style.opacity = '0.5';
+            } else {
+                prevBtn.style.opacity = '1';
+            }
+            
+            if (currentSlide === slides.length - 1) {
+                nextBtn.style.opacity = '0.5';
+            } else {
+                nextBtn.style.opacity = '1';
+            }
+            
+            // Если перешли на слайд с редактором кода, фокусируем поле ввода
+            if (currentSlide === 8) {
+                setTimeout(() => {
+                    codeInput.focus();
+                    // Увеличиваем размер текста в редакторе кода
+                    codeInput.style.fontSize = '1.5rem';
+                    output.style.fontSize = '1.5rem';
+                }, 300);
+            } else {
+                // Возвращаем обычный размер для других слайдов
+                codeInput.style.fontSize = '1rem';
+                output.style.fontSize = '1rem';
+            }
+            
+            // Прокручиваем к началу слайда
+            slides[currentSlide].scrollTop = 0;
+        }
+        
+        // Увеличиваем размер кнопок навигации
+        prevBtn.style.fontSize = '1.4rem';
+        prevBtn.style.padding = '15px 30px';
+        nextBtn.style.fontSize = '1.4rem';
+        nextBtn.style.padding = '15px 30px';
+        
+        // Обработчики кнопок с анимацией
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        });
+        
+        // Обработчики клавиш клавиатуры с улучшениями
+        document.addEventListener('keydown', (e) => {
+            // Стрелки влево/вправо
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+                e.preventDefault(); // Предотвращаем прокрутку страницы
+            } else if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+                goToSlide(currentSlide + 1);
+                e.preventDefault();
+            }
+            
+            // Цифры для быстрого перехода (1-0 для слайдов 1-10)
+            if (e.key >= '1' && e.key <= '9') {
+                const slideNum = parseInt(e.key) - 1;
+                if (slideNum < slides.length) {
+                    goToSlide(slideNum);
+                }
+            }
+            
+            // Ноль для 10-го слайда
+            if (e.key === '0') {
+                goToSlide(9); // 10-й слайд
+            }
+            
+            // Пробел или Enter для перехода вперед
+            if ((e.key === ' ' || e.key === 'Enter') && currentSlide < slides.length - 1) {
+                goToSlide(currentSlide + 1);
+                e.preventDefault();
+            }
+            
+            // Backspace для перехода назад
+            if (e.key === 'Backspace' && currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+                e.preventDefault();
+            }
+        });
+        
+        // Автопрокрутка длинных слайдов
+        slides.forEach(slide => {
+            slide.addEventListener('wheel', function(e) {
+                // Если контент не помещается, разрешаем прокрутку
+                if (this.scrollHeight > this.clientHeight) {
+                    const isAtTop = this.scrollTop === 0;
+                    const isAtBottom = this.scrollTop + this.clientHeight >= this.scrollHeight - 1;
+                    
+                    // Если внизу слайда и прокрутка вниз - переходим к следующему слайду
+                    if (isAtBottom && e.deltaY > 0 && currentSlide < slides.length - 1) {
+                        goToSlide(currentSlide + 1);
+                        e.preventDefault();
+                    }
+                    // Если вверху слайда и прокрутка вверх - переходим к предыдущему слайду
+                    else if (isAtTop && e.deltaY < 0 && currentSlide > 0) {
+                        goToSlide(currentSlide - 1);
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
+        });
+        
+        // Запуск кода в интерактивном редакторе
+        runBtn.addEventListener('click', function() {
+            const code = codeInput.value;
+            output.textContent = "Выполнение...";
+            output.style.color = "#ff9800"; // Оранжевый цвет для статуса выполнения
+            
+            // Увеличиваем кнопку при нажатии
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Безопасное выполнение кода
+            setTimeout(() => {
+                try {
+                    // Создаем безопасный контекст выполнения
+                    const logs = [];
+                    const originalLog = console.log;
+                    console.log = function(...args) {
+                        logs.push(args.join(' '));
+                    };
+                    
+                    // Выполняем код
+                    const result = new Function(code)();
+                    
+                    // Восстанавливаем console.log
+                    console.log = originalLog;
+                    
+                    // Выводим результат
+                    let outputText = '';
+                    if (logs.length > 0) {
+                        outputText = logs.join('\n');
+                    }
+                    
+                    if (result !== undefined) {
+                        if (outputText) outputText += '\n';
+                        outputText += `Возвращено: ${result}`;
+                    }
+                    
+                    output.textContent = outputText || "✓ Код выполнен успешно (нет вывода)";
+                    output.style.color = "#4caf50"; // Зеленый цвет при успехе
+                } catch (error) {
+                    output.textContent = `✗ Ошибка: ${error.message}`;
+                    output.style.color = "#f44336"; // Красный цвет при ошибке
+                }
+            }, 100);
+        });
+        
+        // Разрешаем выполнение кода по Ctrl+Enter
+        codeInput.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                runBtn.click();
+            }
+        });
+        
+        // Примеры кода для редактора (увеличенные для лучшей видимости)
+        const codeExamples = [
+            `# Пример 1: Функция для вычисления площади круга
+def площадь_круга(радиус):
+    import math
+    return math.pi * радиус ** 2
+
+print(f"Площадь круга с радиусом 5: {площадь_круга(5):.2f}")
+print(f"Площадь круга с радиусом 10: {площадь_круга(10):.2f}")`,
+            
+            `# Пример 2: Функция для проверки четности числа
+def четное_ли(число):
+    return число % 2 == 0
+
+for i in range(1, 11):
+    if четное_ли(i):
+        print(f"{i} - четное число")
+    else:
+        print(f"{i} - нечетное число")`,
+            
+            `# Пример 3: Функция для нахождения максимального числа
+def максимум_из_трех(a, b, c):
+    if a >= b and a >= c:
+        return a
+    elif b >= a and b >= c:
+        return b
+    else:
+        return c
+
+print(f"Максимум из 3, 7, 5: {максимум_из_трех(3, 7, 5)}")
+print(f"Максимум из 10, 2, 8: {максимум_из_трех(10, 2, 8)}")
+print(f"Максимум из 1, 1, 1: {максимум_из_трех(1, 1, 1)}")`
+        ];
+        
+        // Увеличиваем размер текста в поле ввода по умолчанию
+        codeInput.style.fontSize = '1.5rem';
+        codeInput.style.lineHeight = '1.6';
+        
+        // Увеличиваем размер кнопки выполнения кода
+        runBtn.style.fontSize = '1.4rem';
+        runBtn.style.padding = '15px 30px';
+        
+        // Загружаем случайный пример при двойном клике
+        codeInput.addEventListener('dblclick', function() {
+            const randomExample = codeExamples[Math.floor(Math.random() * codeExamples.length)];
+            codeInput.value = randomExample;
+            output.textContent = "✅ Пример загружен! Нажмите 'Выполнить код' для запуска.";
+            output.style.color = "#2196f3"; // Синий цвет для информационных сообщений
+        });
+        
+        // Подсказка при двойном клике
+        codeInput.addEventListener('click', function(e) {
+            if (e.detail === 2) {
+                output.textContent = "✅ Двойной клик загружает случайный пример!";
+                output.style.color = "#2196f3";
+                
+                // Скрываем подсказку через 3 секунды
+                setTimeout(() => {
+                    if (output.textContent.includes("Двойной клик")) {
+                        output.textContent = "Здесь появится результат выполнения вашего кода...";
+                        output.style.color = "white";
+                    }
+                }, 3000);
+            }
+        });
+        
+        // Функция для увеличения/уменьшения шрифта
+        function adjustFontSize(change) {
+            const currentFontSize = parseFloat(getComputedStyle(document.querySelector('.text-section')).fontSize);
+            const newSize = currentFontSize + change;
+            
+            // Ограничиваем размер шрифта
+            if (newSize >= 1.5 && newSize <= 3) {
+                document.querySelectorAll('.text-section').forEach(el => {
+                    el.style.fontSize = newSize + 'rem';
+                });
+                
+                // Также увеличиваем код
+                document.querySelectorAll('.code-block').forEach(el => {
+                    const currentCodeSize = parseFloat(getComputedStyle(el).fontSize);
+                    el.style.fontSize = (currentCodeSize + change) + 'px';
+                });
+            }
+        }
+        
+        // Добавляем горячие клавиши для изменения размера шрифта
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === '+') {
+                adjustFontSize(0.1);
+                e.preventDefault();
+            } else if (e.ctrlKey && e.key === '-') {
+                adjustFontSize(-0.1);
+                e.preventDefault();
+            } else if (e.ctrlKey && e.key === '0') {
+                // Сброс к стандартному размеру
+                document.querySelectorAll('.text-section').forEach(el => {
+                    el.style.fontSize = '2rem';
+                });
+                document.querySelectorAll('.code-block').forEach(el => {
+                    el.style.fontSize = '1.8rem';
+                });
+                e.preventDefault();
+            }
+        });
+        
+        // Автоматическое переключение слайдов (опционально, для демонстрации)
+        let autoAdvanceInterval = null;
+        
+        function startAutoAdvance(interval = 10000) { // 10 секунд
+            stopAutoAdvance();
+            autoAdvanceInterval = setInterval(() => {
+                if (currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                } else {
+                    goToSlide(0); // Возвращаемся к первому слайду
+                }
+            }, interval);
+        }
+        
+        function stopAutoAdvance() {
+            if (autoAdvanceInterval) {
+                clearInterval(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+            }
+        }
+        
+        // Останавливаем автопереключение при взаимодействии пользователя
+        document.addEventListener('keydown', stopAutoAdvance);
+        document.addEventListener('click', stopAutoAdvance);
+        document.addEventListener('wheel', stopAutoAdvance);
+        
+        // Начинаем автопереключение через 30 секунд бездействия
+        let inactivityTimer = setTimeout(() => {
+            startAutoAdvance(15000); // 15 секунд на слайд
+        }, 30000);
+        
+        // Сбрасываем таймер бездействия при активности пользователя
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                startAutoAdvance(15000);
+            }, 30000);
+        }
+        
+        document.addEventListener('keydown', resetInactivityTimer);
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('wheel', resetInactivityTimer);
+    });
+</script>
+</body>
+</html>

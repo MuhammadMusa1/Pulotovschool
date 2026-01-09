@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск информации в интернете - Презентация для 9 класса</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #4a148c 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            height: 95vh;
+        }
+
+        .header {
+            background: linear-gradient(to right, #303f9f, #7b1fa2);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .slide-counter {
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .slides-container {
+            height: 800px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide h2 {
+            color: #303f9f;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #7b1fa2;
+            font-size: 2.2rem;
+        }
+
+        .slide p {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .slide ul, .slide ol {
+            margin-left: 30px;
+            margin-bottom: 25px;
+        }
+
+        .slide li {
+            margin-bottom: 12px;
+            font-size: 1.8rem;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background-color: #e8eaf6;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #303f9f;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: #f5f5f5;
+            border-top: 1px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #303f9f;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #283593;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:disabled {
+            background: #b0b0b0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-dots {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #7b1fa2;
+            transform: scale(1.2);
+        }
+
+        .visual-example {
+            background: #f9f9f9;
+            border-left: 5px solid #303f9f;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .visual-example h3 {
+            color: #303f9f;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: fit-content;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #388e3c;
+        }
+
+        .operator-example {
+            display: inline-block;
+            background: #e3f2fd;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+            font-family: monospace;
+            border: 1px solid #bbdefb;
+        }
+
+        .verification-checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .checklist-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid #7b1fa2;
+        }
+
+        .checklist-item h4 {
+            color: #303f9f;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+            }
+            
+            .slide h2 {
+                font-size: 1.8rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .nav-dots {
+                order: -1;
+            }
+            
+            .slides-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-search"></i>
+                <span>Поиск информации в интернете</span>
+            </div>
+            <div class="slide-counter">
+                Слайд: <span id="current-slide">1</span> из <span id="total-slides">10</span>
+            </div>
+        </div>
+        
+        <div class="slides-container">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <h2><i class="fas fa-globe-americas"></i> Поиск информации в интернете</h2>
+                <p>Искусство находить нужное быстро и эффективно</p>
+                <div class="visual-example">
+                    <h3><i class="fas fa-user-graduate"></i> Презентация для 9 класса</h3>
+                    <p>Ученика(цы) 9 класса</p>
+                    <p>Дата: <span id="current-date"></span></p>
+                </div>
+                <p>Сегодня мы научимся:</p>
+                <ul>
+                    <li>Эффективно использовать поисковые системы</li>
+                    <li>Формулировать точные запросы</li>
+                    <li>Оценивать достоверность информации</li>
+                    <li>Применять продвинутые техники поиска</li>
+                </ul>
+            </div>
+            
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <h2><i class="fas fa-water"></i> Цифровой океан информации</h2>
+                <p>Почему умение искать информацию так важно?</p>
+                <div class="visual-example">
+                    <h3><i class="fas fa-chart-line"></i> Масштабы интернета</h3>
+                    <p>В интернете более <span class="highlight">5 миллиардов</span> веб-страниц и это число постоянно растет!</p>
+                </div>
+                <ul>
+                    <li><span class="highlight">Не вся информация</span> в интернете является полезной, достоверной и безопасной</li>
+                    <li>Умение искать — ключевой навык 21 века для учебы, хобби и будущей работы</li>
+                    <li>Без правильных навыков можно потратить часы на поиск того, что можно найти за минуты</li>
+                    <li>Цель: научиться находить <span class="highlight">точные, актуальные и надежные</span> ответы за минимальное время</li>
+                </ul>
+            </div>
+            
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <h2><i class="fas fa-tools"></i> Основные инструменты поиска</h2>
+                <p>Чем мы ищем информацию в интернете?</p>
+                
+                <div class="verification-checklist">
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-search"></i> Поисковые системы</h4>
+                        <p><strong>Примеры:</strong> Google, Yandex, Bing</p>
+                        <p><strong>Принцип работы:</strong> Роботы (краулеры) постоянно сканируют сеть и создают индекс страниц</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-folder-open"></i> Каталоги сайтов</h4>
+                        <p><strong>Старый формат:</strong> DMOZ, Яндекс.Каталог</p>
+                        <p><strong>Принцип работы:</strong> Рубрикация сайтов людьми-редакторами</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-specialty-platforms"></i> Специализированные платформы</h4>
+                        <p><strong>Примеры:</strong> YouTube (видео), SlideShare (презентации), научные базы данных</p>
+                        <p><strong>Принцип работы:</strong> Поиск внутри конкретной платформы</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <h2><i class="fas fa-cogs"></i> Как работает поисковая система?</h2>
+                <p>Магия под капотом: от запроса к результату</p>
+                
+                <ol>
+                    <li><span class="highlight">Сканирование (Crawling)</span> — Поисковый робот обходит сайты по ссылкам</li>
+                    <li><span class="highlight">Индексирование (Indexing)</span> — Система анализирует и сохраняет содержимое страниц в гигантской базе данных</li>
+                    <li><span class="highlight">Обработка запроса</span> — Вы вводите запрос, система ищет в индексе релевантные (соответствующие) страницы</li>
+                    <li><span class="highlight">Ранжирование (Ranking)</span> — Алгоритмы сортируют результаты по полезности и авторитетности, выводя SERP (страницу выдачи)</li>
+                </ol>
+                
+                <div class="visual-example">
+                    <h3><i class="fas fa-sitemap"></i> Упрощенная схема работы</h3>
+                    <p>Запрос пользователя → Поиск в индексе → Ранжирование → Выдача результатов</p>
+                </div>
+            </div>
+            
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <h2><i class="fas fa-key"></i> Искусство формулировать запрос</h2>
+                <p>Ключ к успеху — правильный запрос</p>
+                
+                <div class="search-demo">
+                    <h3><i class="fas fa-lightbulb"></i> Попробуйте улучшить запрос:</h3>
+                    <p>Вместо: <span class="operator-example">животные Африки</span></p>
+                    <p>Попробуйте: <span class="operator-example">хищники саванны Танзании</span></p>
+                </div>
+                
+                <h3>Продвинутые операторы поиска:</h3>
+                <ul>
+                    <li><span class="operator-example">"Точная фраза"</span> — поиск точного словосочетания</li>
+                    <li><span class="operator-example">фортепиано -цифровое</span> — исключает слово из поиска</li>
+                    <li><span class="operator-example">site:gov.ru экология</span> — искать только на определенном сайте</li>
+                    <li><span class="operator-example">презентация кислые дожди filetype:pdf</span> — поиск по типу файла</li>
+                </ul>
+                
+                <div class="visual-example">
+                    <p><i class="fas fa-tip"></i> Совет: Выделяйте главные понятия (ключевые слова) в вашем запросе</p>
+                </div>
+            </div>
+            
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <h2><i class="fas fa-clipboard-check"></i> Оценка достоверности информации</h2>
+                <p>Доверяй, но проверяй! Верификация источников</p>
+                
+                <div class="verification-checklist">
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-user-edit"></i> Авторство</h4>
+                        <p>Кто написал материал? Есть ли контакты, регалии, экспертиза автора?</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-sitemap"></i> Источник</h4>
+                        <p>Официальный сайт (.gov, .edu), научный журнал, блог или форум?</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-calendar-alt"></i> Актуальность</h4>
+                        <p>Когда опубликовано? Данные не устарели? Всегда ищите дату публикации.</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-bullseye"></i> Цель</h4>
+                        <p>Информировать, продать, развлечь, манипулировать мнением?</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-exchange-alt"></i> Перекрестная проверка</h4>
+                        <p>Подтверждается ли информация на других уважаемых сайтах?</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-link"></i> Ссылки и источники</h4>
+                        <p>Есть ли ссылки на исследования, официальные данные, первоисточники?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <h2><i class="fas fa-shield-alt"></i> Безопасный и этичный поиск</h2>
+                <p>Правила цифровой гигиены</p>
+                
+                <ul>
+                    <li><span class="highlight">Безопасность:</span> Не переходите по подозрительным ссылкам в выдаче. Всегда смотрите на адрес сайта. Используйте антивирусное ПО.</li>
+                    <li><span class="highlight">Конфиденциальность:</span> Помните, что поисковики сохраняют историю запросов. Используйте режим инкогнито для личных вопросов.</li>
+                    <li><span class="highlight">Авторское право:</span> При использовании текстов, картинок, видео всегда указывайте источник информации.</li>
+                    <li><span class="highlight">Критическое мышление:</span> Избегайте фейков и недостоверных сенсаций. Проверяйте информацию в нескольких источниках.</li>
+                    <li><span class="highlight">Этикет:</span> Уважайте авторские права, не выдавайте чужую работу за свою (плагиат).</li>
+                </ul>
+                
+                <div class="visual-example">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Опасные признаки сайта</h3>
+                    <p>1. Ошибки в адресе (например, gooogle.com вместо google.com)</p>
+                    <p>2. Навязчивая реклама и всплывающие окна</p>
+                    <p>3. Требование личных данных без необходимости</p>
+                </div>
+            </div>
+            
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <h2><i class="fas fa-lightbulb"></i> Полезные лайфхаки</h2>
+                <p>Секреты эффективного поиска</p>
+                
+                <div class="verification-checklist">
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-image"></i> Поиск по картинке</h4>
+                        <p>Загрузите фото в Google Images или Яндекс.Картинки, чтобы найти его источник или похожие изображения</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-microphone"></i> Голосовой поиск</h4>
+                        <p>Удобно для сложных или длинных запросов. Экономит время при использовании смартфона</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-search-plus"></i> Расширенный поиск</h4>
+                        <p>Используйте Google Advanced Search для удобного применения всех операторов через графический интерфейс</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-columns"></i> Вертикальный поиск</h4>
+                        <p>Ищите отдельно новости, карты, товары, видео, книги для более точных результатов</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-bookmark"></i> Сохранение ссылок</h4>
+                        <p>Используйте закладки браузера или сервисы вроде Pocket, Notion для хранения важных найденных материалов</p>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <h4><i class="fas fa-language"></i> Перевод запроса</h4>
+                        <p>Для поиска на иностранных языках переведите запрос и ищите в соответствующем сегменте интернета</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <h2><i class="fas fa-graduation-cap"></i> Выводы: Поиск — это навык</h2>
+                <p>Что мы сегодня узнали?</p>
+                
+                <ul>
+                    <li>Эффективный поиск экономит <span class="highlight">время и нервы</span></li>
+                    <li>Это сочетание <span class="highlight">техники</span> (операторы поиска) и <span class="highlight">критического мышления</span> (верификация источников)</li>
+                    <li>Интернет — это инструмент, качество работы с которым зависит от пользователя</li>
+                    <li>Нужно постоянно тренироваться и быть вдумчивым исследователем цифрового мира</li>
+                    <li>Правильные навыки поиска пригодятся не только в учебе, но и в будущей профессиональной деятельности</li>
+                </ul>
+                
+                <div class="visual-example">
+                    <h3><i class="fas fa-rocket"></i> Ваши следующие шаги</h3>
+                    <p>1. Попрактикуйтесь с операторами поиска на реальных запросах</p>
+                    <p>2. Проверяйте источники информации для следующего школьного проекта</p>
+                    <p>3. Используйте полученные знания для безопасного и эффективного поиска</p>
+                </div>
+            </div>
+            
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <h2><i class="fas fa-comments"></i> Спасибо за внимание!</h2>
+                
+                <div class="visual-example" style="text-align: center; padding: 40px;">
+                    <h3><i class="fas fa-question-circle"></i> Есть вопросы?</h3>
+                    <p style="font-size: 1.4rem; margin: 25px 0;">Готов(а) ответить на ваши вопросы!</p>
+                    <p style="font-size: 1.2rem; margin-bottom: 15px;"><i class="fas fa-user"></i> Презентацию подготовил(а) ученик(ца) 9 класса</p>
+                    <p style="font-size: 1.2rem;"><i class="fas fa-calendar"></i> <span id="current-date-footer"></span></p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <h3><i class="fas fa-keyboard"></i> Управление презентацией</h3>
+                    <p>Используйте стрелки на клавиатуре ← → или кнопки ниже для навигации</p>
+                    <p style="margin-top: 20px; font-size: 1.1rem;"><i class="fas fa-lightbulb"></i> Удачи в освоении искусства поиска информации!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="nav-btn" id="prev-btn" disabled>
+                <i class="fas fa-arrow-left"></i> Назад
+            </button>
+            
+            <div class="nav-dots" id="nav-dots">
+                <!-- Точки навигации будут созданы через JS -->
+            </div>
+            
+            <button class="nav-btn" id="next-btn">
+                Вперед <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Установка текущей даты
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const formattedDate = now.toLocaleDateString('ru-RU', options);
+            document.getElementById('current-date').textContent = formattedDate;
+            document.getElementById('current-date-footer').textContent = formattedDate;
+            
+            // Элементы презентации
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const navDots = document.getElementById('nav-dots');
+            const currentSlideSpan = document.getElementById('current-slide');
+            const totalSlidesSpan = document.getElementById('total-slides');
+            
+            let currentSlide = 0;
+            totalSlidesSpan.textContent = slides.length;
+            
+            // Создание точек навигации
+            slides.forEach((slide, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => goToSlide(index));
+                navDots.appendChild(dot);
+            });
+            
+            // Функция перехода к слайду
+            function goToSlide(slideIndex) {
+                // Скрыть текущий слайд
+                slides[currentSlide].classList.remove('active');
+                document.querySelectorAll('.dot')[currentSlide].classList.remove('active');
+                
+                // Показать новый слайд
+                currentSlide = slideIndex;
+                slides[currentSlide].classList.add('active');
+                document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+                
+                // Обновить счетчик
+                currentSlideSpan.textContent = currentSlide + 1;
+                
+                // Обновить состояние кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+            }
+            
+            // Обработчики кнопок
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            });
+            
+            // Обработчики клавиш клавиатуры
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                } else if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            });
+            
+            // Демонстрация поискового запроса
+            const searchDemoBtn = document.querySelector('.search-btn');
+            if (searchDemoBtn) {
+                searchDemoBtn.addEventListener('click', function() {
+                    const searchInput = document.querySelector('.search-input');
+                    if (searchInput && searchInput.value.trim()) {
+                        alert(`Вы ищете: "${searchInput.value}". В реальном поисковике вы получили бы результаты по этому запросу.`);
+                    } else {
+                        alert('Пожалуйста, введите поисковый запрос для демонстрации.');
+                    }
+                });
+            }
+            
+            // Интерактивность для операторов поиска
+            const operatorExamples = document.querySelectorAll('.operator-example');
+            operatorExamples.forEach(example => {
+                example.addEventListener('click', function() {
+                    const text = this.textContent;
+                    alert(`Оператор поиска: ${text}\n\nСкопируйте этот оператор и попробуйте его в реальном поисковике!`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
