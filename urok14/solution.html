@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задачи по функциям Python - Уровни 5-10 баллов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d47a1 0%, #311b92 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(to right, #1565c0, #4527a0);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #ffeb3b;
+        }
+
+        .python-icon {
+            color: #3776ab;
+            font-weight: bold;
+        }
+
+        .level-counter {
+            font-size: 1.3rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .levels-sidebar {
+            width: 300px;
+            background: #f5f5f5;
+            border-right: 2px solid #ddd;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .levels-sidebar h2 {
+            color: #1565c0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1565c0;
+            font-size: 1.8rem;
+        }
+
+        .level-btn {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border: 2px solid #1565c0;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1565c0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .level-btn:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .level-btn.active {
+            background: #1565c0;
+            color: white;
+        }
+
+        .level-badge {
+            background: #ffeb3b;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 1rem;
+        }
+
+        .task-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .task-description {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 6px solid #4caf50;
+        }
+
+        .task-description h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-description p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .code-section {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 45px;
+            border-left: 6px solid #1565c0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-title {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+        }
+
+        .code-block {
+            background: #263238;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        .keyword {
+            color: #f92672;
+            font-weight: bold;
+        }
+
+        .function {
+            color: #66d9ef;
+        }
+
+        .string {
+            color: #e6db74;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .number {
+            color: #ae81ff;
+        }
+
+        .code-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .control-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .run-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        .run-btn:hover {
+            background: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn {
+            background: #2196f3;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #0b7dda;
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            background: #ff9800;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        .output-section {
+            background: #fff3e0;
+            border-radius: 15px;
+            padding: 15px;
+            border-left: 6px solid #ff9800;
+        }
+
+        .output-title {
+            color: #e65100;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+        }
+
+        .output {
+            background: #263238;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 1.4rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .hint-section {
+            background: #e3f2fd;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 6px solid #2196f3;
+            margin-top: 10px;
+        }
+
+        .hint-title {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+        }
+
+        .hint-content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        .task-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #0d47a1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:disabled {
+            background: #b0b0b0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .task-number {
+            font-size: 1.3rem;
+            color: #1565c0;
+            font-weight: bold;
+            background: #e3f2fd;
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        .success-message {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #2e7d32;
+            font-size: 1.3rem;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-message {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #c62828;
+            font-size: 1.3rem;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .levels-sidebar {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .task-content {
+                height: calc(100vh - 300px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fab fa-python"></i>
+                <span>Задачи по функциям <span class="python-icon">Python</span></span>
+            </div>
+            <div class="level-counter">
+                Уровень: <span id="current-level">5</span> баллов | Задача: <span id="current-task">1</span>/3
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="levels-sidebar">
+                <h2><i class="fas fa-layer-group"></i> Уровни сложности</h2>
+                <button class="level-btn active" data-level="5">
+                    <span>Уровень 5</span>
+                    <span class="level-badge">★☆☆☆☆</span>
+                </button>
+                <button class="level-btn" data-level="6">
+                    <span>Уровень 6</span>
+                    <span class="level-badge">★★☆☆☆</span>
+                </button>
+                <button class="level-btn" data-level="7">
+                    <span>Уровень 7</span>
+                    <span class="level-badge">★★★☆☆</span>
+                </button>
+                <button class="level-btn" data-level="8">
+                    <span>Уровень 8</span>
+                    <span class="level-badge">★★★★☆</span>
+                </button>
+                <button class="level-btn" data-level="9">
+                    <span>Уровень 9</span>
+                    <span class="level-badge">★★★★★</span>
+                </button>
+                <button class="level-btn" data-level="10">
+                    <span>Уровень 10</span>
+                    <span class="level-badge">★★★★★</span>
+                </button>
+            </div>
+            
+            <div class="task-content">
+                
+                
+                <div class="code-section">
+                    <div class="code-title"><i class="fas fa-code"></i> Решение</div>
+                    <div class="code-block" id="code-block">
+                        <span class="keyword">def</span> <span class="function">numbers_1_10</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(i)<br><br>
+                        <span class="function">numbers_1_10</span>()
+                    </div>
+                    
+                    <div class="code-controls">
+                        <button class="control-btn run-btn" id="run-btn">
+                            <i class="fas fa-play"></i> Выполнить
+                        </button>
+                        <button class="control-btn copy-btn" id="copy-btn">
+                            <i class="fas fa-copy"></i> Копировать код
+                        </button>
+                        <button class="control-btn reset-btn" id="reset-btn">
+                            <i class="fas fa-redo"></i> Сбросить вывод
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="output-section">
+                    <div class="output-title"><i class="fas fa-terminal"></i> Результат выполнения</div>
+                    <div class="output" id="output">Здесь появится результат выполнения кода...</div>
+                    
+                    <div class="success-message" id="success-message">
+                        <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                    </div>
+                    
+                    <div class="error-message" id="error-message">
+                        <i class="fas fa-exclamation-circle"></i> Произошла ошибка при выполнении
+                    </div>
+                </div>
+                
+                
+                
+                <div class="task-navigation">
+                    <button class="nav-btn" id="prev-task-btn" disabled>
+                        <i class="fas fa-arrow-left"></i> Предыдущая задача
+                    </button>
+                    
+                    <div class="task-number">
+                        Задача <span id="current-task-num">1</span> из <span id="total-tasks">3</span>
+                    </div>
+                    
+                    <button class="nav-btn" id="next-task-btn">
+                        Следующая задача <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные о задачах по уровням
+        const tasksData = {
+            5: [
+                {
+                    title: "Числа от 1 до 10",
+                    description: "Напишите функцию numbers_1_10(), которая выводит числа от 1 до 10 включительно, каждое с новой строки.",
+                    code: `def numbers_1_10():\n    for i in range(1, 11):\n        print(i)\n\nnumbers_1_10()`,
+                    hint: "Используйте цикл for с функцией range(). Помните, что range(1, 11) генерирует числа от 1 до 10 включительно."
+                },
+                {
+                    title: "Слово 'Python' 5 раз",
+                    description: "Напишите функцию print_python(), которая выводит слово 'Python' 5 раз, каждое с новой строки.",
+                    code: `def print_python():\n    for i in range(5):\n        print("Python")\n\nprint_python()`,
+                    hint: "Используйте цикл for с range(5). Каждую итерацию выводите строку 'Python'."
+                },
+                {
+                    title: "Проверка числа (положительное или нет)",
+                    description: "Напишите функцию check_positive(n), которая принимает число и выводит 'Положительное', если число больше 0, иначе выводит 'Не положительное'.",
+                    code: `def check_positive(n):\n    if n > 0:\n        print("Положительное")\n    else:\n        print("Не положительное")\n\ncheck_positive(3)`,
+                    hint: "Используйте условный оператор if-else для проверки условия n > 0."
+                }
+            ],
+            6: [
+                {
+                    title: "Чётные числа от 1 до 20",
+                    description: "Напишите функцию even_numbers(), которая выводит все чётные числа от 1 до 20 включительно, каждое с новой строки.",
+                    code: `def even_numbers():\n    for i in range(2, 21, 2):\n        print(i)\n\neven_numbers()`,
+                    hint: "Используйте цикл for с функцией range(2, 21, 2). Третий аргумент 2 означает шаг."
+                },
+                {
+                    title: "Таблица умножения на N",
+                    description: "Напишите функцию table_n(n), которая принимает число n и выводит таблицу умножения на это число от 1 до 10.",
+                    code: `def table_n(n):\n    for i in range(1, 11):\n        print(n, "*", i, "=", n * i)\n\ntable_n(4)`,
+                    hint: "Используйте цикл for от 1 до 10. На каждой итерации выводите произведение n и i."
+                },
+                {
+                    title: "Большее из двух чисел",
+                    description: "Напишите функцию max_two(a, b), которая принимает два числа и выводит большее из них.",
+                    code: `def max_two(a, b):\n    if a > b:\n        print(a)\n    else:\n        print(b)\n\nmax_two(7, 3)`,
+                    hint: "Используйте условный оператор if-else для сравнения двух чисел."
+                }
+            ],
+            7: [
+                {
+                    title: "Сумма чисел от 1 до 100",
+                    description: "Напишите функцию sum_1_100(), которая вычисляет и выводит сумму всех чисел от 1 до 100 включительно.",
+                    code: `def sum_1_100():\n    total = 0\n    for i in range(1, 101):\n        total += i\n    print(total)\n\nsum_1_100()`,
+                    hint: "Создайте переменную total, инициализированную нулём, и добавляйте к ней каждое число из цикла."
+                },
+                {
+                    title: "Вывод букв строки",
+                    description: "Напишите функцию print_letters(text), которая принимает строку и выводит каждый её символ на отдельной строке.",
+                    code: `def print_letters(text):\n    for ch in text:\n        print(ch)\n\nprint_letters("Python")`,
+                    hint: "Используйте цикл for для перебора символов строки. В Python строки можно перебирать напрямую."
+                },
+                {
+                    title: "Чётное или нечётное",
+                    description: "Напишите функцию even_or_odd(n), которая принимает число и выводит 'Чётное', если число чётное, и 'Нечётное', если нечётное.",
+                    code: `def even_or_odd(n):\n    if n % 2 == 0:\n        print("Чётное")\n    else:\n        print("Нечётное")\n\neven_or_odd(5)`,
+                    hint: "Используйте оператор % для получения остатка от деления на 2. Если остаток 0 - число чётное."
+                }
+            ],
+            8: [
+                {
+                    title: "Только положительные из 5 чисел",
+                    description: "Напишите функцию positive_numbers(), которая 5 раз запрашивает у пользователя число и выводит только положительные числа.",
+                    code: `def positive_numbers():\n    for i in range(5):\n        n = int(input())\n        if n > 0:\n            print(n)\n\npositive_numbers()`,
+                    hint: "Используйте цикл for для 5 итераций. Внутри цикла получайте ввод пользователя и проверяйте условие."
+                },
+                {
+                    title: "Проверка диапазона (10 < n < 100)",
+                    description: "Напишите функцию check_range(n), которая принимает число и проверяет, находится ли оно в диапазоне от 10 до 100 (не включая границы).",
+                    code: `def check_range(n):\n    if n > 10 and n < 100:\n        print("В диапазоне")\n    else:\n        print("Вне диапазона")\n\ncheck_range(50)`,
+                    hint: "Используйте составное условие с оператором and. Помните, что границы не включаются."
+                },
+                {
+                    title: "Среднее значение 5 чисел",
+                    description: "Напишите функцию average_5(), которая запрашивает у пользователя 5 чисел и выводит их среднее арифметическое.",
+                    code: `def average_5():\n    total = 0\n    for i in range(5):\n        n = int(input())\n        total += n\n    print(total / 5)\n\naverage_5()`,
+                    hint: "Суммируйте все введённые числа, затем разделите сумму на 5. Не забудьте преобразовать ввод в целое число."
+                }
+            ],
+            9: [
+                {
+                    title: "Количество чётных из 10 чисел",
+                    description: "Напишите функцию count_even(), которая 10 раз запрашивает у пользователя число и выводит количество чётных чисел.",
+                    code: `def count_even():\n    count = 0\n    for i in range(10):\n        n = int(input())\n        if n % 2 == 0:\n            count += 1\n    print(count)\n\ncount_even()`,
+                    hint: "Создайте переменную-счётчик, увеличивайте её при каждом вводе чётного числа."
+                },
+                {
+                    title: "Минимум и максимум списка",
+                    description: "Напишите функцию min_max(nums), которая принимает список чисел и выводит минимальное и максимальное значение.",
+                    code: `def min_max(nums):\n    print("Минимум:", min(nums))\n    print("Максимум:", max(nums))\n\nmin_max([3, 7, 1, 9, 4])`,
+                    hint: "Используйте встроенные функции min() и max() для работы со списками."
+                },
+                {
+                    title: "Числа с суммой цифр = 5",
+                    description: "Напишите функцию sum_digits_5(), которая выводит все числа от 1 до 100, сумма цифр которых равна 5.",
+                    code: `def sum_digits_5():\n    for i in range(1, 101):\n        if (i // 10) + (i % 10) == 5:\n            print(i)\n\nsum_digits_5()`,
+                    hint: "Для двузначных чисел: десятки = i // 10, единицы = i % 10. Для однозначных чисел это тоже работает."
+                }
+            ],
+            10: [
+                {
+                    title: "Сумма чисел до ввода 0",
+                    description: "Напишите функцию sum_until_zero(), которая запрашивает у пользователя числа до тех пор, пока не будет введён 0, затем возвращает сумму всех введённых чисел.",
+                    code: `def sum_until_zero():\n    total = 0\n    while True:\n        n = int(input())\n        if n == 0:\n            break\n        total += n\n    return total\n\nprint(sum_until_zero())`,
+                    hint: "Используйте бесконечный цикл while True и оператор break для выхода при вводе 0."
+                },
+                {
+                    title: "Простые числа от 2 до 100",
+                    description: "Напишите функцию primes_2_100(), которая выводит все простые числа от 2 до 100 включительно.",
+                    code: `def primes_2_100():\n    for n in range(2, 101):\n        prime = True\n        for d in range(2, n):\n            if n % d == 0:\n                prime = False\n                break\n        if prime:\n            print(n)\n\nprimes_2_100()`,
+                    hint: "Число простое, если оно делится только на 1 и на себя. Проверяйте делители от 2 до n-1."
+                },
+                {
+                    title: "Таблица умножения от 1 до N",
+                    description: "Напишите функцию table_1_to_n(N), которая принимает число N и выводит таблицы умножения от 1 до N.",
+                    code: `def table_1_to_n(N):\n    for i in range(1, N + 1):\n        for j in range(1, 11):\n            print(i, "*", j, "=", i * j)\n        print()\n\ntable_1_to_n(5)`,
+                    hint: "Используйте вложенные циклы: внешний для множителей от 1 до N, внутренний для чисел от 1 до 10."
+                }
+            ]
+        };
+
+        // Переменные состояния
+        let currentLevel = 5;
+        let currentTask = 0;
+        let taskHistory = [];
+
+        // DOM элементы
+        const levelButtons = document.querySelectorAll('.level-btn');
+        const currentLevelSpan = document.getElementById('current-level');
+        const currentTaskSpan = document.getElementById('current-task');
+        const taskText = document.getElementById('task-text');
+        const codeBlock = document.getElementById('code-block');
+        const output = document.getElementById('output');
+        const hintContent = document.getElementById('hint-content');
+        const runBtn = document.getElementById('run-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const prevTaskBtn = document.getElementById('prev-task-btn');
+        const nextTaskBtn = document.getElementById('next-task-btn');
+        const currentTaskNum = document.getElementById('current-task-num');
+        const totalTasks = document.getElementById('total-tasks');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+
+        // Инициализация
+        function init() {
+            updateLevel(5);
+            updateTask(0);
+            
+            // Добавляем обработчики для кнопок уровней
+            levelButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const level = parseInt(btn.dataset.level);
+                    updateLevel(level);
+                    updateTask(0);
+                });
+            });
+            
+            // Обработчики для кнопок управления
+            runBtn.addEventListener('click', runCode);
+            copyBtn.addEventListener('click', copyCode);
+            resetBtn.addEventListener('click', resetOutput);
+            prevTaskBtn.addEventListener('click', previousTask);
+            nextTaskBtn.addEventListener('click', nextTask);
+            
+            // Горячие клавиши
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // Обновление уровня
+        function updateLevel(level) {
+            currentLevel = level;
+            currentTask = 0;
+            
+            // Обновляем активную кнопку уровня
+            levelButtons.forEach(btn => {
+                if (parseInt(btn.dataset.level) === level) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Обновляем отображение уровня
+            currentLevelSpan.textContent = level;
+            
+            // Обновляем общее количество задач
+            totalTasks.textContent = tasksData[level].length;
+        }
+
+        // Обновление задачи
+        function updateTask(taskIndex) {
+            const tasks = tasksData[currentLevel];
+            currentTask = taskIndex;
+            
+            // Проверяем границы
+            if (currentTask < 0) currentTask = 0;
+            if (currentTask >= tasks.length) currentTask = tasks.length - 1;
+            
+            // Получаем данные задачи
+            const task = tasks[currentTask];
+            
+            // Обновляем интерфейс
+            taskText.innerHTML = `<strong>${task.title}</strong><br>${task.description}`;
+            codeBlock.innerHTML = highlightCode(task.code);
+            hintContent.textContent = task.hint;
+            
+            // Обновляем номера задач
+            currentTaskSpan.textContent = currentTask + 1;
+            currentTaskNum.textContent = currentTask + 1;
+            
+            // Обновляем состояние кнопок навигации
+            prevTaskBtn.disabled = currentTask === 0;
+            nextTaskBtn.disabled = currentTask === tasks.length - 1;
+            
+            // Сбрасываем вывод
+            resetOutput();
+        }
+
+        // Подсветка синтаксиса кода
+        function highlightCode(code) {
+            return code
+                .replace(/def\b/g, '<span class="keyword">def</span>')
+                .replace(/for\b/g, '<span class="keyword">for</span>')
+                .replace(/in\b/g, '<span class="keyword">in</span>')
+                .replace(/range\b/g, '<span class="function">range</span>')
+                .replace(/print\b/g, '<span class="function">print</span>')
+                .replace(/if\b/g, '<span class="keyword">if</span>')
+                .replace(/else\b/g, '<span class="keyword">else</span>')
+                .replace(/elif\b/g, '<span class="keyword">elif</span>')
+                .replace(/while\b/g, '<span class="keyword">while</span>')
+                .replace(/True\b/g, '<span class="keyword">True</span>')
+                .replace(/False\b/g, '<span class="keyword">False</span>')
+                .replace(/break\b/g, '<span class="keyword">break</span>')
+                .replace(/return\b/g, '<span class="keyword">return</span>')
+                .replace(/int\b/g, '<span class="function">int</span>')
+                .replace(/input\b/g, '<span class="function">input</span>')
+                .replace(/min\b/g, '<span class="function">min</span>')
+                .replace(/max\b/g, '<span class="function">max</span>')
+                .replace(/sum\b/g, '<span class="function">sum</span>')
+                .replace(/\b\d+\b/g, '<span class="number">$&</span>')
+                .replace(/"[^"]*"/g, '<span class="string">$&</span>')
+                .replace(/'[^']*'/g, '<span class="string">$&</span>')
+                .replace(/#.*$/gm, '<span class="comment">$&</span>')
+                .replace(/\n/g, '<br>')
+                .replace(/    /g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+                .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+        }
+
+        // Выполнение кода
+        function runCode() {
+            const code = tasksData[currentLevel][currentTask].code;
+            output.textContent = "Выполнение...";
+            output.style.color = "#ff9800";
+            
+            // Скрываем сообщения
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Эмуляция ввода для функций с input()
+            let inputIndex = 0;
+            const inputs = getTestInputs(currentLevel, currentTask);
+            
+            // Сохраняем оригинальный input
+            const originalInput = window.input;
+            
+            // Переопределяем input для эмуляции ввода
+            window.input = function(prompt) {
+                if (inputIndex < inputs.length) {
+                    return inputs[inputIndex++];
+                }
+                return "";
+            };
+            
+            // Сохраняем оригинальный console.log
+            const originalLog = console.log;
+            const logs = [];
+            
+            // Перехватываем вывод
+            console.log = function(...args) {
+                logs.push(args.join(' '));
+            };
+            
+            // Выполняем код с задержкой для визуализации
+            setTimeout(() => {
+                try {
+                    // Создаем безопасную функцию
+                    const func = new Function(code);
+                    const result = func();
+                    
+                    // Восстанавливаем оригинальные функции
+                    console.log = originalLog;
+                    window.input = originalInput;
+                    
+                    // Формируем вывод
+                    let outputText = logs.join('\n');
+                    
+                    // Добавляем возвращаемое значение, если есть
+                    if (result !== undefined) {
+                        if (outputText) outputText += '\n';
+                        outputText += `Возвращено: ${result}`;
+                    }
+                    
+                    output.textContent = outputText || "✓ Код выполнен успешно (нет вывода в консоль)";
+                    output.style.color = "#4caf50";
+                    
+                    // Показываем сообщение об успехе
+                    successMessage.style.display = 'flex';
+                    
+                } catch (error) {
+                    // Восстанавливаем оригинальные функции
+                    console.log = originalLog;
+                    window.input = originalInput;
+                    
+                    output.textContent = `✗ Ошибка: ${error.message}`;
+                    output.style.color = "#f44336";
+                    
+                    // Показываем сообщение об ошибке
+                    errorMessage.style.display = 'flex';
+                }
+            }, 500);
+        }
+
+        // Тестовые входные данные для функций с input()
+        function getTestInputs(level, taskIndex) {
+            const inputs = {
+                8: {
+                    0: ['-5', '10', '0', '7', '-3'], // positive_numbers
+                    2: ['10', '20', '30', '40', '50'] // average_5
+                },
+                9: {
+                    0: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] // count_even
+                },
+                10: {
+                    0: ['5', '10', '15', '0'], // sum_until_zero
+                }
+            };
+            
+            return inputs[level]?.[taskIndex] || [];
+        }
+
+        // Копирование кода
+        function copyCode() {
+            const code = tasksData[currentLevel][currentTask].code;
+            navigator.clipboard.writeText(code)
+                .then(() => {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+                    copyBtn.style.background = '#4caf50';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.style.background = '';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Ошибка при копировании:', err);
+                });
+        }
+
+        // Сброс вывода
+        function resetOutput() {
+            output.textContent = "Здесь появится результат выполнения кода...";
+            output.style.color = "white";
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        // Переход к предыдущей задаче
+        function previousTask() {
+            if (currentTask > 0) {
+                updateTask(currentTask - 1);
+            }
+        }
+
+        // Переход к следующей задаче
+        function nextTask() {
+            const tasks = tasksData[currentLevel];
+            if (currentTask < tasks.length - 1) {
+                updateTask(currentTask + 1);
+            }
+        }
+
+        // Обработка горячих клавиш
+        function handleKeyPress(e) {
+            // Ctrl+Enter - выполнить код
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+            
+            // Стрелки влево/вправо - переключение задач
+            if (e.key === 'ArrowLeft' && !e.ctrlKey) {
+                e.preventDefault();
+                previousTask();
+            } else if (e.key === 'ArrowRight' && !e.ctrlKey) {
+                e.preventDefault();
+                nextTask();
+            }
+            
+            // Цифры 1-6 - переключение уровней
+            if (e.key >= '1' && e.key <= '6') {
+                const level = parseInt(e.key) + 4; // 1 -> 5, 2 -> 6, etc.
+                if (level >= 5 && level <= 10) {
+                    e.preventDefault();
+                    updateLevel(level);
+                    updateTask(0);
+                }
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

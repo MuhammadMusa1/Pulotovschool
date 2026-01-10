@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Задачи по функциям Python • 5–10 уровень</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 12px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(30,41,59,0.6);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(90deg, #4f46e5, #7c3aed);
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .logo i {
+      color: #fde047;
+      margin-right: 10px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+    }
+
+    .sidebar {
+      background: rgba(15,23,42,0.5);
+      padding: 1.5rem;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .sidebar h2 {
+      color: #a5b4fc;
+      margin-bottom: 1.2rem;
+    }
+
+    .level-btn {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 6px 0;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #cbd5e1;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .level-btn:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateX(4px);
+    }
+
+    .level-btn.active {
+      background: #6366f1;
+      color: white;
+      border-color: #818cf8;
+    }
+
+    .main {
+      padding: 1.8rem 2rem;
+    }
+
+    h1.task-title {
+      font-size: 1.9rem;
+      margin-bottom: 0.9rem;
+      color: #c7d2fe;
+    }
+
+    .description {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      margin-bottom: 1.6rem;
+    }
+
+    code {
+      background: #1e293b;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', monospace;
+    }
+
+    pre.code {
+      background: #0f172a;
+      padding: 1.3rem;
+      border-radius: 12px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      border-left: 4px solid #6366f1;
+      margin: 1.2rem 0;
+      white-space: pre;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 1.4rem 0;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.18s;
+      color: white;
+    }
+
+    .btn-run    { background: #10b981; }
+    .btn-copy   { background: #3b82f6; }
+    .btn-reset  { background: #f59e0b; }
+
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    #output {
+      background: #020617;
+      color: #94a3b8;
+      padding: 1.3rem;
+      border-radius: 12px;
+      min-height: 140px;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      border-left: 4px solid #f59e0b;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 900px) {
+      .content { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="logo">
+      <i class="fab fa-python"></i>
+      Задачи по функциям Python
+    </div>
+    <div>Уровень: <strong id="level">5</strong>  •  Задача <strong id="task-n">1</strong>/<span id="total-tasks">3</span></div>
+  </header>
+
+  <div class="content">
+    <div class="sidebar">
+      <h2><i class="fas fa-layer-group"></i> Уровни</h2>
+      <button class="level-btn active" data-level="5">Уровень 5 ★</button>
+      <button class="level-btn" data-level="6">Уровень 6 ★★</button>
+      <button class="level-btn" data-level="7">Уровень 7 ★★★</button>
+      <button class="level-btn" data-level="8">Уровень 8 ★★★★</button>
+      <button class="level-btn" data-level="9">Уровень 9 ★★★★★</button>
+      <button class="level-btn" data-level="10">Уровень 10 ★★★★★</button>
+    </div>
+
+    <div class="main">
+      <h1 class="task-title" id="title">Числа от 1 до 10</h1>
+
+      <div class="description" id="desc">
+        Напишите функцию <code>numbers_1_10()</code>, которая выводит числа от 1 до 10 включительно, каждое с новой строки.
+      </div>
+
+      <pre class="code" id="code-block">def numbers_1_10():
+    for i in range(1, 11):
+        print(i)
+
+numbers_1_10()</pre>
+
+      <div class="controls">
+        <button class="btn btn-run" id="run-btn"><i class="fas fa-play"></i> Выполнить</button>
+        <button class="btn btn-copy" id="copy-btn"><i class="fas fa-copy"></i> Копировать</button>
+        <button class="btn btn-reset" id="reset-btn"><i class="fas fa-undo"></i> Сбросить</button>
+      </div>
+
+      <div id="output">Результат появится здесь...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TASKS = {
+  5: [
+    { title: "Числа от 1 до 10", desc: "Напишите функцию <code>numbers_1_10()</code>, которая выводит числа от 1 до 10 включительно, каждое с новой строки.", code: "def numbers_1_10():\n    for i in range(1, 11):\n        print(i)\n\nnumbers_1_10()" },
+    { title: "Слово Python 5 раз", desc: "Напишите функцию <code>print_python()</code>, которая выводит слово \"Python\" ровно 5 раз (каждое на новой строке).", code: "def print_python():\n    for _ in range(5):\n        print(\"Python\")\n\nprint_python()" },
+    { title: "Положительное или нет", desc: "Напишите функцию <code>check_positive(n)</code>, которая выводит «Положительное», если число > 0, иначе — «Не положительное».", code: "def check_positive(n):\n    if n > 0:\n        print(\"Положительное\")\n    else:\n        print(\"Не положительное\")\n\ncheck_positive(8)" }
+  ],
+  6: [
+    { title: "Чётные числа 2–20", desc: "Функция <code>even_numbers()</code> должна вывести все чётные числа от 2 до 20 включительно.", code: "def even_numbers():\n    for i in range(2, 21, 2):\n        print(i)\n\neven_numbers()" },
+    { title: "Таблица умножения", desc: "Функция <code>table_n(n)</code> выводит таблицу умножения на число n от 1×n до 10×n.", code: "def table_n(n):\n    for i in range(1,11):\n        print(f\"{n} × {i} = {n*i}\")\n\ntable_n(7)" },
+    { title: "Максимум из двух", desc: "Функция <code>max_two(a,b)</code> должна вывести большее из двух чисел.", code: "def max_two(a, b):\n    print(a if a >= b else b)\n\nmax_two(25, 17)" }
+  ],
+  7: [
+    { title: "Сумма 1..100", desc: "Функция <code>sum_1_100()</code> выводит сумму всех чисел от 1 до 100 включительно.", code: "def sum_1_100():\n    print(sum(range(1,101)))\n\nsum_1_100()" },
+    { title: "Символы строки", desc: "Функция <code>print_chars(text)</code> выводит каждый символ строки на отдельной строке.", code: "def print_chars(text):\n    for c in text:\n        print(c)\n\nprint_chars(\"Python\")" },
+    { title: "Чёт/нечёт", desc: "Функция <code>even_odd(n)</code> выводит «Чётное» или «Нечётное».", code: "def even_odd(n):\n    print(\"Чётное\" if n % 2 == 0 else \"Нечётное\")\n\neven_odd(56)" }
+  ],
+  // Добавьте остальные уровни по желанию по тому же шаблону
+  // 8,9,10 уровни можно дополнить позже
+};
+
+let currentLevel = 5;
+let currentTaskIndex = 0;
+
+const levelDisplay = document.getElementById("level");
+const taskNumDisplay = document.getElementById("task-n");
+const totalTasksDisplay = document.getElementById("total-tasks");
+const titleEl = document.getElementById("title");
+const descEl = document.getElementById("desc");
+const codeEl = document.getElementById("code-block");
+const outputEl = document.getElementById("output");
+
+function loadTask() {
+  const tasks = TASKS[currentLevel];
+  if (!tasks || !tasks[currentTaskIndex]) return;
+
+  const task = tasks[currentTaskIndex];
+
+  titleEl.textContent = task.title;
+  descEl.innerHTML = task.desc;
+  codeEl.textContent = task.code;
+
+  levelDisplay.textContent = currentLevel;
+  taskNumDisplay.textContent = currentTaskIndex + 1;
+  totalTasksDisplay.textContent = tasks.length;
+
+  outputEl.textContent = "Результат появится здесь...";
+  outputEl.style.color = "#94a3b8";
+}
+
+function runCode() {
+  const code = codeEl.textContent;
+  outputEl.textContent = "Выполняется...\n\n";
+  outputEl.style.color = "#fbbf24";
+
+  const oldLog = console.log;
+  let logs = [];
+
+  console.log = (...args) => {
+    logs.push(args.join(" "));
+  };
+
+  try {
+    new Function(code)();
+    const result = logs.join("\n") || "(ничего не выведено)";
+    outputEl.textContent = result;
+    outputEl.style.color = "#a5b4fc";
+  } catch (err) {
+    outputEl.textContent = "Ошибка:\n" + err.message;
+    outputEl.style.color = "#f87171";
+  } finally {
+    console.log = oldLog;
+  }
+}
+
+document.querySelectorAll(".level-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelector(".level-btn.active")?.classList.remove("active");
+    btn.classList.add("active");
+    currentLevel = Number(btn.dataset.level);
+    currentTaskIndex = 0;
+    loadTask();
+  };
+});
+
+document.getElementById("run-btn").onclick = runCode;
+
+document.getElementById("copy-btn").onclick = () => {
+  navigator.clipboard.writeText(codeEl.textContent)
+    .then(() => alert("Код скопирован!"))
+    .catch(() => alert("Не удалось скопировать :("));
+};
+
+document.getElementById("reset-btn").onclick = () => {
+  outputEl.textContent = "Результат появится здесь...";
+  outputEl.style.color = "#94a3b8";
+};
+
+loadTask();
+</script>
+</body>
+</html>
