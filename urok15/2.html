@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Решения задач: Функции Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #2b2b2b;
+            color: #f8f8f8;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slides-container {
+            display: flex;
+            height: 110vh;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            padding: 40px;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        
+        .slide-header {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .slide-title {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .slide-number {
+            font-size: 1rem;
+            color: #777;
+        }
+        
+        .code-container {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 30px;
+            font-size: 2rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            border-left: 5px solid;
+        }
+        
+        .level-5 .code-container { border-color: #4CAF50; }
+        .level-6 .code-container { border-color: #FFC107; }
+        .level-7 .code-container { border-color: #2196F3; }
+        .level-8 .code-container { border-color: #9C27B0; }
+        .level-9 .code-container { border-color: #F44336; }
+        .level-10 .code-container { border-color: #607D8B; }
+        
+        .keyword { color: #569cd6; }
+        .function { color: #dcdcaa; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .number { color: #b5cea8; }
+        .builtin { color: #4ec9b0; }
+        
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: rgba(0, 122, 204, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 122, 204, 1);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #444;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #007acc;
+            width: 8.33%;
+            transition: transform 0.3s ease;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Стили для каждой секции задач */
+        .level-5 { background: #1a2c1a; }
+        .level-6 { background: #2c2a1a; }
+        .level-7 { background: #1a2c2c; }
+        .level-8 { background: #2a1a2c; }
+        .level-9 { background: #2c1a1a; }
+        .level-10 { background: #2c2c2c; }
+        
+        /* Убрать полосы прокрутки */
+        .slides-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .slides-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    
+    <div class="slide-counter" id="slide-counter">1/12</div>
+    
+    <div class="slides-container" id="slides-container">
+        <!-- Слайд 1 -->
+        <div class="slide level-5">
+           <div class="code-container">
+<pre><span class="comment"># 1. Функция приветствия</span>
+<span class="keyword">def</span> <span class="function">greet</span>(name):
+    <span class="builtin">print</span>(<span class="string">f"Assalomu alaykum, {name}!"</span>)
+
+<span class="function">greet</span>(<span class="string">"Farrukh"</span>)
+<span class="function">greet</span>(<span class="string">"Aziza"</span>)
+
+<span class="comment"># 2. Площадь ковра</span>
+<span class="keyword">def</span> <span class="function">carpet_area</span>(side):
+    area = side * side
+    <span class="builtin">print</span>(area)
+
+<span class="function">carpet_area</span>(<span class="number">4</span>)
+
+<span class="comment"># 3. Приготовление напитка</span>
+<span class="keyword">def</span> <span class="function">make_drink</span>(drink):
+    <span class="builtin">print</span>(<span class="string">f"{drink} is ready!"</span>)
+
+<span class="function">make_drink</span>(<span class="string">"Tea"</span>)
+<span class="function">make_drink</span>(<span class="string">"Sherbet"</span>)</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 2 -->
+        <div class="slide level-5">
+            
+            <div class="code-container">
+<pre><span class="comment"># 📘 Шпаргалка для уровня 5:</span>
+<span class="comment"># 1. def - ключевое слово для создания функции</span>
+<span class="keyword">def</span> <span class="function">function_name</span>(parameter1, parameter2):
+
+<span class="comment"># 2. Параметры в скобках - переменные, принимающие значения</span>
+    result = parameter1 + parameter2
+
+<span class="comment"># 3. print() - вывод информации на экран</span>
+    <span class="builtin">print</span>(result)
+
+<span class="comment"># 4. Вызов функции с аргументами</span>
+<span class="function">function_name</span>(<span class="number">10</span>, <span class="number">20</span>)
+
+<span class="comment"># Важно: параметры vs аргументы:</span>
+<span class="comment"># - Параметры: переменные в определении функции</span>
+<span class="comment"># - Аргументы: фактические значения при вызове</span></pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 3 -->
+        <div class="slide level-6">
+            
+            <div class="code-container">
+<pre><span class="comment"># 1. Цена со скидкой</span>
+<span class="keyword">def</span> <span class="function">discount_price</span>(price, percent):
+    discount = price * percent / <span class="number">100</span>
+    <span class="keyword">return</span> price - discount
+
+<span class="builtin">print</span>(<span class="function">discount_price</span>(<span class="number">100</span>, <span class="number">10</span>))
+
+<span class="comment"># 2. Расчет риса на плов</span>
+<span class="keyword">def</span> <span class="function">rice_amount</span>(people):
+    grams = people * <span class="number">200</span>
+    kg = grams / <span class="number">1000</span>
+    <span class="keyword">return</span> kg
+
+<span class="builtin">print</span>(<span class="function">rice_amount</span>(<span class="number">10</span>))
+
+<span class="comment"># 3. Конвертер валют</span>
+<span class="keyword">def</span> <span class="function">convert_currency</span>(somoni, rate):
+    <span class="keyword">return</span> somoni / rate
+
+<span class="builtin">print</span>(<span class="function">convert_currency</span>(<span class="number">1000</span>, <span class="number">11.0</span>))</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 4 -->
+        <div class="slide level-6">
+            
+            <div class="code-container">
+<pre><span class="comment"># 📘 Шпаргалка для уровня 6:</span>
+<span class="comment"># 1. return - возвращает значение из функции</span>
+<span class="keyword">def</span> <span class="function">add</span>(a, b):
+    <span class="keyword">return</span> a + b
+
+<span class="comment"># 2. Результат можно сохранить в переменную</span>
+result = <span class="function">add</span>(<span class="number">5</span>, <span class="number">3</span>)
+
+<span class="comment"># 3. Или использовать напрямую</span>
+<span class="builtin">print</span>(<span class="function">add</span>(<span class="number">10</span>, <span class="number">20</span>))
+
+<span class="comment"># 4. Функция без return возвращает None</span>
+<span class="keyword">def</span> <span class="function">no_return</span>():
+    <span class="builtin">print</span>(<span class="string">"Hello"</span>)
+
+x = <span class="function">no_return</span>()  <span class="comment"># x = None</span>
+
+<span class="comment"># Важно: return завершает выполнение функции</span>
+<span class="keyword">def</span> <span class="function">example</span>():
+    <span class="keyword">return</span> <span class="number">1</span>
+    <span class="builtin">print</span>(<span class="string">"Это не выполнится"</span>)</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 5 -->
+        <div class="slide level-7">
+            
+            <div class="code-container">
+<pre><span class="comment"># 1. Оценка по баллам</span>
+<span class="keyword">def</span> <span class="function">get_grade</span>(score):
+    <span class="keyword">if</span> score >= <span class="number">90</span>:
+        <span class="keyword">return</span> <span class="string">"5"</span>
+    <span class="keyword">elif</span> score >= <span class="number">75</span>:
+        <span class="keyword">return</span> <span class="string">"4"</span>
+    <span class="keyword">elif</span> score >= <span class="number">60</span>:
+        <span class="keyword">return</span> <span class="string">"3"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"2"</span>
+
+<span class="builtin">print</span>(<span class="function">get_grade</span>(<span class="number">85</span>))
+
+<span class="comment"># 2. Описание погоды</span>
+<span class="keyword">def</span> <span class="function">weather</span>(temp):
+    <span class="keyword">if</span> temp < <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="string">"Cold"</span>
+    <span class="keyword">elif</span> temp <= <span class="number">25</span>:
+        <span class="keyword">return</span> <span class="string">"Normal"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"Hot"</span>
+
+<span class="comment"># 3. Четное или нечетное</span>
+<span class="keyword">def</span> <span class="function">is_even</span>(number):
+    <span class="keyword">if</span> number % <span class="number">2</span> == <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="string">"even"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"odd"</span></pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 6 -->
+        <div class="slide level-7">
+            
+            <div class="code-container">
+<pre><span class="comment"># 📘 Шпаргалка для уровня 7:</span>
+<span class="comment"># 1. Условия в функциях работают как обычно</span>
+<span class="keyword">def</span> <span class="function">check_number</span>(n):
+    <span class="keyword">if</span> n > <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="string">"positive"</span>
+    <span class="keyword">elif</span> n < <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="string">"negative"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"zero"</span>
+
+<span class="comment"># 2. Все ветки if должны возвращать значение</span>
+<span class="keyword">def</span> <span class="function">correct_function</span>(x):
+    <span class="keyword">if</span> x > <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="string">"plus"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"minus or zero"</span>
+
+<span class="comment"># 3. Можно использовать логические операторы</span>
+<span class="keyword">def</span> <span class="function">age_check</span>(age):
+    <span class="keyword">if</span> age >= <span class="number">7</span> <span class="keyword">and</span> age <= <span class="number">17</span>:
+        <span class="keyword">return</span> <span class="string">"school"</span>
+    <span class="keyword">elif</span> age >= <span class="number">18</span> <span class="keyword">and</span> age <= <span class="number">22</span>:
+        <span class="keyword">return</span> <span class="string">"university"</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> <span class="string">"other"</span></pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 7 -->
+        <div class="slide level-8">
+            
+            <div class="code-container">
+<pre><span class="comment"># 1. Поиск максимума (без max)</span>
+<span class="keyword">def</span> <span class="function">find_max</span>(numbers):
+    <span class="keyword">if</span> <span class="builtin">len</span>(numbers) == <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="keyword">None</span>
+
+    max_value = numbers[<span class="number">0</span>]
+    <span class="keyword">for</span> num <span class="keyword">in</span> numbers:
+        <span class="keyword">if</span> num > max_value:
+            max_value = num
+    <span class="keyword">return</span> max_value
+
+<span class="comment"># 2. Форматирование номера</span>
+<span class="keyword">def</span> <span class="function">format_phone</span>(phone):
+    <span class="keyword">return</span> <span class="string">f"(+992) {phone[0:3]}-{phone[3:5]}-{phone[5:7]}-{phone[7:9]}"</span>
+
+<span class="comment"># 3. Средний балл</span>
+<span class="keyword">def</span> <span class="function">average_score</span>(scores):
+    <span class="keyword">if</span> <span class="builtin">len</span>(scores) == <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="number">0</span>
+
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> score <span class="keyword">in</span> scores:
+        total += score
+
+    <span class="keyword">return</span> total / <span class="builtin">len</span>(scores)</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 8 -->
+        <div class="slide level-8">
+           
+            <div class="code-container">
+<pre><span class="comment"># 📘 Шпаргалка для уровня 8:</span>
+<span class="comment"># 1. Работа со списками</span>
+<span class="keyword">def</span> <span class="function">process_list</span>(my_list):
+    <span class="comment"># Перебор элементов</span>
+    <span class="keyword">for</span> item <span class="keyword">in</span> my_list:
+        <span class="builtin">print</span>(item)
+    
+    <span class="comment"># Обращение по индексу</span>
+    first = my_list[<span class="number">0</span>]
+    last = my_list[<span class="builtin">len</span>(my_list)-<span class="number">1</span>]
+
+<span class="comment"># 2. Работа со строками</span>
+<span class="keyword">def</span> <span class="function">string_operations</span>(text):
+    <span class="comment"># Срезы строк</span>
+    first_three = text[<span class="number">0</span>:<span class="number">3</span>]
+    last_two = text[-<span class="number">2</span>:]
+    
+    <span class="comment"># Длина строки</span>
+    length = <span class="builtin">len</span>(text)
+    
+    <span class="keyword">return</span> first_three, last_two, length
+
+<span class="comment"># 3. Проверка на пустой список</span>
+<span class="keyword">def</span> <span class="function">safe_function</span>(data):
+    <span class="keyword">if</span> <span class="keyword">not</span> data:  <span class="comment"># или if len(data) == 0:</span>
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="comment"># основная логика</span></pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 9 -->
+        <div class="slide level-9">
+            
+            <div class="code-container">
+<pre><span class="comment"># 1. Делители числа</span>
+<span class="keyword">def</span> <span class="function">get_divisors</span>(n):
+    divisors = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):
+        <span class="keyword">if</span> n % i == <span class="number">0</span>:
+            divisors.append(i)
+    <span class="keyword">return</span> <span class="builtin">tuple</span>(divisors)
+
+<span class="comment"># 2. Размен денег</span>
+<span class="keyword">def</span> <span class="function">change_money</span>(amount):
+    tens = amount // <span class="number">10</span>
+    amount %= <span class="number">10</span>
+
+    fives = amount // <span class="number">5</span>
+    amount %= <span class="number">5</span>
+
+    threes = amount // <span class="number">3</span>
+    ones = amount % <span class="number">3</span>
+
+    <span class="keyword">return</span> tens, fives, threes, ones
+
+<span class="comment"># 3. Факториал (рекурсия)</span>
+<span class="keyword">def</span> <span class="function">factorial</span>(n):
+    <span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">or</span> n == <span class="number">1</span>:
+        <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">return</span> n * <span class="function">factorial</span>(n - <span class="number">1</span>)</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 10 -->
+        <div class="slide level-9">
+            
+            <div class="code-container">
+<pre><span class="comment"># 📘 Шпаргалка для уровня 9:</span>
+<span class="comment"># 1. Кортежи - неизменяемые списки</span>
+<span class="keyword">def</span> <span class="function">get_coordinates</span>():
+    x = <span class="number">10</span>
+    y = <span class="number">20</span>
+    <span class="comment"># Возвращаем несколько значений как кортеж</span>
+    <span class="keyword">return</span> (x, y)  <span class="comment"># или return x, y</span>
+
+<span class="comment"># Принимаем кортеж</span>
+coords = <span class="function">get_coordinates</span>()
+x, y = coords  <span class="comment"># распаковка кортежа</span>
+
+<span class="comment"># 2. Рекурсия - функция вызывает сама себя</span>
+<span class="keyword">def</span> <span class="function">recursive_sum</span>(n):
+    <span class="comment"># Базовый случай - условие выхода</span>
+    <span class="keyword">if</span> n <= <span class="number">0</span>:
+        <span class="keyword">return</span> <span class="number">0</span>
+    <span class="comment"># Рекурсивный вызов</span>
+    <span class="keyword">return</span> n + <span class="function">recursive_sum</span>(n - <span class="number">1</span>)
+
+<span class="comment"># 3. Важно: всегда должен быть базовый случай!</span>
+<span class="keyword">def</span> <span class="function">good_recursion</span>(n):
+    <span class="keyword">if</span> n == <span class="number">0</span>:  <span class="comment"># Базовый случай</span>
+        <span class="keyword">return</span> <span class="number">1</span>
+    <span class="keyword">return</span> n * <span class="function">good_recursion</span>(n - <span class="number">1</span>)</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 11 -->
+        <div class="slide level-10">
+            
+            <div class="code-container">
+<pre><span class="comment"># 1. Фильтрация списка</span>
+<span class="keyword">def</span> <span class="function">is_positive</span>(x):
+    <span class="keyword">return</span> x > <span class="number">0</span>
+
+<span class="keyword">def</span> <span class="function">filter_list</span>(data, condition):
+    result = []
+    <span class="keyword">for</span> item <span class="keyword">in</span> data:
+        <span class="keyword">if</span> <span class="function">condition</span>(item):
+            result.append(item)
+    <span class="keyword">return</span> result
+
+<span class="comment"># 2. НОК через НОД</span>
+<span class="keyword">def</span> <span class="function">gcd</span>(a, b):
+    <span class="keyword">while</span> b != <span class="number">0</span>:
+        a, b = b, a % b
+    <span class="keyword">return</span> a
+
+<span class="keyword">def</span> <span class="function">lcm</span>(a, b):
+    <span class="keyword">return</span> a * b // <span class="function">gcd</span>(a, b)
+
+<span class="comment"># 3. Анализ текста</span>
+<span class="keyword">def</span> <span class="function">analyze_text</span>(text):
+    vowels = <span class="string">"aeiouAEIOU"</span>
+    result = {
+        <span class="string">"vowels"</span>: <span class="number">0</span>,
+        <span class="string">"consonants"</span>: <span class="number">0</span>,
+        <span class="string">"digits"</span>: <span class="number">0</span>,
+        <span class="string">"other"</span>: <span class="number">0</span>
+    }
+
+    <span class="keyword">for</span> char <span class="keyword">in</span> text:
+        <span class="keyword">if</span> char.isdigit():
+            result[<span class="string">"digits"</span>] += <span class="number">1</span>
+        <span class="keyword">elif</span> char.isalpha():
+            <span class="keyword">if</span> char <span class="keyword">in</span> vowels:
+                result[<span class="string">"vowels"</span>] += <span class="number">1</span>
+            <span class="keyword">else</span>:
+                result[<span class="string">"consonants"</span>] += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            result[<span class="string">"other"</span>] += <span class="number">1</span>
+
+    <span class="keyword">return</span> result</pre>
+            </div>
+        </div>
+        
+        <!-- Слайд 12 -->
+        <div class="slide level-10">
+            
+            <div class="code-container">
+<pre><span class="comment"># 📘 Шпаргалка для уровня 10:</span>
+<span class="comment"># 1. Функции как аргументы</span>
+<span class="keyword">def</span> <span class="function">apply_function</span>(numbers, func):
+    <span class="comment"># func - функция, переданная как аргумент</span>
+    result = []
+    <span class="keyword">for</span> n <span class="keyword">in</span> numbers:
+        result.append(<span class="function">func</span>(n))
+    <span class="keyword">return</span> result
+
+<span class="comment"># Лямбда-функции (анонимные)</span>
+square = <span class="keyword">lambda</span> x: x * x
+
+<span class="comment"># 2. Алгоритм Евклида для НОД</span>
+<span class="keyword">def</span> <span class="function">gcd_explained</span>(a, b):
+    <span class="keyword">while</span> b != <span class="number">0</span>:
+        <span class="comment"># a, b = b, a % b - параллельное присваивание</span>
+        temp = a
+        a = b
+        b = temp % b
+    <span class="keyword">return</span> a
+
+<span class="comment"># 3. Словари для хранения результатов</span>
+<span class="keyword">def</span> <span class="function">create_stats</span>():
+    stats = {
+        <span class="string">"count"</span>: <span class="number">0</span>,
+        <span class="string">"total"</span>: <span class="number">0</span>,
+        <span class="string">"average"</span>: <span class="number">0.0</span>
+    }
+    <span class="comment"># Обновление значений</span>
+    stats[<span class="string">"count"</span>] += <span class="number">1</span>
+    <span class="keyword">return</span> stats</pre>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="nav-btn" onclick="prevSlide()">←</button>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 12;
+        const slidesContainer = document.getElementById('slides-container');
+        const progress = document.getElementById('progress');
+        const slideCounter = document.getElementById('slide-counter');
+        
+        function updateSlide() {
+            // Прокрутка к текущему слайду
+            slidesContainer.scrollTo({
+                left: currentSlide * window.innerWidth,
+                behavior: 'smooth'
+            });
+            
+            // Обновление прогресс-бара
+            const progressWidth = ((currentSlide + 1) / totalSlides) * 100;
+            progress.style.width = `${progressWidth}%`;
+            
+            // Обновление счетчика
+            slideCounter.textContent = `${currentSlide + 1}/${totalSlides}`;
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+        
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+        
+        // Обработчики клавиатуры
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                nextSlide();
+                e.preventDefault();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+                e.preventDefault();
+            } else if (e.key === 'Home') {
+                currentSlide = 0;
+                updateSlide();
+                e.preventDefault();
+            } else if (e.key === 'End') {
+                currentSlide = totalSlides - 1;
+                updateSlide();
+                e.preventDefault();
+            }
+        });
+        
+        // Обработчик колеса мыши
+        let wheelTimeout;
+        slidesContainer.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            
+            // Задержка для предотвращения слишком быстрой прокрутки
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }, 100);
+        });
+        
+        // Обработчик касания для мобильных устройств
+        let startX = 0;
+        slidesContainer.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+        });
+        
+        slidesContainer.addEventListener('touchend', function(e) {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) { // Минимальное расстояние свайпа
+                if (diff > 0) {
+                    nextSlide(); // Свайп влево
+                } else {
+                    prevSlide(); // Свайп вправо
+                }
+            }
+        });
+        
+        // Инициализация
+        updateSlide();
+    </script>
+</body>
+</html>

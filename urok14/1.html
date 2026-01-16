@@ -1,325 +1,2021 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Задачи по функциям Python • 5–10 уровень</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задачи по функциям Python - Уровни 5-10 баллов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #e2e8f0;
-      min-height: 100vh;
-      padding: 12px;
-    }
+        body {
+            background: linear-gradient(135deg, #0d47a1 0%, #311b92 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      background: rgba(30,41,59,0.6);
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow: hidden;
-    }
+        .presentation-container {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            height: 95vh;
+        }
 
-    header {
-      background: linear-gradient(90deg, #4f46e5, #7c3aed);
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .header {
+            background: linear-gradient(to right, #1565c0, #4527a0);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
 
-    .logo i {
-      color: #fde047;
-      margin-right: 10px;
-    }
+        .logo i {
+            font-size: 2rem;
+            color: #ffeb3b;
+        }
 
-    .content {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-    }
+        .python-icon {
+            color: #3776ab;
+            font-weight: bold;
+        }
 
-    .sidebar {
-      background: rgba(15,23,42,0.5);
-      padding: 1.5rem;
-      border-right: 1px solid rgba(255,255,255,0.07);
-    }
+        .slide-counter {
+            font-size: 1.3rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
 
-    .sidebar h2 {
-      color: #a5b4fc;
-      margin-bottom: 1.2rem;
-    }
+        .slides-container {
+            height: calc(95vh - 100px);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .level-btn {
-      width: 100%;
-      padding: 12px 16px;
-      margin: 6px 0;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      color: #cbd5e1;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .2s;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-    }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease;
+            overflow-y: auto;
+            display: none;
+        }
 
-    .level-btn:hover {
-      background: rgba(255,255,255,0.12);
-      transform: translateX(4px);
-    }
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            display: block;
+        }
 
-    .level-btn.active {
-      background: #6366f1;
-      color: white;
-      border-color: #818cf8;
-    }
+        .level-title {
+            color: #1565c0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #4527a0;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-    .main {
-      padding: 1.8rem 2rem;
-    }
+        .level-badge {
+            background: linear-gradient(45deg, #ff9800, #ffeb3b);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-    h1.task-title {
-      font-size: 1.9rem;
-      margin-bottom: 0.9rem;
-      color: #c7d2fe;
-    }
+        .tasks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
 
-    .description {
-      font-size: 1.1rem;
-      line-height: 1.5;
-      color: #cbd5e1;
-      margin-bottom: 1.6rem;
-    }
+        .task-card {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-    code {
-      background: #1e293b;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Consolas', monospace;
-    }
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    pre.code {
-      background: #0f172a;
-      padding: 1.3rem;
-      border-radius: 12px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 1.05rem;
-      line-height: 1.55;
-      overflow-x: auto;
-      border-left: 4px solid #6366f1;
-      margin: 1.2rem 0;
-      white-space: pre;
-    }
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1565c0;
+        }
 
-    .controls {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 1.4rem 0;
-    }
+        .task-title {
+            color: #1565c0;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-    .btn {
-      padding: 10px 18px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.18s;
-      color: white;
-    }
+        .task-number {
+            background: #1565c0;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 1.3rem;
+        }
 
-    .btn-run    { background: #10b981; }
-    .btn-copy   { background: #3b82f6; }
-    .btn-reset  { background: #f59e0b; }
+        .task-description {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-    .btn:hover {
-      filter: brightness(1.1);
-      transform: translateY(-1px);
-    }
+        .code-section {
+            background: #263238;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            position: relative;
+        }
 
-    #output {
-      background: #020617;
-      color: #94a3b8;
-      padding: 1.3rem;
-      border-radius: 12px;
-      min-height: 140px;
-      font-family: Consolas, monospace;
-      white-space: pre-wrap;
-      border-left: 4px solid #f59e0b;
-      line-height: 1.45;
-    }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #fff;
+        }
 
-    @media (max-width: 900px) {
-      .content { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    }
-  </style>
+        .code-title {
+            font-size: 1.4rem;
+            color: #66d9ef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .code-btn {
+            background: #37474f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .code-btn:hover {
+            background: #455a64;
+        }
+
+        .code-block {
+            color: #f8f8f2;
+            font-size: 2rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            padding: 15px;
+            background: #1e272c;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+       
+
+        .output-section {
+            margin-top: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .output-title {
+            color: #2e7d32;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .output {
+            background: #263238;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            min-height: 80px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .hint-section {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .hint-title {
+            color: #1565c0;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hint-content {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: #f5f5f5;
+            border-top: 2px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #0d47a1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:disabled {
+            background: #b0b0b0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-dots {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .dot:hover {
+            transform: scale(1.3);
+        }
+
+        .dot.active {
+            background: #4527a0;
+            transform: scale(1.3);
+        }
+
+        .dot::after {
+            content: attr(data-level);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        .dot:hover::after {
+            opacity: 1;
+        }
+
+        .status-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+
+        @media (max-width: 1200px) {
+            .tasks-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .task-card {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+            
+            .level-title {
+                font-size: 2rem;
+            }
+            
+            .task-title {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .slide-dots {
+                order: -1;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="presentation-container">
+        <div class="header">
+            <div class="logo">
+                <i class="fab fa-python"></i>
+                <span>Задачи по функциям <span class="python-icon">Python</span></span>
+            </div>
+            <div class="slide-counter">
+                Слайд: <span id="current-slide">5</span>/10 баллов
+            </div>
+        </div>
+        
+        <div class="slides-container">
+            <!-- Слайд 5 баллов -->
+            <div class="slide active" id="slide5">
+                <div class="level-title">
+                    <i class="fas fa-star"></i>
+                    Уровень сложности: 
+                    <span class="level-badge">5 баллов</span>
+                </div>
+                <p style="font-size: 1.5rem; margin-bottom: 25px; color: #555;">
+                    Базовые задачи на работу с функциями, циклами и условиями
+                </p>
+                
+                <div class="tasks-container">
+                    <!-- Задача 5.1 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Числа от 1 до 10</div>
+                            <div class="task-number">Задача 1</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>numbers_1_10()</strong>, которая выводит числа от 1 до 10 включительно, каждое с новой строки.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="5" data-task="1">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="5" data-task="1">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-5-1">
+<span class="keyword">def</span> <span class="function">numbers_1_10</span>():
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>):
+        <span class="function">print</span>(i)
 
-<div class="container">
-  <header>
-    <div class="logo">
-      <i class="fab fa-python"></i>
-      Задачи по функциям Python
+<span class="function">numbers_1_10</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-5-1">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте цикл for с функцией range(). Помните, что range(1, 11) генерирует числа от 1 до 10 включительно.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-5-1">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-5-1">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 5.2 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Слово "Python" 5 раз</div>
+                            <div class="task-number">Задача 2</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>print_python()</strong>, которая выводит слово "Python" 5 раз, каждое с новой строки.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="5" data-task="2">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="5" data-task="2">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-5-2">
+<span class="keyword">def</span> <span class="function">print_python</span>():
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>):
+        <span class="function">print</span>(<span class="string">"Python"</span>)
+
+<span class="function">print_python</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-5-2">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте цикл for с range(5). Каждую итерацию выводите строку "Python".
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-5-2">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-5-2">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 5.3 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Проверка числа</div>
+                            <div class="task-number">Задача 3</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>check_positive(n)</strong>, которая принимает число и выводит "Положительное", если число больше 0, иначе выводит "Не положительное".
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="5" data-task="3">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="5" data-task="3">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-5-3">
+<span class="keyword">def</span> <span class="function">check_positive</span>(n):
+    <span class="keyword">if</span> n > <span class="number">0</span>:
+        <span class="function">print</span>(<span class="string">"Положительное"</span>)
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">"Не положительное"</span>)
+
+<span class="function">check_positive</span>(<span class="number">3</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-5-3">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте условный оператор if-else для проверки условия n > 0.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-5-3">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-5-3">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 6 баллов -->
+            <div class="slide" id="slide6">
+                <div class="level-title">
+                    <i class="fas fa-star"></i>
+                    Уровень сложности: 
+                    <span class="level-badge">6 баллов</span>
+                </div>
+                <p style="font-size: 1.5rem; margin-bottom: 25px; color: #555;">
+                    Задачи на работу с циклами, условиями и параметрами функций
+                </p>
+                
+                <div class="tasks-container">
+                    <!-- Задача 6.1 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Чётные числа от 1 до 20</div>
+                            <div class="task-number">Задача 1</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>even_numbers()</strong>, которая выводит все чётные числа от 1 до 20 включительно, каждое с новой строки.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="6" data-task="1">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="6" data-task="1">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-6-1">
+<span class="keyword">def</span> <span class="function">even_numbers</span>():
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2</span>, <span class="number">21</span>, <span class="number">2</span>):
+        <span class="function">print</span>(i)
+
+<span class="function">even_numbers</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-6-1">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте цикл for с функцией range(2, 21, 2). Третий аргумент 2 означает шаг.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-6-1">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-6-1">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 6.2 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Таблица умножения на N</div>
+                            <div class="task-number">Задача 2</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>table_n(n)</strong>, которая принимает число n и выводит таблицу умножения на это число от 1 до 10.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="6" data-task="2">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="6" data-task="2">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-6-2">
+<span class="keyword">def</span> <span class="function">table_n</span>(n):
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>):
+        <span class="function">print</span>(n, <span class="string">"*"</span>, i, <span class="string">"="</span>, n * i)
+
+<span class="function">table_n</span>(<span class="number">4</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-6-2">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте цикл for от 1 до 10. На каждой итерации выводите произведение n и i.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-6-2">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-6-2">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 6.3 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Большее из двух чисел</div>
+                            <div class="task-number">Задача 3</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>max_two(a, b)</strong>, которая принимает два числа и выводит большее из них.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="6" data-task="3">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="6" data-task="3">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-6-3">
+<span class="keyword">def</span> <span class="function">max_two</span>(a, b):
+    <span class="keyword">if</span> a > b:
+        <span class="function">print</span>(a)
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(b)
+
+<span class="function">max_two</span>(<span class="number">7</span>, <span class="number">3</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-6-3">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте условный оператор if-else для сравнения двух чисел.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-6-3">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-6-3">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 7 баллов -->
+            <div class="slide" id="slide7">
+                <div class="level-title">
+                    <i class="fas fa-star"></i>
+                    Уровень сложности: 
+                    <span class="level-badge">7 баллов</span>
+                </div>
+                <p style="font-size: 1.5rem; margin-bottom: 25px; color: #555;">
+                    Задачи на накопление суммы, работу со строками и более сложные условия
+                </p>
+                
+                <div class="tasks-container">
+                    <!-- Задача 7.1 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Сумма чисел от 1 до 100</div>
+                            <div class="task-number">Задача 1</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>sum_1_100()</strong>, которая вычисляет и выводит сумму всех чисел от 1 до 100 включительно.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="7" data-task="1">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="7" data-task="1">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-7-1">
+<span class="keyword">def</span> <span class="function">sum_1_100</span>():
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">101</span>):
+        total += i
+    <span class="function">print</span>(total)
+
+<span class="function">sum_1_100</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-7-1">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Создайте переменную total, инициализированную нулём, и добавляйте к ней каждое число из цикла.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-7-1">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-7-1">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 7.2 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Вывод букв строки</div>
+                            <div class="task-number">Задача 2</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>print_letters(text)</strong>, которая принимает строку и выводит каждый её символ на отдельной строке.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="7" data-task="2">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="7" data-task="2">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-7-2">
+<span class="keyword">def</span> <span class="function">print_letters</span>(text):
+    <span class="keyword">for</span> ch <span class="keyword">in</span> text:
+        <span class="function">print</span>(ch)
+
+<span class="function">print_letters</span>(<span class="string">"Python"</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-7-2">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте цикл for для перебора символов строки. В Python строки можно перебирать напрямую.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-7-2">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-7-2">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 7.3 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Чётное или нечётное</div>
+                            <div class="task-number">Задача 3</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>even_or_odd(n)</strong>, которая принимает число и выводит "Чётное", если число чётное, и "Нечётное", если нечётное.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="7" data-task="3">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="7" data-task="3">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-7-3">
+<span class="keyword">def</span> <span class="function">even_or_odd</span>(n):
+    <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span>:
+        <span class="function">print</span>(<span class="string">"Чётное"</span>)
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">"Нечётное"</span>)
+
+<span class="function">even_or_odd</span>(<span class="number">5</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-7-3">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте оператор % для получения остатка от деления на 2. Если остаток 0 - число чётное.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-7-3">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-7-3">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 8 баллов -->
+            <div class="slide" id="slide8">
+                <div class="level-title">
+                    <i class="fas fa-star"></i>
+                    Уровень сложности: 
+                    <span class="level-badge">8 баллов</span>
+                </div>
+                <p style="font-size: 1.5rem; margin-bottom: 25px; color: #555;">
+                    Задачи на работу с вводом пользователя и обработку последовательностей
+                </p>
+                
+                <div class="tasks-container">
+                    <!-- Задача 8.1 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Только положительные из 5 чисел</div>
+                            <div class="task-number">Задача 1</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>positive_numbers()</strong>, которая 5 раз запрашивает у пользователя число и выводит только положительные числа.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="8" data-task="1">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="8" data-task="1">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-8-1">
+<span class="keyword">def</span> <span class="function">positive_numbers</span>():
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>):
+        n = <span class="function">int</span>(<span class="function">input</span>())
+        <span class="keyword">if</span> n > <span class="number">0</span>:
+            <span class="function">print</span>(n)
+
+<span class="function">positive_numbers</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-8-1">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте цикл for для 5 итераций. Внутри цикла получайте ввод пользователя и проверяйте условие.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-8-1">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-8-1">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 8.2 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Проверка диапазона</div>
+                            <div class="task-number">Задача 2</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>check_range(n)</strong>, которая принимает число и проверяет, находится ли оно в диапазоне от 10 до 100 (не включая границы).
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="8" data-task="2">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="8" data-task="2">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-8-2">
+<span class="keyword">def</span> <span class="function">check_range</span>(n):
+    <span class="keyword">if</span> n > <span class="number">10</span> <span class="keyword">and</span> n < <span class="number">100</span>:
+        <span class="function">print</span>(<span class="string">"В диапазоне"</span>)
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">"Вне диапазона"</span>)
+
+<span class="function">check_range</span>(<span class="number">50</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-8-2">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте составное условие с оператором and. Помните, что границы не включаются.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-8-2">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-8-2">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 8.3 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Среднее значение 5 чисел</div>
+                            <div class="task-number">Задача 3</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>average_5()</strong>, которая запрашивает у пользователя 5 чисел и выводит их среднее арифметическое.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="8" data-task="3">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="8" data-task="3">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-8-3">
+<span class="keyword">def</span> <span class="function">average_5</span>():
+    total = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>):
+        n = <span class="function">int</span>(<span class="function">input</span>())
+        total += n
+    <span class="function">print</span>(total / <span class="number">5</span>)
+
+<span class="function">average_5</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-8-3">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Суммируйте все введённые числа, затем разделите сумму на 5. Не забудьте преобразовать ввод в целое число.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-8-3">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-8-3">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 9 баллов -->
+            <div class="slide" id="slide9">
+                <div class="level-title">
+                    <i class="fas fa-star"></i>
+                    Уровень сложности: 
+                    <span class="level-badge">9 баллов</span>
+                </div>
+                <p style="font-size: 1.5rem; margin-bottom: 25px; color: #555;">
+                    Задачи на подсчёт элементов, работу со списками и анализ чисел
+                </p>
+                
+                <div class="tasks-container">
+                    <!-- Задача 9.1 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Количество чётных из 10 чисел</div>
+                            <div class="task-number">Задача 1</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>count_even()</strong>, которая 10 раз запрашивает у пользователя число и выводит количество чётных чисел.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="9" data-task="1">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="9" data-task="1">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-9-1">
+<span class="keyword">def</span> <span class="function">count_even</span>():
+    count = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>):
+        n = <span class="function">int</span>(<span class="function">input</span>())
+        <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span>:
+            count += <span class="number">1</span>
+    <span class="function">print</span>(count)
+
+<span class="function">count_even</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-9-1">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Создайте переменную-счётчик, увеличивайте её при каждом вводе чётного числа.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-9-1">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-9-1">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 9.2 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Минимум и максимум списка</div>
+                            <div class="task-number">Задача 2</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>min_max(nums)</strong>, которая принимает список чисел и выводит минимальное и максимальное значение.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="9" data-task="2">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="9" data-task="2">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-9-2">
+<span class="keyword">def</span> <span class="function">min_max</span>(nums):
+    <span class="function">print</span>(<span class="string">"Минимум:"</span>, <span class="function">min</span>(nums))
+    <span class="function">print</span>(<span class="string">"Максимум:"</span>, <span class="function">max</span>(nums))
+
+<span class="function">min_max</span>([<span class="number">3</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">4</span>])
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-9-2">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте встроенные функции min() и max() для работы со списками.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-9-2">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-9-2">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 9.3 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Числа с суммой цифр = 5</div>
+                            <div class="task-number">Задача 3</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>sum_digits_5()</strong>, которая выводит все числа от 1 до 100, сумма цифр которых равна 5.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="9" data-task="3">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="9" data-task="3">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-9-3">
+<span class="keyword">def</span> <span class="function">sum_digits_5</span>():
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">101</span>):
+        <span class="keyword">if</span> (i // <span class="number">10</span>) + (i % <span class="number">10</span>) == <span class="number">5</span>:
+            <span class="function">print</span>(i)
+
+<span class="function">sum_digits_5</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-9-3">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Для двузначных чисел: десятки = i // 10, единицы = i % 10. Для однозначных чисел это тоже работает.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-9-3">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-9-3">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 10 баллов -->
+            <div class="slide" id="slide10">
+                <div class="level-title">
+                    <i class="fas fa-star"></i>
+                    Уровень сложности: 
+                    <span class="level-badge">10 баллов</span>
+                </div>
+                <p style="font-size: 1.5rem; margin-bottom: 25px; color: #555;">
+                    Сложные задачи на бесконечные циклы, простые числа и вложенные циклы
+                </p>
+                
+                <div class="tasks-container">
+                    <!-- Задача 10.1 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Сумма чисел до ввода 0</div>
+                            <div class="task-number">Задача 1</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>sum_until_zero()</strong>, которая запрашивает у пользователя числа до тех пор, пока не будет введён 0, затем возвращает сумму всех введённых чисел.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="10" data-task="1">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="10" data-task="1">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-10-1">
+<span class="keyword">def</span> <span class="function">sum_until_zero</span>():
+    total = <span class="number">0</span>
+    <span class="keyword">while</span> <span class="keyword">True</span>:
+        n = <span class="function">int</span>(<span class="function">input</span>())
+        <span class="keyword">if</span> n == <span class="number">0</span>:
+            <span class="keyword">break</span>
+        total += n
+    <span class="keyword">return</span> total
+
+<span class="function">print</span>(<span class="function">sum_until_zero</span>())
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-10-1">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте бесконечный цикл while True и оператор break для выхода при вводе 0.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-10-1">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-10-1">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 10.2 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Простые числа от 2 до 100</div>
+                            <div class="task-number">Задача 2</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>primes_2_100()</strong>, которая выводит все простые числа от 2 до 100 включительно.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="10" data-task="2">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="10" data-task="2">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-10-2">
+<span class="keyword">def</span> <span class="function">primes_2_100</span>():
+    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2</span>, <span class="number">101</span>):
+        prime = <span class="keyword">True</span>
+        <span class="keyword">for</span> d <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2</span>, n):
+            <span class="keyword">if</span> n % d == <span class="number">0</span>:
+                prime = <span class="keyword">False</span>
+                <span class="keyword">break</span>
+        <span class="keyword">if</span> prime:
+            <span class="function">print</span>(n)
+
+<span class="function">primes_2_100</span>()
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-10-2">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Число простое, если оно делится только на 1 и на себя. Проверяйте делители от 2 до n-1.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-10-2">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-10-2">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                    
+                    <!-- Задача 10.3 -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Таблица умножения от 1 до N</div>
+                            <div class="task-number">Задача 3</div>
+                        </div>
+                        <div class="task-description">
+                            Напишите функцию <strong>table_1_to_n(N)</strong>, которая принимает число N и выводит таблицы умножения от 1 до N.
+                        </div>
+                        
+                        <div class="code-section">
+                            <div class="code-header">
+                                <div class="code-title">
+                                    <i class="fas fa-code"></i> Решение
+                                </div>
+                                <div class="code-controls">
+                                    <button class="code-btn run-btn" data-level="10" data-task="3">
+                                        <i class="fas fa-play"></i> Выполнить
+                                    </button>
+                                    <button class="code-btn copy-btn" data-level="10" data-task="3">
+                                        <i class="fas fa-copy"></i> Копировать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block" id="code-10-3">
+<span class="keyword">def</span> <span class="function">table_1_to_n</span>(N):
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, N + <span class="number">1</span>):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>):
+            <span class="function">print</span>(i, <span class="string">"*"</span>, j, <span class="string">"="</span>, i * j)
+        <span class="function">print</span>()
+
+<span class="function">table_1_to_n</span>(<span class="number">5</span>)
+                            </div>
+                        </div>
+                        
+                        <div class="output-section">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Результат выполнения
+                            </div>
+                            <div class="output" id="output-10-3">Нажмите "Выполнить" чтобы увидеть результат</div>
+                        </div>
+                        
+                        <div class="hint-section">
+                            <div class="hint-title">
+                                <i class="fas fa-lightbulb"></i> Подсказка
+                            </div>
+                            <div class="hint-content">
+                                Используйте вложенные циклы: внешний для множителей от 1 до N, внутренний для чисел от 1 до 10.
+                            </div>
+                        </div>
+                        
+                        <div class="status-message success" id="success-10-3">
+                            <i class="fas fa-check-circle"></i> Код выполнен успешно!
+                        </div>
+                        <div class="status-message error" id="error-10-3">
+                            <i class="fas fa-exclamation-circle"></i> Ошибка выполнения
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="nav-btn" id="prev-btn" disabled>
+                <i class="fas fa-arrow-left"></i> Предыдущий уровень (5 баллов)
+            </button>
+            
+            <div class="slide-dots" id="slide-dots">
+                <!-- Точки навигации будут созданы через JS -->
+            </div>
+            
+            <button class="nav-btn" id="next-btn">
+                Следующий уровень (6 баллов) <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
     </div>
-    <div>Уровень: <strong id="level">5</strong>  •  Задача <strong id="task-n">1</strong>/<span id="total-tasks">3</span></div>
-  </header>
 
-  <div class="content">
-    <div class="sidebar">
-      <h2><i class="fas fa-layer-group"></i> Уровни</h2>
-      <button class="level-btn active" data-level="5">Уровень 5 ★</button>
-      <button class="level-btn" data-level="6">Уровень 6 ★★</button>
-      <button class="level-btn" data-level="7">Уровень 7 ★★★</button>
-      <button class="level-btn" data-level="8">Уровень 8 ★★★★</button>
-      <button class="level-btn" data-level="9">Уровень 9 ★★★★★</button>
-      <button class="level-btn" data-level="10">Уровень 10 ★★★★★</button>
-    </div>
-
-    <div class="main">
-      <h1 class="task-title" id="title">Числа от 1 до 10</h1>
-
-      <div class="description" id="desc">
-        Напишите функцию <code>numbers_1_10()</code>, которая выводит числа от 1 до 10 включительно, каждое с новой строки.
-      </div>
-
-      <pre class="code" id="code-block">def numbers_1_10():
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы презентации
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideDots = document.getElementById('slide-dots');
+            const currentSlideSpan = document.getElementById('current-slide');
+            
+            let currentSlideIndex = 0; // 0 = 5 баллов, 1 = 6 баллов, и т.д.
+            const levels = [5, 6, 7, 8, 9, 10]; // Соответствие индексов баллам
+            
+            // Инициализация точек навигации
+            function initNavigationDots() {
+                slideDots.innerHTML = '';
+                
+                levels.forEach((level, index) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    dot.dataset.level = level;
+                    dot.dataset.index = index;
+                    
+                    if (index === currentSlideIndex) {
+                        dot.classList.add('active');
+                    }
+                    
+                    dot.addEventListener('click', () => {
+                        goToSlide(index);
+                    });
+                    
+                    slideDots.appendChild(dot);
+                });
+            }
+            
+            // Переход к слайду
+            function goToSlide(slideIndex) {
+                // Скрыть текущий слайд
+                slides[currentSlideIndex].classList.remove('active');
+                document.querySelectorAll('.dot')[currentSlideIndex].classList.remove('active');
+                
+                // Показать новый слайд
+                currentSlideIndex = slideIndex;
+                slides[currentSlideIndex].classList.add('active');
+                document.querySelectorAll('.dot')[currentSlideIndex].classList.add('active');
+                
+                // Обновить счетчик
+                currentSlideSpan.textContent = levels[currentSlideIndex];
+                
+                // Обновить состояние кнопок
+                updateNavigationButtons();
+                
+                // Прокрутить к началу слайда
+                slides[currentSlideIndex].scrollTop = 0;
+            }
+            
+            // Обновление кнопок навигации
+            function updateNavigationButtons() {
+                prevBtn.disabled = currentSlideIndex === 0;
+                nextBtn.disabled = currentSlideIndex === slides.length - 1;
+                
+                // Обновить текст кнопок
+                if (currentSlideIndex > 0) {
+                    prevBtn.innerHTML = `<i class="fas fa-arrow-left"></i> Предыдущий уровень (${levels[currentSlideIndex - 1]} баллов)`;
+                }
+                
+                if (currentSlideIndex < slides.length - 1) {
+                    nextBtn.innerHTML = `Следующий уровень (${levels[currentSlideIndex + 1]} баллов) <i class="fas fa-arrow-right"></i>`;
+                }
+            }
+            
+            // Обработчики кнопок навигации
+            prevBtn.addEventListener('click', () => {
+                if (currentSlideIndex > 0) {
+                    goToSlide(currentSlideIndex - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlideIndex < slides.length - 1) {
+                    goToSlide(currentSlideIndex + 1);
+                }
+            });
+            
+            // Обработчики клавиш клавиатуры
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
+                    goToSlide(currentSlideIndex - 1);
+                    e.preventDefault();
+                } else if (e.key === 'ArrowRight' && currentSlideIndex < slides.length - 1) {
+                    goToSlide(currentSlideIndex + 1);
+                    e.preventDefault();
+                }
+                
+                // Цифры 5-0 для перехода к уровням
+                if (e.key >= '5' && e.key <= '9') {
+                    const level = parseInt(e.key);
+                    const index = levels.indexOf(level);
+                    if (index !== -1) {
+                        goToSlide(index);
+                        e.preventDefault();
+                    }
+                }
+                
+                // 0 для 10 баллов
+                if (e.key === '0') {
+                    const index = levels.indexOf(10);
+                    if (index !== -1) {
+                        goToSlide(index);
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            // Инициализация точек навигации
+            initNavigationDots();
+            
+            // Данные задач
+            const tasksData = {
+                // Уровень 5 баллов
+                '5-1': `def numbers_1_10():
     for i in range(1, 11):
         print(i)
 
-numbers_1_10()</pre>
+numbers_1_10()`,
+                '5-2': `def print_python():
+    for i in range(5):
+        print("Python")
 
-      <div class="controls">
-        <button class="btn btn-run" id="run-btn"><i class="fas fa-play"></i> Выполнить</button>
-        <button class="btn btn-copy" id="copy-btn"><i class="fas fa-copy"></i> Копировать</button>
-        <button class="btn btn-reset" id="reset-btn"><i class="fas fa-undo"></i> Сбросить</button>
-      </div>
+print_python()`,
+                '5-3': `def check_positive(n):
+    if n > 0:
+        print("Положительное")
+    else:
+        print("Не положительное")
 
-      <div id="output">Результат появится здесь...</div>
-    </div>
-  </div>
-</div>
+check_positive(3)`,
+                
+                // Уровень 6 баллов
+                '6-1': `def even_numbers():
+    for i in range(2, 21, 2):
+        print(i)
 
-<script>
-const TASKS = {
-  5: [
-    { title: "Числа от 1 до 10", desc: "Напишите функцию <code>numbers_1_10()</code>, которая выводит числа от 1 до 10 включительно, каждое с новой строки.", code: "def numbers_1_10():\n    for i in range(1, 11):\n        print(i)\n\nnumbers_1_10()" },
-    { title: "Слово Python 5 раз", desc: "Напишите функцию <code>print_python()</code>, которая выводит слово \"Python\" ровно 5 раз (каждое на новой строке).", code: "def print_python():\n    for _ in range(5):\n        print(\"Python\")\n\nprint_python()" },
-    { title: "Положительное или нет", desc: "Напишите функцию <code>check_positive(n)</code>, которая выводит «Положительное», если число > 0, иначе — «Не положительное».", code: "def check_positive(n):\n    if n > 0:\n        print(\"Положительное\")\n    else:\n        print(\"Не положительное\")\n\ncheck_positive(8)" }
-  ],
-  6: [
-    { title: "Чётные числа 2–20", desc: "Функция <code>even_numbers()</code> должна вывести все чётные числа от 2 до 20 включительно.", code: "def even_numbers():\n    for i in range(2, 21, 2):\n        print(i)\n\neven_numbers()" },
-    { title: "Таблица умножения", desc: "Функция <code>table_n(n)</code> выводит таблицу умножения на число n от 1×n до 10×n.", code: "def table_n(n):\n    for i in range(1,11):\n        print(f\"{n} × {i} = {n*i}\")\n\ntable_n(7)" },
-    { title: "Максимум из двух", desc: "Функция <code>max_two(a,b)</code> должна вывести большее из двух чисел.", code: "def max_two(a, b):\n    print(a if a >= b else b)\n\nmax_two(25, 17)" }
-  ],
-  7: [
-    { title: "Сумма 1..100", desc: "Функция <code>sum_1_100()</code> выводит сумму всех чисел от 1 до 100 включительно.", code: "def sum_1_100():\n    print(sum(range(1,101)))\n\nsum_1_100()" },
-    { title: "Символы строки", desc: "Функция <code>print_chars(text)</code> выводит каждый символ строки на отдельной строке.", code: "def print_chars(text):\n    for c in text:\n        print(c)\n\nprint_chars(\"Python\")" },
-    { title: "Чёт/нечёт", desc: "Функция <code>even_odd(n)</code> выводит «Чётное» или «Нечётное».", code: "def even_odd(n):\n    print(\"Чётное\" if n % 2 == 0 else \"Нечётное\")\n\neven_odd(56)" }
-  ],
-  // Добавьте остальные уровни по желанию по тому же шаблону
-  // 8,9,10 уровни можно дополнить позже
-};
+even_numbers()`,
+                '6-2': `def table_n(n):
+    for i in range(1, 11):
+        print(n, "*", i, "=", n * i)
 
-let currentLevel = 5;
-let currentTaskIndex = 0;
+table_n(4)`,
+                '6-3': `def max_two(a, b):
+    if a > b:
+        print(a)
+    else:
+        print(b)
 
-const levelDisplay = document.getElementById("level");
-const taskNumDisplay = document.getElementById("task-n");
-const totalTasksDisplay = document.getElementById("total-tasks");
-const titleEl = document.getElementById("title");
-const descEl = document.getElementById("desc");
-const codeEl = document.getElementById("code-block");
-const outputEl = document.getElementById("output");
+max_two(7, 3)`,
+                
+                // Уровень 7 баллов
+                '7-1': `def sum_1_100():
+    total = 0
+    for i in range(1, 101):
+        total += i
+    print(total)
 
-function loadTask() {
-  const tasks = TASKS[currentLevel];
-  if (!tasks || !tasks[currentTaskIndex]) return;
+sum_1_100()`,
+                '7-2': `def print_letters(text):
+    for ch in text:
+        print(ch)
 
-  const task = tasks[currentTaskIndex];
+print_letters("Python")`,
+                '7-3': `def even_or_odd(n):
+    if n % 2 == 0:
+        print("Чётное")
+    else:
+        print("Нечётное")
 
-  titleEl.textContent = task.title;
-  descEl.innerHTML = task.desc;
-  codeEl.textContent = task.code;
+even_or_odd(5)`,
+                
+                // Уровень 8 баллов
+                '8-1': `def positive_numbers():
+    for i in range(5):
+        n = int(input())
+        if n > 0:
+            print(n)
 
-  levelDisplay.textContent = currentLevel;
-  taskNumDisplay.textContent = currentTaskIndex + 1;
-  totalTasksDisplay.textContent = tasks.length;
+positive_numbers()`,
+                '8-2': `def check_range(n):
+    if n > 10 and n < 100:
+        print("В диапазоне")
+    else:
+        print("Вне диапазона")
 
-  outputEl.textContent = "Результат появится здесь...";
-  outputEl.style.color = "#94a3b8";
-}
+check_range(50)`,
+                '8-3': `def average_5():
+    total = 0
+    for i in range(5):
+        n = int(input())
+        total += n
+    print(total / 5)
 
-function runCode() {
-  const code = codeEl.textContent;
-  outputEl.textContent = "Выполняется...\n\n";
-  outputEl.style.color = "#fbbf24";
+average_5()`,
+                
+                // Уровень 9 баллов
+                '9-1': `def count_even():
+    count = 0
+    for i in range(10):
+        n = int(input())
+        if n % 2 == 0:
+            count += 1
+    print(count)
 
-  const oldLog = console.log;
-  let logs = [];
+count_even()`,
+                '9-2': `def min_max(nums):
+    print("Минимум:", min(nums))
+    print("Максимум:", max(nums))
 
-  console.log = (...args) => {
-    logs.push(args.join(" "));
-  };
+min_max([3, 7, 1, 9, 4])`,
+                '9-3': `def sum_digits_5():
+    for i in range(1, 101):
+        if (i // 10) + (i % 10) == 5:
+            print(i)
 
-  try {
-    new Function(code)();
-    const result = logs.join("\n") || "(ничего не выведено)";
-    outputEl.textContent = result;
-    outputEl.style.color = "#a5b4fc";
-  } catch (err) {
-    outputEl.textContent = "Ошибка:\n" + err.message;
-    outputEl.style.color = "#f87171";
-  } finally {
-    console.log = oldLog;
-  }
-}
+sum_digits_5()`,
+                
+                // Уровень 10 баллов
+                '10-1': `def sum_until_zero():
+    total = 0
+    while True:
+        n = int(input())
+        if n == 0:
+            break
+        total += n
+    return total
 
-document.querySelectorAll(".level-btn").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelector(".level-btn.active")?.classList.remove("active");
-    btn.classList.add("active");
-    currentLevel = Number(btn.dataset.level);
-    currentTaskIndex = 0;
-    loadTask();
-  };
-});
+print(sum_until_zero())`,
+                '10-2': `def primes_2_100():
+    for n in range(2, 101):
+        prime = True
+        for d in range(2, n):
+            if n % d == 0:
+                prime = False
+                break
+        if prime:
+            print(n)
 
-document.getElementById("run-btn").onclick = runCode;
+primes_2_100()`,
+                '10-3': `def table_1_to_n(N):
+    for i in range(1, N + 1):
+        for j in range(1, 11):
+            print(i, "*", j, "=", i * j)
+        print()
 
-document.getElementById("copy-btn").onclick = () => {
-  navigator.clipboard.writeText(codeEl.textContent)
-    .then(() => alert("Код скопирован!"))
-    .catch(() => alert("Не удалось скопировать :("));
-};
-
-document.getElementById("reset-btn").onclick = () => {
-  outputEl.textContent = "Результат появится здесь...";
-  outputEl.style.color = "#94a3b8";
-};
-
-loadTask();
-</script>
+table_1_to_n(5)`
+            };
+            
+            // Тестовые входные данные для функций с input()
+            const testInputs = {
+                '8-1': ['-5', '10', '0', '7', '-3'], // positive_numbers
+                '8-3': ['10', '20', '30', '40', '50'], // average_5
+                '9-1': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], // count_even
+                '10-1': ['5', '10', '15', '0'] // sum_until_zero
+            };
+            
+            // Обработчики для кнопок выполнения
+            document.querySelectorAll('.run-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const level = this.dataset.level;
+                    const task = this.dataset.task;
+                    runCode(level, task);
+                });
+            });
+            
+            // Обработчики для кнопок копирования
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const level = this.dataset.level;
+                    const task = this.dataset.task;
+                    copyCode(level, task);
+                });
+            });
+            
+            // Функция выполнения кода
+            function runCode(level, task) {
+                const codeId = `${level}-${task}`;
+                const output = document.getElementById(`output-${codeId}`);
+                const successMsg = document.getElementById(`success-${codeId}`);
+                const errorMsg = document.getElementById(`error-${codeId}`);
+                
+                // Получить код
+                const code = tasksData[codeId];
+                if (!code) return;
+                
+                // Подготовить вывод
+                output.textContent = "Выполнение...";
+                output.style.color = "#ff9800";
+                successMsg.style.display = 'none';
+                errorMsg.style.display = 'none';
+                
+                // Эмуляция ввода
+                let inputIndex = 0;
+                const inputs = testInputs[codeId] || [];
+                
+                // Сохранить оригинальные функции
+                const originalInput = window.input;
+                const originalLog = console.log;
+                const logs = [];
+                
+                // Переопределить input
+                window.input = function(prompt) {
+                    if (inputIndex < inputs.length) {
+                        return inputs[inputIndex++];
+                    }
+                    return "";
+                };
+                
+                // Перехватить вывод
+                console.log = function(...args) {
+                    logs.push(args.join(' '));
+                };
+                
+                // Выполнить код с задержкой
+                setTimeout(() => {
+                    try {
+                        // Создать безопасную функцию
+                        const func = new Function(code);
+                        const result = func();
+                        
+                        // Восстановить оригинальные функции
+                        console.log = originalLog;
+                        window.input = originalInput;
+                        
+                        // Формировать вывод
+                        let outputText = logs.join('\n');
+                        
+                        // Добавить возвращаемое значение
+                        if (result !== undefined) {
+                            if (outputText) outputText += '\n';
+                            outputText += `Возвращено: ${result}`;
+                        }
+                        
+                        output.textContent = outputText || "✓ Код выполнен успешно (нет вывода в консоль)";
+                        output.style.color = "#4caf50";
+                        successMsg.style.display = 'flex';
+                        
+                    } catch (error) {
+                        // Восстановить оригинальные функции
+                        console.log = originalLog;
+                        window.input = originalInput;
+                        
+                        output.textContent = `✗ Ошибка: ${error.message}`;
+                        output.style.color = "#f44336";
+                        errorMsg.style.display = 'flex';
+                    }
+                }, 500);
+            }
+            
+            // Функция копирования кода
+            function copyCode(level, task) {
+                const codeId = `${level}-${task}`;
+                const code = tasksData[codeId];
+                
+                if (!code) return;
+                
+                navigator.clipboard.writeText(code)
+                    .then(() => {
+                        const btn = document.querySelector(`.copy-btn[data-level="${level}"][data-task="${task}"]`);
+                        const originalHTML = btn.innerHTML;
+                        
+                        btn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+                        btn.style.background = '#4caf50';
+                        
+                        setTimeout(() => {
+                            btn.innerHTML = originalHTML;
+                            btn.style.background = '';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Ошибка при копировании:', err);
+                    });
+            }
+            
+            // Автоматическое переключение слайдов (опционально)
+            //let autoAdvanceInterval = null;
+            
+            /*function startAutoAdvance(interval = 30000) { // 30 секунд на слайд
+                stopAutoAdvance();
+                autoAdvanceInterval = setInterval(() => {
+                    if (currentSlideIndex < slides.length - 1) {
+                        goToSlide(currentSlideIndex + 1);
+                    } else {
+                        goToSlide(0); // Вернуться к началу
+                    }
+                }, interval);
+            }
+                */
+            
+            function stopAutoAdvance() {
+                if (autoAdvanceInterval) {
+                    clearInterval(autoAdvanceInterval);
+                    autoAdvanceInterval = null;
+                }
+            }
+            
+            // Начать автопереключение через 1 минуту бездействия
+            let inactivityTimer = setTimeout(() => {
+                startAutoAdvance(30000);
+            }, 60000);
+            
+            // Сброс таймера бездействия
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                stopAutoAdvance();
+                inactivityTimer = setTimeout(() => {
+                    startAutoAdvance(30000);
+                }, 60000);
+            }
+            
+            // Обработчики событий для сброса таймера
+            document.addEventListener('keydown', resetInactivityTimer);
+            document.addEventListener('click', resetInactivityTimer);
+            document.addEventListener('wheel', resetInactivityTimer);
+            
+            // Инициализация
+            updateNavigationButtons();
+            
+            // Фокусировка на первом слайде
+            slides[0].scrollTop = 0;
+        });
+    </script>
 </body>
 </html>

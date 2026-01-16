@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: E-mail и функции Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: #333;
+            height: 110vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 1900px;
+            margin: 0 auto;
+            height: 100%;
+            position: relative;
+        }
+        
+        .presentation {
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            height: calc(100vh - 120px);
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #26d0ce;
+        }
+        
+        .slide-title {
+            color: #1a2980;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .slide-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .slide-content {
+            font-size: 2rem;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: #1a2980;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #26d0ce;
+        }
+        
+        .example {
+            background: #f8f9fa;
+            border-left: 4px solid #1a2980;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Consolas', monospace;
+            overflow-x: auto;
+        }
+        
+        .code-keyword {
+            color: #d73a49;
+            font-weight: bold;
+        }
+        
+        .code-function {
+            color: #6f42c1;
+        }
+        
+        .code-string {
+            color: #032f62;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .correct {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .btn {
+            background: #1a2980;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: #26d0ce;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-prev::before {
+            content: "←";
+            font-size: 1.2rem;
+        }
+        
+        .btn-next::after {
+            content: "→";
+            font-size: 1.2rem;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .progress {
+            height: 100%;
+            background: #26d0ce;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #1a2980;
+        }
+        
+        .bullets {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .bullets li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .bullets li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #26d0ce;
+            font-weight: bold;
+        }
+        
+        .email-example {
+            text-align: center;
+            font-size: 1.8rem;
+            margin: 20px 0;
+            color: #1a2980;
+            font-weight: bold;
+        }
+        
+        .email-part {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0 2px;
+        }
+        
+        .email-user {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .email-at {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .email-domain {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .email-zone {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+                margin: 10px;
+                height: calc(100vh - 100px);
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .controls {
+                right: 20px;
+                bottom: 15px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slide-counter">Слайд <span id="current-slide">1</span> из <span id="total-slides">14</span></div>
+        
+        <div class="presentation">
+            <!-- Слайд 1 -->
+            <div class="slide active" id="slide1">
+                <div class="slide-header">
+                    <h1 class="slide-title">Информатика. 9 класс</h1>
+                    <p class="slide-subtitle">Тема урока: Электронная почта (E-mail) и Аргументы в функциях Python</p>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Цель урока:</h2>
+                        <p>Изучить принципы работы электронной почты и освоить передачу данных в функции Python</p>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Преподаватель:</h2>
+                        <p>[Ваше имя]</p>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Дата:</h2>
+                        <p id="current-date"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 2 -->
+            <div class="slide" id="slide2">
+                <div class="slide-header">
+                    <h1 class="slide-title">План урока</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Часть 1: Электронная почта</h2>
+                        <ul class="bullets">
+                            <li>Что такое E-mail и зачем он нужен?</li>
+                            <li>Как устроен адрес электронной почты?</li>
+                            <li>Основные правила безопасности</li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Часть 2: Функции в Python</h2>
+                        <ul class="bullets">
+                            <li>Зачем нужны аргументы в функциях?</li>
+                            <li>Что такое возвращаемые значения?</li>
+                            <li>Как правильно передавать данные в функции?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 3 -->
+            <div class="slide" id="slide3">
+                <div class="slide-header">
+                    <h1 class="slide-title">Электронная почта — что это?</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Цифровая почта нашего времени</h2>
+                        <ul class="bullets">
+                            <li>Сервис для обмена сообщениями через интернет</li>
+                            <li>Быстрее обычной почты в тысячи раз!</li>
+                            <li>Бесплатно для большинства пользователей</li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Где используем?</h2>
+                        <div class="example">
+                            ✅ Общение с друзьями и родными<br>
+                            ✅ Учеба: домашние задания, проекты<br>
+                            ✅ Работа: документы, отчеты<br>
+                            ✅ Регистрация на сайтах и в приложениях
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 4 -->
+            <div class="slide" id="slide4">
+                <div class="slide-header">
+                    <h1 class="slide-title">Структура адреса E-mail</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Все адреса имеют одинаковый формат:</h2>
+                        <div class="email-example">
+                            <span class="email-part email-user">имя_пользователя</span>
+                            <span class="email-part email-at">@</span>
+                            <span class="email-part email-domain">домен</span>
+                            <span class="email-part email-zone">.зона</span>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Разберем реальный пример:</h2>
+                        <div class="email-example">
+                            <span class="email-part email-user">student2024</span>
+                            <span class="email-part email-at">@</span>
+                            <span class="email-part email-domain">school</span>
+                            <span class="email-part email-zone">.tj</span>
+                        </div>
+                        <p><span class="highlight">student2024</span> — логин пользователя</p>
+                        <p><span class="highlight">@</span> — разделитель (читается "at" — "на")</p>
+                        <p><span class="highlight">school.tj</span> — доменное имя почтового сервера</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 5 -->
+            <div class="slide" id="slide5">
+                <div class="slide-header">
+                    <h1 class="slide-title">Как работает электронная почта?</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Процесс отправки письма:</h2>
+                        <ol class="bullets">
+                            <li>Вы пишете письмо в почтовой программе</li>
+                            <li>Письмо отправляется на SMTP-сервер</li>
+                            <li>Сервер находит почтовый ящик получателя</li>
+                            <li>Письмо сохраняется на сервере получателя</li>
+                            <li>Получатель забирает письмо, когда зайдет в почту</li>
+                        </ol>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Важно:</h2>
+                        <div class="example">
+                            Письма хранятся на сервере, а не сразу на вашем компьютере!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 6 -->
+            <div class="slide" id="slide6">
+                <div class="slide-header">
+                    <h1 class="slide-title">Безопасность — это важно!</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Пароль:</h2>
+                        <ul class="bullets">
+                            <li>Должен быть сложным (цифры+буквы+символы)</li>
+                            <li>Не повторять на разных сайтах</li>
+                            <li>Никому не сообщать!</li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Вложения:</h2>
+                        <ul class="bullets">
+                            <li>Проверять отправителя перед открытием</li>
+                            <li>Сканировать антивирусом</li>
+                            <li>Не открывать подозрительные файлы</li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Спам:</h2>
+                        <ul class="bullets">
+                            <li>Не отвечать на спам-письма</li>
+                            <li>Не переходить по подозрительным ссылкам</li>
+                            <li>Использовать фильтры спама</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 7 -->
+            <div class="slide" id="slide7">
+                <div class="slide-header">
+                    <h1 class="slide-title">Переходим к программированию</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Связь между темами:</h2>
+                        <div class="example">
+                            <strong>Электронная почта:</strong> Передача писем<br>
+                            <strong>Функции Python:</strong> Передача данных<br><br>
+                            
+                            <strong>Электронная почта:</strong> Отправитель → Получатель<br>
+                            <strong>Функции Python:</strong> Программа → Функция<br><br>
+                            
+                            <strong>Электронная почта:</strong> Адрес для отправки<br>
+                            <strong>Функции Python:</strong> Аргументы для вызова
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Идея:</h2>
+                        <div class="highlight">
+                            Чтобы система работала правильно, нужно правильно передавать информацию!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 8 -->
+            <div class="slide" id="slide8">
+                <div class="slide-header">
+                    <h1 class="slide-title">Вспоминаем функции</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Что такое функция?</h2>
+                        <div class="example">
+                            <span class="code-keyword">def</span> <span class="code-function">приветствие</span>():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">print</span>(<span class="code-string">"Здравствуйте, ученики!"</span>)
+                        </div>
+                        <p><strong>Проблема:</strong> функция всегда говорит одно и то же</p>
+                        <p><strong>Решение:</strong> нужно передавать данные в функцию!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 9 -->
+            <div class="slide" id="slide9">
+                <div class="slide-header">
+                    <h1 class="slide-title">Аргументы функций</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Аргументы = данные для функции</h2>
+                        <div class="example">
+                            <span class="code-keyword">def</span> <span class="code-function">приветствие</span>(<span class="highlight">имя</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">print</span>(<span class="code-string">f"Здравствуйте, {имя}!"</span>)<br><br>
+                            
+                            <span class="code-function">приветствие</span>(<span class="code-string">"Алишер"</span>)   <span class="code-comment"># Аргумент "Алишер"</span><br>
+                            <span class="code-function">приветствие</span>(<span class="code-string">"Мадина"</span>)    <span class="code-comment"># Аргумент "Мадина"</span>
+                        </div>
+                        <div class="section">
+                            <h2 class="section-title">Ключевые понятия:</h2>
+                            <p><span class="highlight">Параметр</span> — переменная в определении функции (<code>имя</code>)</p>
+                            <p><span class="highlight">Аргумент</span> — конкретное значение при вызове (<code>"Алишер"</code>)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 10 -->
+            <div class="slide" id="slide10">
+                <div class="slide-header">
+                    <h1 class="slide-title">Возвращаемые значения</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title"><code>return</code> — вернуть результат работы</h2>
+                        
+                        <h3 class="section-title">Без return (только печать):</h3>
+                        <div class="example">
+                            <span class="code-keyword">def</span> <span class="code-function">показать_сумму</span>(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">print</span>(<span class="code-string">f"Сумма: {a + b}"</span>)<br><br>
+                            
+                            <span class="code-function">показать_сумму</span>(5, 3)  <span class="code-comment"># Напечатает "Сумма: 8"</span>
+                        </div>
+                        
+                        <h3 class="section-title">С return (возвращает значение):</h3>
+                        <div class="example">
+                            <span class="code-keyword">def</span> <span class="code-function">вычислить_сумму</span>(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> a + b<br><br>
+                            
+                            результат = <span class="code-function">вычислить_сумму</span>(5, 3)  <span class="code-comment"># результат = 8</span><br>
+                            <span class="code-keyword">print</span>(результат * 2)  <span class="code-comment"># Можно использовать дальше!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 11 -->
+            <div class="slide" id="slide11">
+                <div class="slide-header">
+                    <h1 class="slide-title">Типичные ошибки</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Ошибка 1: Неправильное количество аргументов</h2>
+                        <div class="error">
+                            <span class="code-keyword">def</span> <span class="code-function">информация</span>(имя, возраст):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">print</span>(<span class="code-string">f"{имя}, {возраст} лет"</span>)<br><br>
+                            
+                            <span class="code-function">информация</span>(<span class="code-string">"Али"</span>)  <span class="code-comment"># ОШИБКА! Нужно 2 аргумента</span>
+                        </div>
+                        <div class="correct">
+                            <span class="code-function">информация</span>(<span class="code-string">"Али"</span>, 15)  <span class="code-comment"># Теперь правильно</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 12 -->
+            <div class="slide" id="slide12">
+                <div class="slide-header">
+                    <h1 class="slide-title">Типичные ошибки (продолжение)</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Ошибка 2: Путаница между print и return</h2>
+                        <div class="error">
+                            <span class="code-keyword">def</span> <span class="code-function">расчет</span>(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = a + b  <span class="code-comment"># Вычислили</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Забыли return! Функция вернет None</span><br><br>
+                            
+                            х = <span class="code-function">расчет</span>(5, 3)  <span class="code-comment"># х = None (ничего)</span>
+                        </div>
+                        <div class="correct">
+                            <span class="code-keyword">def</span> <span class="code-function">расчет</span>(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = a + b<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> result  <span class="code-comment"># Теперь вернет сумму</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 13 -->
+            <div class="slide" id="slide13">
+                <div class="slide-header">
+                    <h1 class="slide-title">Итоги урока</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Про электронную почту:</h2>
+                        <ul class="bullets">
+                            <li>Формат адреса: имя@домен.зона</li>
+                            <li>Основные правила безопасности</li>
+                            <li>Как работает отправка писем</li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Про функции Python:</h2>
+                        <ul class="bullets">
+                            <li>Как передавать данные через аргументы</li>
+                            <li>Как возвращать результаты через <code>return</code></li>
+                            <li>Как избегать типичных ошибок</li>
+                        </ul>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Главный вывод:</h2>
+                        <div class="highlight" style="font-size: 1.3rem; padding: 15px;">
+                            Правильная передача информации — основа работы и в интернете, и в программировании!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 14 -->
+            <div class="slide" id="slide14">
+                <div class="slide-header">
+                    <h1 class="slide-title">Домашнее задание</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="section">
+                        <h2 class="section-title">Теория:</h2>
+                        <ol class="bullets">
+                            <li>Нарисуйте схему отправки электронного письма</li>
+                            <li>Составьте список из 5 правил безопасности в интернете</li>
+                        </ol>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Практика:</h2>
+                        <p>Создайте функцию для проверки правильности адреса электронной почты:</p>
+                        <div class="example">
+                            <span class="code-keyword">def</span> <span class="code-function">proverit_email</span>(email):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Проверьте, есть ли @ и .</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Верните True или False</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">pass</span>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2 class="section-title">Спасибо за внимание!</h2>
+                        <p style="text-align: center; font-size: 1.3rem; margin-top: 30px;">Удачи в освоении новых технологий!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-prev" id="prev-btn">Назад</button>
+            <button class="btn btn-next" id="next-btn">Вперед</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentSlideEl = document.getElementById('current-slide');
+            const totalSlidesEl = document.getElementById('total-slides');
+            const progressEl = document.getElementById('progress');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            // Устанавливаем общее количество слайдов
+            totalSlidesEl.textContent = totalSlides;
+            
+            // Устанавливаем текущую дату
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('ru-RU', options);
+            
+            // Функция обновления слайда
+            function updateSlide() {
+                // Скрываем все слайды
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Показываем текущий слайд
+                slides[currentSlide].classList.add('active');
+                
+                // Обновляем счетчик
+                currentSlideEl.textContent = currentSlide + 1;
+                
+                // Обновляем прогресс-бар
+                progressEl.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+                
+                // Обновляем состояние кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Обработчики кнопок
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Обработчики клавиатуры
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextBtn.click();
+                }
+            });
+            
+            // Инициализация
+            updateSlide();
+            
+            // Добавляем обработчики для клика по слайду (переход вперед)
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.addEventListener('click', (e) => {
+                    // Проверяем, не кликнули ли по кнопке или элементу с действием
+                    if (!e.target.closest('.btn') && !e.target.closest('.example')) {
+                        nextBtn.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
