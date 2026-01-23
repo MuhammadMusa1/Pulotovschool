@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Задачи по Python — Калькулятор (уровни 5–9)</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0a0a0a;
+      color: #f0f0f0;
+      line-height: 1.5;
+      font-size: 20px;
+    }
+
+    header {
+      background: #1a3c5e;
+      padding: 30px 20px;
+      text-align: center;
+      border-bottom: 4px solid #336699;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 3.4rem;
+      color: #aaffcc;
+    }
+
+    h2 {
+      font-size: 2.6rem;
+      color: #88ffaa;
+      margin: 50px 0 25px;
+      text-align: center;
+      border-bottom: 2px solid #444;
+      padding-bottom: 15px;
+    }
+
+    .level {
+      max-width: 1100px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+
+    .task {
+      background: #111;
+      border: 2px solid #444;
+      border-radius: 12px;
+      margin: 30px 0;
+      padding: 25px;
+    }
+
+    .task h3 {
+      margin: 0 0 18px 0;
+      color: #ffdd99;
+      font-size: 2.1rem;
+    }
+
+    pre {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 1.35rem;
+      overflow-x: auto;
+      border: 1px solid #555;
+      margin: 18px 0;
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      color: #d9ffcc;
+    }
+
+    .comment {
+      color: #88cc88;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+      font-size: 1.3rem;
+      border-top: 2px solid #333;
+    }
+
+    @media (max-width: 800px) {
+      h1 { font-size: 2.8rem; }
+      h2 { font-size: 2.2rem; }
+      .task h3 { font-size: 1.8rem; }
+      pre { font-size: 1.2rem; }
+      body { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Задачи по Python<br>Создаём свой калькулятор</h1>
+  <p style="font-size:1.6rem; margin-top:15px; color:#ccc;">
+    Уровни 5–9 баллов — от простого к сложному
+  </p>
+</header>
+
+<div class="level">
+
+  <h2>Уровень 5 баллов — самые простые задания</h2>
+
+  <div class="task">
+    <h3>Задача 1. Функция сложения двух чисел</h3>
+<pre><code>def simple_addition(a, b):
+    сумма = a + b
+    return сумма
+
+# Примеры:
+print(simple_addition(8, 3))     # → 11
+print(simple_addition(25, 7))    # → 32</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 2. Функция вычитания</h3>
+<pre><code>def simple_subtraction(a, b):
+    разность = a - b
+    return разность
+
+print(simple_subtraction(15, 6))   # → 9
+print(simple_subtraction(10, 4))   # → 6</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Показать меню</h3>
+<pre><code>def show_menu():
+    print("Что умеет калькулятор:")
+    print("+   сложить числа")
+    print("-   вычесть числа")
+    print("Выбери знак!")
+
+show_menu()</code></pre>
+  </div>
+
+</div>
+
+<div class="level">
+
+  <h2>Уровень 6 баллов — добавляем деление и ввод</h2>
+
+  <div class="task">
+    <h3>Задача 1. Безопасное деление</h3>
+<pre><code>def safe_division(a, b):
+    if b == 0:
+        print("На ноль делить нельзя!")
+        return 0
+    else:
+        return a / b
+
+print(safe_division(20, 4))   # → 5.0
+print(safe_division(15, 0))   # сообщение + 0</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 2. Универсальная функция вычислений</h3>
+<pre><code>def calculate(знак, x, y):
+    if знак == "+": return x + y
+    if знак == "-": return x - y
+    if знак == "*": return x * y
+    if знак == "/":
+        if y == 0:
+            print("На ноль нельзя!")
+            return 0
+        return x / y
+    
+    print("Я такого знака не знаю")
+    return 0
+
+print(calculate("+", 7, 8))    # 15
+print(calculate("/", 10, 2))   # 5.0</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Безопасный ввод числа</h3>
+<pre><code>def get_number(вопрос):
+    while True:
+        текст = input(вопрос + " ")
+        try:
+            число = float(текст)
+            return число
+        except:
+            print("Нужно написать число! Попробуй ещё раз.")
+
+n = get_number("Сколько тебе лет?")
+print("Тебе", n, "лет")</code></pre>
+  </div>
+
+</div>
+
+<div class="level">
+
+  <h2>Уровень 7 баллов</h2>
+
+  <div class="task">
+    <h3>Задача 1. Калькулятор с меню</h3>
+<pre><code>def advanced_calculator():
+    print("Выбери действие:")
+    print("1 — сложить")
+    print("2 — вычесть")
+    print("3 — умножить")
+    print("4 — разделить")
+    
+    выбор = input("Напиши номер → ")
+    a = get_number("Первое число: ")
+    b = get_number("Второе число: ")
+    
+    if выбор == "1": print(a + b)
+    elif выбор == "2": print(a - b)
+    elif выбор == "3": print(a * b)
+    elif выбор == "4": print(safe_division(a, b))
+    else: print("Такого пункта нет")</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 2. Процент от числа</h3>
+<pre><code>def calculate_percentage(число, проценты):
+    часть = число * проценты / 100
+    return часть
+
+print(calculate_percentage(200, 25))   # 50.0
+print(calculate_percentage(360, 15))   # 54.0</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Возведение в степень</h3>
+<pre><code>def power_calculator(число, степень):
+    результат = число ** степень
+    return результат
+
+print(power_calculator(2, 5))   # 32
+print(power_calculator(3, 4))   # 81</code></pre>
+  </div>
+
+</div>
+
+<div class="level">
+
+  <h2>Уровень 8 баллов</h2>
+
+  <div class="task">
+    <h3>Задача 1. Калькулятор с историей</h3>
+<pre><code>история = []
+
+def calculator_with_history():
+    while True:
+        действие = input("Знак (+ - * /) или 'выход': ")
+        if действие == "выход":
+            break
+            
+        x = get_number("Первое число: ")
+        y = get_number("Второе число: ")
+        
+        if   действие == "+": res = x + y
+        elif действие == "-": res = x - y
+        elif действие == "*": res = x * y
+        elif действие == "/": res = safe_division(x, y)
+        else:
+            print("Неправильный знак")
+            continue
+            
+        строчка = f"{x} {действие} {y} = {res}"
+        print(строчка)
+        история.append(строчка)
+    
+    print("\nВся история:")
+    for строка in история:
+        print(строка)</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 2. (a + b) × c</h3>
+<pre><code>def complex_operation(a, b, c):
+    сумма = a + b
+    итог = сумма * c
+    return итог
+
+print(complex_operation(3, 4, 5))   # 35</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Конвертер валют</h3>
+<pre><code>def currency_converter(сумма, курс):
+    новая_сумма = сумма * курс
+    return новая_сумма
+
+print(currency_converter(100, 11.2))   # 1120</code></pre>
+  </div>
+
+</div>
+
+<div class="level">
+
+  <h2>Уровень 9 баллов</h2>
+
+  <div class="task">
+    <h3>Задача 1. Класс Calculator</h3>
+<pre><code>class Calculator:
+    def плюс(self, a, b):
+        return a + b
+    
+    def минус(self, a, b):
+        return a - b
+    
+    def умножить(self, a, b):
+        return a * b
+
+кальк = Calculator()
+print(кальк.плюс(6, 7))         # 13
+print(кальк.умножить(4, 5))     # 20</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 2. Научный калькулятор (простой)</h3>
+<pre><code>import math
+
+def scientific_calculator():
+    print("1 — квадратный корень")
+    print("2 — факториал")
+    
+    выбор = input("Что считаем? (1 или 2) ")
+    число = get_number("Число: ")
+    
+    if выбор == "1":
+        if число >= 0:
+            print(math.sqrt(число))
+        else:
+            print("Отрицательное число!")
+    elif выбор == "2":
+        if число == int(число) and число >= 0:
+            print(math.factorial(int(число)))
+        else:
+            print("Только целые ≥ 0")</code></pre>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Цена со скидкой</h3>
+<pre><code>def calculate_discount(цена, скидка):
+    if скидка < 0 or скидка > 100:
+        print("Скидка 0–100%")
+        return цена
+        
+    сколько_скидки = цена * скидка / 100
+    итоговая_цена = цена - сколько_скидки
+    print("Было: ", цена)
+    print("Скидка:", сколько_скидки)
+    print("Стало:", итоговая_цена)
+    return итоговая_цена
+
+calculate_discount(1200, 30)   # 840</code></pre>
+  </div>
+
+</div>
+
+<footer>
+  Удачи в изучении Python!<br>
+  © 2025 — для школьников и начинающих
+</footer>
+
+</body>
+</html>

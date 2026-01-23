@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сетевые общения и этика | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .presentation-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .slide {
+            display: none;
+            padding: 50px 40px;
+            min-height: 500px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #26d0ce;
+        }
+        
+        .slide-title {
+            color: #1a2980;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .slide-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+        
+        .slide-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: #1a2980;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .bullets {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .bullets li {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .bullets li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #26d0ce;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .tip {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .nav-btn {
+            background: #1a2980;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover {
+            background: #26d0ce;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .slide-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator-dot.active {
+            background: #1a2980;
+            transform: scale(1.2);
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(26, 41, 128, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #1a2980;
+            font-size: 0.9rem;
+        }
+        
+        .class-info {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+                min-height: 400px;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-content {
+                font-size: 1rem;
+            }
+            
+            .navigation {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+            
+            .class-info {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .slide-title {
+                font-size: 1.6rem;
+            }
+            
+            .bullets li {
+                font-size: 0.95rem;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="class-info">
+        <h2>Информатика | 9 класс</h2>
+    </div>
+    
+    <div class="presentation-container">
+        <div class="slide-counter" id="slide-counter">Слайд 1 из 5</div>
+        
+        <!-- Слайд 1 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">Сетевые общения и этика</h1>
+                <p class="slide-subtitle">Основы цифрового взаимодействия</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Что такое сетевое общение?</h2>
+                    <p>Сетевое общение — это взаимодействие между людьми через компьютерные сети и интернет с использованием различных цифровых платформ и технологий.</p>
+                </div>
+                
+                <div class="tip">
+                    <strong>Интересный факт:</strong> Ежедневно в мире отправляется более 300 миллиардов электронных писем и 100 миллиардов сообщений в мессенджерах.
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Основные формы сетевого общения:</h2>
+                    <ul class="bullets">
+                        <li>Электронная почта</li>
+                        <li>Социальные сети</li>
+                        <li>Мессенджеры</li>
+                        <li>Форумы и блоги</li>
+                        <li>Видеоконференции</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 2 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">Сетевой этикет (Нетикет)</h1>
+                <p class="slide-subtitle">Правила поведения в цифровом пространстве</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Золотые правила нетикета:</h2>
+                    <ul class="bullets">
+                        <li>Помните, что на другом конце — реальный человек</li>
+                        <li>Соблюдайте те же нормы, что и в реальной жизни</li>
+                        <li>Уважайте время и возможности других</li>
+                        <li>Пишите грамотно и понятно</li>
+                        <li>Не злоупотребляйте Caps Lock</li>
+                        <li>Уважайте частную жизнь других</li>
+                        <li>Не распространяйте ложную информацию</li>
+                        <li>Будьте терпимы к ошибкам новичков</li>
+                    </ul>
+                </div>
+                
+                <div class="warning">
+                    <strong>Важно:</strong> Ваши слова в интернете остаются навсегда. Думайте перед тем, как отправить сообщение!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 3 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">Безопасность в сети</h1>
+                <p class="slide-subtitle">Как защитить себя в цифровом мире</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Основные правила безопасности:</h2>
+                    <ul class="bullets">
+                        <li>Используйте сложные пароли (не менее 8 символов, буквы + цифры + символы)</li>
+                        <li>Не переходите по подозрительным ссылкам</li>
+                        <li>Не сообщайте личные данные незнакомцам</li>
+                        <li>Проверяйте информацию перед её распространением</li>
+                        <li>Настройте приватность в социальных сетях</li>
+                        <li>Используйте антивирусные программы</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Защита от кибербуллинга:</h2>
+                    <ul class="bullets">
+                        <li>Не отвечайте на оскорбления</li>
+                        <li>Сохраняйте доказательства травли</li>
+                        <li>Блокируйте агрессоров</li>
+                        <li>Обращайтесь за помощью к взрослым</li>
+                        <li>Сообщайте администрации платформы</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 4 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">Культура общения онлайн</h1>
+                <p class="slide-subtitle">Особенности разных форматов общения</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Электронная почта:</h2>
+                    <ul class="bullets">
+                        <li>Заполняйте поле "Тема" письма</li>
+                        <li>Используйте приветствие и подпись</li>
+                        <li>Пишите лаконично и по делу</li>
+                        <li>Проверяйте орфографию перед отправкой</li>
+                        <li>Отвечайте на письма своевременно</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Социальные сети и мессенджеры:</h2>
+                    <ul class="bullets">
+                        <li>Не спамьте сообщениями</li>
+                        <li>Уважайте время собеседника</li>
+                        <li>Используйте уместные эмодзи и стикеры</li>
+                        <li>Не злоупотребляйте голосовыми сообщениями</li>
+                        <li>Уважайте границы личного пространства</li>
+                    </ul>
+                </div>
+                
+                <div class="tip">
+                    <strong>Совет:</strong> В деловой переписке лучше использовать полные предложения и избегать сленга.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 5 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">Цифровая грамотность</h1>
+                <p class="slide-subtitle">Навыки для успеха в цифровом мире</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Ключевые навыки:</h2>
+                    <ul class="bullets">
+                        <li>Критическое мышление при оценке информации</li>
+                        <li>Умение отличать фейки от правды</li>
+                        <li>Понимание авторского права</li>
+                        <li>Базовые знания о защите данных</li>
+                        <li>Эффективный поиск информации</li>
+                        <li>Умение работать в команде онлайн</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Практическое задание:</h2>
+                    <div class="tip">
+                        <p>1. Проанализируйте своё поведение в соцсетях за последнюю неделю</p>
+                        <p>2. Составьте список из 5 правил для классного чата</p>
+                        <p>3. Проверьте настройки приватности в одной из социальных сетей</p>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Итог:</h2>
+                    <p>Цифровой мир требует от нас не только технических навыков, но и развитой этики, эмпатии и ответственности. Будьте внимательны к тому, что и как вы пишете в сети — ваши слова создают вашу цифровую репутацию.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn">
+                <span>←</span> Назад
+            </button>
+            
+            <div class="slide-indicator" id="indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+            </div>
+            
+            <button class="nav-btn" id="next-btn">
+                Вперед <span>→</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const indicatorDots = document.querySelectorAll('.indicator-dot');
+            const slideCounter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            // Функция обновления слайдов
+            function updateSlide() {
+                // Скрываем все слайды
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Показываем текущий слайд
+                slides[currentSlide].classList.add('active');
+                
+                // Обновляем индикаторы
+                indicatorDots.forEach((dot, index) => {
+                    dot.classList.remove('active');
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    }
+                });
+                
+                // Обновляем счетчик
+                slideCounter.textContent = `Слайд ${currentSlide + 1} из ${totalSlides}`;
+                
+                // Обновляем состояние кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Навигация по кнопкам
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Навигация по индикаторам
+            indicatorDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                    currentSlide = slideIndex;
+                    updateSlide();
+                });
+            });
+            
+            // Навигация с клавиатуры
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                    prevBtn.click();
+                    e.preventDefault();
+                } else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+                    nextBtn.click();
+                    e.preventDefault();
+                }
+            });
+            
+            // Навигация свайпом на мобильных устройствах
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50; // минимальное расстояние для свайпа
+                const diff = touchStartX - touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        // Свайп влево - следующий слайд
+                        nextBtn.click();
+                    } else {
+                        // Свайп вправо - предыдущий слайд
+                        prevBtn.click();
+                    }
+                }
+            }
+            
+            // Автоматическое обновление высоты слайдов
+            function updateSlideHeight() {
+                const activeSlide = document.querySelector('.slide.active');
+                const container = document.querySelector('.presentation-container');
+                
+                if (activeSlide && container) {
+                    const slideHeight = activeSlide.offsetHeight + 120; // + навигация
+                    container.style.minHeight = `${slideHeight}px`;
+                }
+            }
+            
+            // Вызываем при изменении размера окна
+            window.addEventListener('resize', updateSlideHeight);
+            
+            // Инициализация
+            updateSlide();
+            updateSlideHeight();
+            
+            // Анимация при загрузке
+            setTimeout(() => {
+                document.body.style.opacity = 1;
+            }, 100);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Анонимные функции и переменные | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Consolas', monospace;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .presentation-container {
+            width: 100%;
+            max-width: 1000px;
+            background: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 500px;
+            animation: slideIn 0.4s ease;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4CAF50;
+        }
+        
+        .slide-title {
+            color: #4CAF50;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .slide-subtitle {
+            color: #aaa;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        
+        .slide-content {
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            background: #252525;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .section-title {
+            color: #2196F3;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #f8f8f2;
+        }
+        
+        .code-keyword { color: #569cd6; }
+        .code-function { color: #dcdcaa; }
+        .code-string { color: #ce9178; }
+        .code-comment { color: #6a9955; }
+        .code-number { color: #b5cea8; }
+        .code-variable { color: #9cdcfe; }
+        .code-operator { color: #d4d4d4; }
+        .code-builtin { color: #4ec9b0; }
+        
+        .example {
+            background: #2a2a2a;
+            border-left: 4px solid #FF9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .tip {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #252525;
+            border-top: 1px solid #444;
+        }
+        
+        .nav-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 130px;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover:not(:disabled) {
+            background: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .slide-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator-dot.active {
+            background: #4CAF50;
+            transform: scale(1.3);
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(33, 150, 243, 0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            color: #2196F3;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            color: #4CAF50;
+        }
+        
+        .header h2 {
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #252525;
+        }
+        
+        .comparison-table th {
+            background: #333;
+            color: #2196F3;
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #444;
+        }
+        
+        .comparison-table td {
+            padding: 12px 15px;
+            border: 1px solid #444;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #2a2a2a;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 20px;
+                min-height: auto;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .navigation {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .slide-indicator {
+                order: -1;
+                margin-bottom: 10px;
+            }
+            
+            .code-block {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .slide-title {
+                font-size: 1.5rem;
+            }
+            
+            .slide-content {
+                font-size: 0.95rem;
+            }
+        }
+        
+        .output {
+            background: #0d1b2a;
+            border-left: 4px solid #FF5722;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Consolas', monospace;
+            color: #ffcc80;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="header">
+        <h1>Python Программирование</h1>
+        <h2>Анонимные функции и переменные | 9 класс</h2>
+    </div>
+    
+    <div class="presentation-container">
+        <div class="slide-counter" id="slide-counter">1/6</div>
+        
+        <!-- Слайд 1 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">Локальные и глобальные переменные</h1>
+                <p class="slide-subtitle">Область видимости переменных в Python</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Что такое область видимости?</h2>
+                    <p>Область видимости (scope) — это часть программы, в которой переменная доступна для использования.</p>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Локальные переменные</h2>
+                    <p>Объявляются внутри функции и доступны только в ней.</p>
+                    <div class="code-block">
+<span class="code-keyword">def</span> <span class="code-function">my_function</span>():
+    <span class="code-comment"># Локальная переменная</span>
+    local_var = <span class="code-number">10</span>
+    <span class="code-builtin">print</span>(<span class="code-string">"Внутри функции:"</span>, local_var)
+
+<span class="code-function">my_function</span>()  <span class="code-comment"># Выведет: 10</span>
+<span class="code-builtin">print</span>(local_var)  <span class="code-comment"># Ошибка! Переменная не определена</span>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>Важно:</strong> Локальные переменные создаются при вызове функции и уничтожаются при её завершении.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 2 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">Глобальные переменные</h1>
+                <p class="slide-subtitle">Переменные, доступные во всей программе</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Определение глобальных переменных</h2>
+                    <p>Объявляются вне функций и доступны во всей программе.</p>
+                    <div class="code-block">
+<span class="code-comment"># Глобальная переменная</span>
+global_var = <span class="code-number">100</span>
+
+<span class="code-keyword">def</span> <span class="code-function">function1</span>():
+    <span class="code-builtin">print</span>(<span class="code-string">"function1:"</span>, global_var)  <span class="code-comment"># Может читать</span>
+
+<span class="code-keyword">def</span> <span class="code-function">function2</span>():
+    <span class="code-builtin">print</span>(<span class="code-string">"function2:"</span>, global_var)  <span class="code-comment"># Может читать</span>
+
+<span class="code-function">function1</span>()  <span class="code-comment"># Выведет: 100</span>
+<span class="code-function">function2</span>()  <span class="code-comment"># Выведет: 100</span>
+<span class="code-builtin">print</span>(<span class="code-string">"Глобально:"</span>, global_var)  <span class="code-comment"># Выведет: 100</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Ключевое слово global</h2>
+                    <p>Позволяет изменять глобальные переменные внутри функции.</p>
+                    <div class="code-block">
+counter = <span class="code-number">0</span>  <span class="code-comment"># Глобальная переменная</span>
+
+<span class="code-keyword">def</span> <span class="code-function">increment</span>():
+    <span class="code-keyword">global</span> counter  <span class="code-comment"># Указываем, что работаем с глобальной переменной</span>
+    counter += <span class="code-number">1</span>
+
+<span class="code-function">increment</span>()
+<span class="code-function">increment</span>()
+<span class="code-builtin">print</span>(<span class="code-string">"Счетчик:"</span>, counter)  <span class="code-comment"># Выведет: 2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 3 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">Сравнение и практика</h1>
+                <p class="slide-subtitle">Когда использовать локальные и глобальные переменные</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Сравнительная таблица</h2>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Характеристика</th>
+                            <th>Локальные переменные</th>
+                            <th>Глобальные переменные</th>
+                        </tr>
+                        <tr>
+                            <td>Область видимости</td>
+                            <td>Только внутри функции</td>
+                            <td>Вся программа</td>
+                        </tr>
+                        <tr>
+                            <td>Время жизни</td>
+                            <td>Создаются при вызове функции, уничтожаются при выходе</td>
+                            <td>Существуют всю работу программы</td>
+                        </tr>
+                        <tr>
+                            <td>Доступ на чтение</td>
+                            <td>Только из своей функции</td>
+                            <td>Из любой функции</td>
+                        </tr>
+                        <tr>
+                            <td>Доступ на запись</td>
+                            <td>Всегда</td>
+                            <td>Только с ключевым словом global</td>
+                        </tr>
+                        <tr>
+                            <td>Рекомендуется для</td>
+                            <td>Временных данных, промежуточных результатов</td>
+                            <td>Констант, настроек, общих данных</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="example">
+                    <h3 class="section-title">Практический пример</h3>
+                    <div class="code-block">
+<span class="code-comment"># Глобальные настройки</span>
+TAX_RATE = <span class="code-number">0.20</span>  <span class="code-comment"># НДС 20%</span>
+
+<span class="code-keyword">def</span> <span class="code-function">calculate_total</span>(price, quantity):
+    <span class="code-comment"># Локальные переменные</span>
+    subtotal = price * quantity
+    tax = subtotal * TAX_RATE  <span class="code-comment"># Используем глобальную константу</span>
+    total = subtotal + tax
+    <span class="code-keyword">return</span> total
+
+result = <span class="code-function">calculate_total</span>(<span class="code-number">100</span>, <span class="code-number">3</span>)
+<span class="code-builtin">print</span>(<span class="code-string">"Итого:"</span>, result)  <span class="code-comment"># Выведет: 360.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 4 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">Анонимные функции (lambda)</h1>
+                <p class="slide-subtitle">Краткие функции без имени</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Что такое lambda-функции?</h2>
+                    <p>Анонимные (безымянные) функции, которые можно создавать в одной строке.</p>
+                    <div class="code-block">
+<span class="code-comment"># Обычная функция</span>
+<span class="code-keyword">def</span> <span class="code-function">add</span>(x, y):
+    <span class="code-keyword">return</span> x + y
+
+<span class="code-comment"># Lambda-функция (эквивалентна функции выше)</span>
+add_lambda = <span class="code-keyword">lambda</span> x, y: x + y
+
+<span class="code-comment"># Использование</span>
+<span class="code-builtin">print</span>(<span class="code-function">add</span>(<span class="code-number">5</span>, <span class="code-number">3</span>))          <span class="code-comment"># Выведет: 8</span>
+<span class="code-builtin">print</span>(<span class="code-function">add_lambda</span>(<span class="code-number">5</span>, <span class="code-number">3</span>))  <span class="code-comment"># Выведет: 8</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Синтаксис lambda</h2>
+                    <p><code>lambda аргументы: выражение</code></p>
+                    <div class="code-block">
+<span class="code-comment"># Простые примеры</span>
+square = <span class="code-keyword">lambda</span> x: x ** <span class="code-number">2</span>
+is_even = <span class="code-keyword">lambda</span> n: n % <span class="code-number">2</span> == <span class="code-number">0</span>
+greet = <span class="code-keyword">lambda</span> name: <span class="code-string">f"Привет, {name}!"</span>
+
+<span class="code-builtin">print</span>(<span class="code-function">square</span>(<span class="code-number">5</span>))       <span class="code-comment"># 25</span>
+<span class="code-builtin">print</span>(<span class="code-function">is_even</span>(<span class="code-number">4</span>))      <span class="code-comment"># True</span>
+<span class="code-builtin">print</span>(<span class="code-function">greet</span>(<span class="code-string">"Анна"</span>))  <span class="code-comment"># Привет, Анна!</span>
+                    </div>
+                </div>
+                
+                <div class="warning">
+                    <strong>Ограничение:</strong> Lambda-функции могут содержать только одно выражение и не могут содержать сложные конструкции (if-else, циклы, кроме тернарного оператора).
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 5 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">Применение lambda-функций</h1>
+                <p class="slide-subtitle">Практические примеры использования</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">1. Сортировка с ключом</h2>
+                    <div class="code-block">
+<span class="code-comment"># Список студентов (имя, возраст)</span>
+students = [(<span class="code-string">"Алиса"</span>, <span class="code-number">17</span>), (<span class="code-string">"Боб"</span>, <span class="code-number">16</span>), (<span class="code-string">"Карл"</span>, <span class="code-number">18</span>)]
+
+<span class="code-comment"># Сортировка по возрасту</span>
+students_sorted = <span class="code-builtin">sorted</span>(students, key=<span class="code-keyword">lambda</span> student: student[<span class="code-number">1</span>])
+<span class="code-builtin">print</span>(students_sorted)  <span class="code-comment"># [('Боб', 16), ('Алиса', 17), ('Карл', 18)]</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">2. Функции высшего порядка</h2>
+                    <div class="code-block">
+<span class="code-comment"># Функция, которая принимает другую функцию</span>
+<span class="code-keyword">def</span> <span class="code-function">apply_operation</span>(func, x, y):
+    <span class="code-keyword">return</span> <span class="code-function">func</span>(x, y)
+
+<span class="code-comment"># Использование с lambda</span>
+result1 = <span class="code-function">apply_operation</span>(<span class="code-keyword">lambda</span> a, b: a + b, <span class="code-number">10</span>, <span class="code-number">5</span>)
+result2 = <span class="code-function">apply_operation</span>(<span class="code-keyword">lambda</span> a, b: a * b, <span class="code-number">10</span>, <span class="code-number">5</span>)
+
+<span class="code-builtin">print</span>(<span class="code-string">"Сложение:"</span>, result1)  <span class="code-comment"># 15</span>
+<span class="code-builtin">print</span>(<span class="code-string">"Умножение:"</span>, result2)  <span class="code-comment"># 50</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">3. Обработка данных</h2>
+                    <div class="code-block">
+<span class="code-comment"># Удвоить все числа в списке</span>
+numbers = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>]
+doubled = <span class="code-builtin">list</span>(<span class="code-builtin">map</span>(<span class="code-keyword">lambda</span> x: x * <span class="code-number">2</span>, numbers))
+<span class="code-builtin">print</span>(doubled)  <span class="code-comment"># [2, 4, 6, 8, 10]</span>
+
+<span class="code-comment"># Отфильтровать четные числа</span>
+even_numbers = <span class="code-builtin">list</span>(<span class="code-builtin">filter</span>(<span class="code-keyword">lambda</span> x: x % <span class="code-number">2</span> == <span class="code-number">0</span>, numbers))
+<span class="code-builtin">print</span>(even_numbers)  <span class="code-comment"># [2, 4]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Слайд 6 -->
+        <div class="slide" id="slide6">
+            <div class="slide-header">
+                <h1 class="slide-title">Практические задания</h1>
+                <p class="slide-subtitle">Закрепление материала</p>
+            </div>
+            
+            <div class="slide-content">
+                <div class="section">
+                    <h2 class="section-title">Задание 1: Локальные и глобальные переменные</h2>
+                    <div class="code-block">
+<span class="code-comment"># Исходный код с ошибкой</span>
+total = <span class="code-number">0</span>
+
+<span class="code-keyword">def</span> <span class="code-function">add_to_total</span>(value):
+    <span class="code-comment"># Что нужно добавить здесь?</span>
+    total += value
+    <span class="code-keyword">return</span> total
+
+<span class="code-comment"># Как исправить эту функцию?</span>
+                    </div>
+                    <div class="tip">
+                        <strong>Решение:</strong> Добавить <code>global total</code> внутри функции.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Задание 2: Lambda-калькулятор</h2>
+                    <div class="code-block">
+<span class="code-comment"># Создайте словарь операций с lambda-функциями</span>
+operations = {
+    <span class="code-string">'+'</span>: <span class="code-keyword">lambda</span> x, y: x + y,
+    <span class="code-string">'-'</span>: <span class="code-keyword">lambda</span> x, y: x - y,
+    <span class="code-string">'*'</span>: <span class="code-keyword">lambda</span> x, y: x * y,
+    <span class="code-string">'/'</span>: <span class="code-keyword">lambda</span> x, y: x / y <span class="code-keyword">if</span> y != <span class="code-number">0</span> <span class="code-keyword">else</span> <span class="code-string">"Ошибка"</span>
+}
+
+<span class="code-comment"># Тестирование</span>
+<span class="code-builtin">print</span>(<span class="code-function">operations</span>[<span class="code-string">'+'</span>](<span class="code-number">10</span>, <span class="code-number">5</span>))  <span class="code-comment"># Должно вывести 15</span>
+<span class="code-builtin">print</span>(<span class="code-function">operations</span>[<span class="code-string">'*'</span>](<span class="code-number">3</span>, <span class="code-number">4</span>))   <span class="code-comment"># Должно вывести 12</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">Итоговый тест</h2>
+                    <div class="output">
+                        <p><strong>Вопрос 1:</strong> Где объявляются локальные переменные?</p>
+                        <p><strong>Вопрос 2:</strong> Как изменить глобальную переменную внутри функции?</p>
+                        <p><strong>Вопрос 3:</strong> В чем преимущество lambda-функций?</p>
+                        <p><strong>Вопрос 4:</strong> Какое ограничение есть у lambda-функций?</p>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>Ключевые выводы:</strong><br>
+                    1. Локальные переменные безопаснее глобальных<br>
+                    2. Используйте global для изменения глобальных переменных<br>
+                    3. Lambda-функции удобны для простых операций<br>
+                    4. Практикуйтесь на реальных задачах!
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn">
+                ← Назад
+            </button>
+            
+            <div class="slide-indicator" id="indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+                <div class="indicator-dot" data-slide="5"></div>
+            </div>
+            
+            <button class="nav-btn" id="next-btn">
+                Вперед →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const indicatorDots = document.querySelectorAll('.indicator-dot');
+            const slideCounter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function updateSlide() {
+                // Скрыть все слайды
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Показать текущий слайд
+                slides[currentSlide].classList.add('active');
+                
+                // Обновить индикаторы
+                indicatorDots.forEach((dot, index) => {
+                    dot.classList.remove('active');
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    }
+                });
+                
+                // Обновить счетчик
+                slideCounter.textContent = `${currentSlide + 1}/${totalSlides}`;
+                
+                // Обновить кнопки
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Навигация кнопками
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Навигация по точкам
+            indicatorDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                    currentSlide = slideIndex;
+                    updateSlide();
+                });
+            });
+            
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextBtn.click();
+                }
+            });
+            
+            // Свайп для мобильных
+            let startX = 0;
+            let endX = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+            
+            document.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextBtn.click(); // Свайп влево
+                    } else {
+                        prevBtn.click(); // Свайп вправо
+                    }
+                }
+            }
+            
+            // Инициализация
+            updateSlide();
+        });
+    </script>
+</body>
+</html>

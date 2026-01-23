@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Анонимные функции и переменные в Python</title>
+
+    <!-- ===== CSS: оформление презентации ===== -->
+   <style>
+    /* ===== ОСНОВА ===== */
+    body {
+        margin: 0;
+        font-family: Arial, Verdana, sans-serif;
+        background-color: #f4f6f8;
+    }
+
+    /* ===== КОНТЕЙНЕР ПРЕЗЕНТАЦИИ ===== */
+    .presentation {
+        width: 95%;
+        max-width: 1200px;
+        margin: 30px auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 40px 50px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        min-height: 80vh; /* почти весь экран */
+    }
+
+    /* ===== СЛАЙДЫ ===== */
+    .slide {
+        display: none;
+    }
+
+    .slide.active {
+        display: block;
+    }
+
+    /* ===== ЗАГОЛОВКИ ===== */
+    h1 {
+        font-size: 42px;
+        color: #0d47a1;
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        font-size: 36px;
+        color: #0d47a1;
+        margin-bottom: 25px;
+    }
+
+    /* ===== ТЕКСТ ===== */
+    ul {
+        font-size: 26px;
+        line-height: 1.9;
+        color: #111;
+        padding-left: 35px;
+    }
+
+    li {
+        margin-bottom: 15px;
+    }
+
+    /* ===== КОД ===== */
+    code {
+        display: block;
+        background-color: #eeeeee;
+        color: #000;
+        padding: 25px;
+        border-radius: 10px;
+        font-size: 24px;
+        margin-top: 25px;
+        line-height: 1.7;
+        border-left: 8px solid #1976d2;
+        overflow-x: auto;
+    }
+
+    /* ===== НАВИГАЦИЯ ===== */
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+    }
+
+    button {
+        font-size: 24px;
+        padding: 16px 40px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        background-color: #1976d2;
+        color: #ffffff;
+    }
+
+    button:hover {
+        background-color: #0d47a1;
+    }
+
+    button:focus {
+        outline: 4px solid #ffeb3b;
+    }
+</style>
+
+
+</head>
+<body>
+
+<div class="presentation">
+
+    <!-- ===== СЛАЙД 1 ===== -->
+    <div class="slide active">
+        <h1>Анонимные функции и переменные в Python</h1>
+        <ul>
+            <li>Что такое <b>lambda-функции</b></li>
+            <li>Локальные и глобальные переменные</li>
+            <li>Где и зачем это используется</li>
+        </ul>
+    </div>
+
+    <!-- ===== СЛАЙД 2 ===== -->
+    <div class="slide">
+        <h2>Анонимные функции (lambda)</h2>
+        <ul>
+            <li>Короткие функции без имени</li>
+            <li>Используются для простых действий</li>
+            <li>Записываются в одну строку</li>
+        </ul>
+
+        <code>
+lambda a, b: a + b
+        </code>
+    </div>
+
+    <!-- ===== СЛАЙД 3 ===== -->
+    <div class="slide">
+        <h2>Примеры lambda-функций</h2>
+
+        <code>
+# Обычная функция
+def square(x):
+    return x * x
+        </code>
+
+        <code>
+# Та же функция через lambda
+square = lambda x: x * x
+print(square(5))
+        </code>
+    </div>
+
+    <!-- ===== СЛАЙД 4 ===== -->
+    <div class="slide">
+        <h2>Локальные и глобальные переменные</h2>
+        <ul>
+            <li><b>Локальная</b> — работает только внутри функции</li>
+            <li><b>Глобальная</b> — доступна во всей программе</li>
+        </ul>
+
+        <code>
+x = 10  # глобальная переменная
+
+def my_func():
+    x = 5   # локальная переменная
+    print(x)
+
+my_func()
+print(x)
+        </code>
+    </div>
+
+    <!-- ===== СЛАЙД 5 ===== -->
+    <div class="slide">
+        <h2>Резюме</h2>
+        <ul>
+            <li>lambda — короткие функции без имени</li>
+            <li>Локальные переменные живут внутри функций</li>
+            <li>Глобальные переменные доступны везде</li>
+            <li>Используйте глобальные переменные осторожно ⚠️</li>
+        </ul>
+    </div>
+
+    <!-- ===== НАВИГАЦИЯ ===== -->
+    <div class="navigation">
+        <button onclick="prevSlide()">⬅ Назад</button>
+        <button onclick="nextSlide()">Вперёд ➡</button>
+    </div>
+
+</div>
+
+<!-- ===== JavaScript: логика переключения слайдов ===== -->
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    // Показать нужный слайд
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+    }
+
+    // Следующий слайд
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+    }
+
+    // Предыдущий слайд
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    }
+</script>
+
+</body>
+</html>
