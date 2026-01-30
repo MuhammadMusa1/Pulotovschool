@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Безопасность и Списки | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c2461, #1e3799);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+            height:100vh;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #0c2461;
+        }
+
+        .slide-title {
+            color: #0c2461;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .security-section, .programming-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid;
+        }
+        p{
+            font-size:28px;
+        }
+
+        .security-section {
+            border-color: #e74c3c;
+        }
+
+        .programming-section {
+            border-color: #3498db;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .security-section .section-title {
+            color: #e74c3c;
+        }
+
+        .programming-section .section-title {
+            color: #3498db;
+        }
+
+        .code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 1.9rem;
+            line-height: 1.6;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+       
+
+        .rules-list, .tips-list {
+            list-style: none;
+            padding-left: 20px;
+            font-size:25px;
+        }
+
+        .rules-list li, .tips-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size:25px;
+        }
+
+        .rules-list li:before {
+            content: "🔒";
+            position: absolute;
+            left: 0;
+        }
+
+        .tips-list li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-size:25px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 2px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #0c2461;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #1e3799;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #bdc3c7;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: #0c2461;
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(12, 36, 97, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #0c2461;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 20px;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .navigation {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .slide-indicator {
+                order: -1;
+                margin-bottom: 10px;
+            }
+            
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slide-counter">1/5</div>
+
+        <!-- Слайд 1 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">Информатика 9 класс</h1>
+                <p class="slide-subtitle">Безопасность сетевой информации и Списки в Python</p>
+            </div>
+            
+            <div class="content">
+                <div class="security-section">
+                    <h2 class="section-title">🔐 Безопасность в сети</h2>
+                    <p>Основные угрозы и правила защиты</p>
+                    
+                    <div class="warning">
+                        <strong>Важно!</strong> Каждый день в мире происходит более 30,000 кибератак.
+                    </div>
+                    
+                    <ul class="rules-list">
+                        <li>Используйте сложные пароли</li>
+                        <li>Не переходите по подозрительным ссылкам</li>
+                        <li>Обновляйте программное обеспечение</li>
+                        <li>Проверяйте отправителей email</li>
+                    </ul>
+                </div>
+                
+                <div class="programming-section">
+                    <h2 class="section-title">🐍 Списки в Python</h2>
+                    <p>Структура данных для хранения коллекций</p>
+                    
+                    <div class="code"><span class="comment"># Пример списка</span>
+numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+words = [<span class="string">"яблоко"</span>, <span class="string">"банан"</span>, <span class="string">"апельсин"</span>]
+
+<span class="comment"># Основные операции</span>
+<span class="function">print</span>(numbers[<span class="number">0</span>])  <span class="comment"># Первый элемент</span>
+<span class="function">print</span>(<span class="function">len</span>(words))  <span class="comment"># Длина списка</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">Защита паролей</h1>
+                <p class="slide-subtitle">Основные методы списков</p>
+            </div>
+            
+            <div class="content">
+                <div class="security-section">
+                    <h2 class="section-title">🔑 Правила создания паролей</h2>
+                    
+                    <ul class="tips-list">
+                        <li>Минимум 8 символов</li>
+                        <li>Буквы верхнего и нижнего регистра</li>
+                        <li>Цифры и специальные символы</li>
+                        <li>Не использовать личную информацию</li>
+                        <li>Разные пароли для разных сервисов</li>
+                    </ul>
+                    
+                    <div class="warning">
+                        <strong>Пример плохого пароля:</strong> 123456, password, qwerty<br>
+                        <strong>Пример хорошего пароля:</strong> M@rch2024!Security
+                    </div>
+                </div>
+                
+                <div class="programming-section">
+                    <h2 class="section-title">➕ Добавление элементов</h2>
+                    
+                    <div class="code"><span class="comment"># Создание пустого списка</span>
+students = []
+
+<span class="comment"># Добавление элементов</span>
+students.<span class="function">append</span>(<span class="string">"Анна"</span>)
+students.<span class="function">append</span>(<span class="string">"Борис"</span>)
+students.<span class="function">append</span>(<span class="string">"Светлана"</span>)
+
+<span class="function">print</span>(students)  <span class="comment"># ['Анна', 'Борис', 'Светлана']</span>
+
+<span class="comment"># Добавление в определенную позицию</span>
+students.<span class="function">insert</span>(<span class="number">1</span>, <span class="string">"Дмитрий"</span>)
+<span class="function">print</span>(students)  <span class="comment"># ['Анна', 'Дмитрий', 'Борис', 'Светлана']</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">Фишинг и социальная инженерия</h1>
+                <p class="slide-subtitle">Работа с элементами списков</p>
+            </div>
+            
+            <div class="content">
+                <div class="security-section">
+                    <h2 class="section-title">🎣 Что такое фишинг?</h2>
+                    <p>Мошенничество с целью получения конфиденциальной информации</p>
+                    
+                    <ul class="tips-list">
+                        <li>Проверяйте URL адреса сайтов</li>
+                        <li>Не открывайте подозрительные вложения</li>
+                        <li>Не сообщайте пароли по телефону или email</li>
+                        <li>Используйте двухфакторную аутентификацию</li>
+                    </ul>
+                    
+                    <div class="warning">
+                        <strong>Признаки фишинга:</strong><br>
+                        • Ошибки в тексте письма<br>
+                        • Срочность в действиях<br>
+                        • Незнакомый отправитель
+                    </div>
+                </div>
+                
+                <div class="programming-section">
+                    <h2 class="section-title">➖ Удаление элементов</h2>
+                    
+                    <div class="code"><span class="comment"># Удаление по значению</span>
+fruits = [<span class="string">"яблоко"</span>, <span class="string">"банан"</span>, <span class="string">"апельсин"</span>, <span class="string">"банан"</span>]
+fruits.<span class="function">remove</span>(<span class="string">"банан"</span>)
+<span class="function">print</span>(fruits)  <span class="comment"># ['яблоко', 'апельсин', 'банан']</span>
+
+<span class="comment"># Удаление по индексу</span>
+fruits.<span class="function">pop</span>(<span class="number">1</span>)
+<span class="function">print</span>(fruits)  <span class="comment"># ['яблоко', 'банан']</span>
+
+<span class="comment"># Удаление последнего элемента</span>
+last_fruit = fruits.<span class="function">pop</span>()
+<span class="function">print</span>(<span class="string">"Удалено:"</span>, last_fruit)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">Кибербуллинг и цифровая репутация</h1>
+                <p class="slide-subtitle">Поиск и сортировка в списках</p>
+            </div>
+            
+            <div class="content">
+                <div class="security-section">
+                    <h2 class="section-title">🚫 Защита от кибербуллинга</h2>
+                    
+                    <ul class="tips-list">
+                        <li>Не отвечайте на оскорбления</li>
+                        <li>Сохраняйте доказательства</li>
+                        <li>Блокируйте агрессоров</li>
+                        <li>Расскажите взрослым</li>
+                        <li>Обратитесь к администраторам</li>
+                    </ul>
+                    
+                    <div class="warning">
+                        <strong>Помните:</strong> Все что вы публикуете в интернете, остается там навсегда. 
+                        Создавайте положительную цифровую репутацию!
+                    </div>
+                </div>
+                
+                <div class="programming-section">
+                    <h2 class="section-title">🔍 Поиск и сортировка</h2>
+                    
+                    <div class="code"><span class="comment"># Проверка наличия элемента</span>
+grades = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>]
+<span class="keyword">if</span> <span class="number">5</span> <span class="keyword">in</span> grades:
+    <span class="function">print</span>(<span class="string">"Есть отличные оценки!"</span>)
+
+<span class="comment"># Сортировка списка</span>
+numbers = [<span class="number">42</span>, <span class="number">15</span>, <span class="number">7</span>, <span class="number">23</span>, <span class="number">56</span>]
+numbers.<span class="function">sort</span>()  <span class="comment"># По возрастанию</span>
+<span class="function">print</span>(numbers)  <span class="comment"># [7, 15, 23, 42, 56]</span>
+
+<span class="comment"># Обратная сортировка</span>
+numbers.<span class="function">sort</span>(reverse=<span class="keyword">True</span>)
+<span class="function">print</span>(numbers)  <span class="comment"># [56, 42, 23, 15, 7]</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">Практические задания</h1>
+                <p class="slide-subtitle">Закрепление материала</p>
+            </div>
+            
+            <div class="content">
+                <div class="security-section">
+                    <h2 class="section-title">📝 Задания по безопасности</h2>
+                    
+                    <ol class="tips-list">
+                        <li>Создайте 3 правила для классного чата</li>
+                        <li>Придумайте надежный пароль по всем правилам</li>
+                        <li>Составьте памятку "5 признаков фишинга"</li>
+                        <li>Напишите алгоритм действий при кибербуллинге</li>
+                        <li>Проверьте настройки приватности в соцсети</li>
+                    </ol>
+                </div>
+                
+                <div class="programming-section">
+                    <h2 class="section-title">💻 Задания по программированию</h2>
+                    
+                    <div class="code"><span class="comment"># Задание 1: Создать список оценок</span>
+grades = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>]
+<span class="comment"># Найти среднюю оценку</span>
+
+<span class="comment"># Задание 2: Управление списком студентов</span>
+students = [<span class="string">"Анна"</span>, <span class="string">"Борис"</span>, <span class="string">"Светлана"</span>]
+<span class="comment"># Добавить нового студента</span>
+<span class="comment"># Удалить одного студента</span>
+<span class="comment"># Отсортировать по алфавиту</span>
+
+<span class="comment"># Задание 3: Фильтрация данных</span>
+numbers = [<span class="number">12</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">15</span>, <span class="number">3</span>, <span class="number">9</span>]
+<span class="comment"># Создать новый список только с четными числами</span></div>
+                    
+                    <div class="warning" style="margin-top: 20px;">
+                        <strong>Подсказка:</strong> Используйте цикл for и оператор % для проверки четности.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator-dot');
+            const counter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function updateSlide() {
+                // Скрыть все слайды
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Скрыть все индикаторы
+                indicators.forEach(indicator => {
+                    indicator.classList.remove('active');
+                });
+                
+                // Показать текущий слайд
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+                
+                // Обновить счетчик
+                counter.textContent = `${currentSlide + 1}/${totalSlides}`;
+                
+                // Обновить состояние кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Навигация по кнопкам
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Навигация по индикаторам
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlide();
+                });
+            });
+            
+            // Навигация клавишами
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Инициализация
+            updateSlide();
+        });
+    </script>
+</body>
+</html>
