@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Списки в Python | Презентация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide-title {
+            color: #667eea;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            font-size: 1.95rem;
+            line-height: 1.6;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #764ba2;
+        }
+
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 1.95rem;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+       
+
+        .method-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 20px 0;
+        }
+
+        .method-list li {
+            margin: 10px 0;
+            padding: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .method-name {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .method-description {
+            color: #555;
+            margin-top: 5px;
+            font-size: 1.95rem;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tip {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 20px;
+                min-height: auto;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .code {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+            
+            .navigation {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .slide-indicator {
+                order: -1;
+            }
+            
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slide-counter">1/6</div>
+
+        <!-- Слайд 1 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">Списки в Python</h1>
+                <p class="slide-subtitle">Основы работы с коллекциями данных</p>
+            </div>
+            
+            <div class="content">
+                <div class="example">
+                    <h3>Что такое список?</h3>
+                    <p>Список (list) - это упорядоченная изменяемая коллекция элементов.</p>
+                </div>
+                
+                <div class="code"><span class="comment"># Создание списка</span>
+<span class="keyword">fruits</span> = [<span class="string">"яблоко"</span>, <span class="string">"банан"</span>, <span class="string">"апельсин"</span>]
+<span class="keyword">numbers</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+<span class="keyword">mixed</span> = [<span class="string">"текст"</span>, <span class="number">42</span>, <span class="keyword">True</span>, <span class="number">3.14</span>]
+
+<span class="comment"># Пустой список</span>
+<span class="keyword">empty_list</span> = []</div>
+                
+                <div class="tip">
+                    💡 Списки могут содержать элементы разных типов данных.
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">Доступ к элементам</h1>
+                <p class="slide-subtitle">Индексация и срезы</p>
+            </div>
+            
+            <div class="content">
+                <div class="code"><span class="keyword">fruits</span> = [<span class="string">"яблоко"</span>, <span class="string">"банан"</span>, <span class="string">"апельсин"</span>, <span class="string">"виноград"</span>, <span class="string">"манго"</span>]
+
+<span class="comment"># Обращение по индексу (начинается с 0)</span>
+<span class="function">print</span>(fruits[<span class="number">0</span>])   <span class="comment"># яблоко</span>
+<span class="function">print</span>(fruits[<span class="number">2</span>])   <span class="comment"># апельсин</span>
+
+<span class="comment"># Отрицательные индексы (с конца)</span>
+<span class="function">print</span>(fruits[<span class="operator">-</span><span class="number">1</span>])  <span class="comment"># манго</span>
+<span class="function">print</span>(fruits[<span class="operator">-</span><span class="number">2</span>])  <span class="comment"># виноград</span>
+
+<span class="comment"># Срезы (slice)</span>
+<span class="function">print</span>(fruits[<span class="number">1</span>:<span class="number">4</span>])   <span class="comment"># ['банан', 'апельсин', 'виноград']</span>
+<span class="function">print</span>(fruits[:<span class="number">3</span>])    <span class="comment"># ['яблоко', 'банан', 'апельсин']</span>
+<span class="function">print</span>(fruits[<span class="number">2</span>:])    <span class="comment"># ['апельсин', 'виноград', 'манго']</span></div>
+                
+                <div class="tip">
+                    💡 Срезы создают новый список, не изменяя оригинальный.
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">Основные методы списков</h1>
+                <p class="slide-subtitle">Добавление элементов</p>
+            </div>
+            
+            <div class="content">
+                <ul class="method-list">
+                    <li>
+                        <div class="method-name">append()</div>
+                        <div class="method-description">Добавляет элемент в конец списка</div>
+                    </li>
+                    <li>
+                        <div class="method-name">insert()</div>
+                        <div class="method-description">Вставляет элемент на указанную позицию</div>
+                    </li>
+                    <li>
+                        <div class="method-name">extend()</div>
+                        <div class="method-description">Добавляет элементы из другого списка</div>
+                    </li>
+                </ul>
+                
+                <div class="code"><span class="comment"># Примеры использования</span>
+<span class="keyword">students</span> = [<span class="string">"Анна"</span>, <span class="string">"Борис"</span>]
+
+<span class="comment"># append() - добавить в конец</span>
+students.<span class="function">append</span>(<span class="string">"Светлана"</span>)
+<span class="function">print</span>(students)  <span class="comment"># ['Анна', 'Борис', 'Светлана']</span>
+
+<span class="comment"># insert() - вставить на позицию</span>
+students.<span class="function">insert</span>(<span class="number">1</span>, <span class="string">"Дмитрий"</span>)
+<span class="function">print</span>(students)  <span class="comment"># ['Анна', 'Дмитрий', 'Борис', 'Светлана']</span>
+
+<span class="comment"># extend() - объединить списки</span>
+new_students = [<span class="string">"Елена"</span>, <span class="string">"Фёдор"</span>]
+students.<span class="function">extend</span>(new_students)
+<span class="function">print</span>(students)  <span class="comment"># ['Анна', 'Дмитрий', 'Борис', 'Светлана', 'Елена', 'Фёдор']</span></div>
+            </div>
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">Методы удаления</h1>
+                <p class="slide-subtitle">Удаление элементов из списка</p>
+            </div>
+            
+            <div class="content">
+                <ul class="method-list">
+                    <li>
+                        <div class="method-name">remove()</div>
+                        <div class="method-description">Удаляет первый элемент с указанным значением</div>
+                    </li>
+                    <li>
+                        <div class="method-name">pop()</div>
+                        <div class="method-description">Удаляет элемент по индексу и возвращает его</div>
+                    </li>
+                    <li>
+                        <div class="method-name">clear()</div>
+                        <div class="method-description">Очищает весь список</div>
+                    </li>
+                </ul>
+                
+                <div class="code"><span class="keyword">numbers</span> = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">20</span>, <span class="number">50</span>]
+
+<span class="comment"># remove() - удалить по значению</span>
+numbers.<span class="function">remove</span>(<span class="number">20</span>)
+<span class="function">print</span>(numbers)  <span class="comment"># [10, 30, 40, 20, 50]</span>
+
+<span class="comment"># pop() - удалить по индексу</span>
+removed = numbers.<span class="function">pop</span>(<span class="number">2</span>)
+<span class="function">print</span>(<span class="string">"Удален:"</span>, removed)  <span class="comment"># 40</span>
+<span class="function">print</span>(numbers)  <span class="comment"># [10, 30, 20, 50]</span>
+
+<span class="comment"># pop() без аргумента - удалить последний</span>
+last = numbers.<span class="function">pop</span>()
+<span class="function">print</span>(<span class="string">"Последний:"</span>, last)  <span class="comment"># 50</span>
+
+<span class="comment"># clear() - очистить список</span>
+numbers.<span class="function">clear</span>()
+<span class="function">print</span>(numbers)  <span class="comment"># []</span></div>
+            </div>
+        </div>
+
+        <!-- Слайд 5 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">Поиск и сортировка</h1>
+                <p class="slide-subtitle">Поиск элементов и упорядочивание</p>
+            </div>
+            
+            <div class="content">
+                <ul class="method-list">
+                    <li>
+                        <div class="method-name">index()</div>
+                        <div class="method-description">Возвращает индекс первого найденного элемента</div>
+                    </li>
+                    <li>
+                        <div class="method-name">count()</div>
+                        <div class="method-description">Считает количество элементов с заданным значением</div>
+                    </li>
+                    <li>
+                        <div class="method-name">sort()</div>
+                        <div class="method-description">Сортирует список по возрастанию</div>
+                    </li>
+                    <li>
+                        <div class="method-name">reverse()</div>
+                        <div class="method-description">Разворачивает список</div>
+                    </li>
+                </ul>
+                
+                <div class="code"><span class="keyword">grades</span> = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">3</span>]
+
+<span class="comment"># index() - найти позицию</span>
+position = grades.<span class="function">index</span>(<span class="number">4</span>)
+<span class="function">print</span>(<span class="string">"Первая четверка на позиции:"</span>, position)  <span class="comment"># 1</span>
+
+<span class="comment"># count() - посчитать количество</span>
+count_5 = grades.<span class="function">count</span>(<span class="number">5</span>)
+<span class="function">print</span>(<span class="string">"Количество пятерок:"</span>, count_5)  <span class="comment"># 3</span>
+
+<span class="comment"># sort() - сортировка</span>
+grades.<span class="function">sort</span>()
+<span class="function">print</span>(<span class="string">"Отсортировано:"</span>, grades)  <span class="comment"># [3, 3, 4, 4, 5, 5, 5]</span>
+
+<span class="comment"># reverse() - развернуть</span>
+grades.<span class="function">reverse</span>()
+<span class="function">print</span>(<span class="string">"Развернуто:"</span>, grades)  <span class="comment"># [5, 5, 5, 4, 4, 3, 3]</span></div>
+            </div>
+        </div>
+
+        <!-- Слайд 6 -->
+        <div class="slide" id="slide6">
+            <div class="slide-header">
+                <h1 class="slide-title">Практические примеры</h1>
+                <p class="slide-subtitle">Применение списков в реальных задачах</p>
+            </div>
+            
+            <div class="content">
+                <div class="example">
+                    <h3>Пример 1: Учет студентов</h3>
+                    <div class="code"><span class="comment"># Создаем список студентов</span>
+<span class="keyword">students</span> = []
+
+<span class="comment"># Добавляем студентов</span>
+<span class="keyword">while</span> <span class="keyword">True</span>:
+    name = <span class="function">input</span>(<span class="string">"Введите имя студента (или 'стоп'): "</span>)
+    <span class="keyword">if</span> name.<span class="function">lower</span>() == <span class="string">"стоп"</span>:
+        <span class="keyword">break</span>
+    students.<span class="function">append</span>(name)
+
+<span class="function">print</span>(<span class="string">"\nСписок студентов:"</span>)
+<span class="keyword">for</span> student <span class="keyword">in</span> students:
+    <span class="function">print</span>(<span class="string">"-"</span>, student)
+
+<span class="function">print</span>(<span class="string">"\nВсего студентов:"</span>, <span class="function">len</span>(students))</div>
+                </div>
+                
+                <div class="example">
+                    <h3>Пример 2: Анализ оценок</h3>
+                    <div class="code"><span class="keyword">grades</span> = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>]
+
+<span class="comment"># Вычисляем среднюю оценку</span>
+average = <span class="function">sum</span>(grades) / <span class="function">len</span>(grades)
+
+<span class="comment"># Находим лучшую и худшую оценки</span>
+best_grade = <span class="function">max</span>(grades)
+worst_grade = <span class="function">min</span>(grades)
+
+<span class="function">print</span>(<span class="string">"Средняя оценка:"</span>, <span class="function">round</span>(average, <span class="number">2</span>))
+<span class="function">print</span>(<span class="string">"Лучшая оценка:"</span>, best_grade)
+<span class="function">print</span>(<span class="string">"Худшая оценка:"</span>, worst_grade)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+                <div class="indicator-dot" data-slide="5"></div>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator-dot');
+            const counter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function showSlide(index) {
+                // Скрыть все слайды и индикаторы
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // Показать нужный слайд
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                
+                // Обновить счетчик
+                counter.textContent = `${index + 1}/${totalSlides}`;
+                
+                // Обновить состояние кнопок
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === totalSlides - 1;
+                
+                currentSlide = index;
+            }
+            
+            // Навигация кнопками
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            // Навигация по индикаторам
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            // Инициализация
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>
