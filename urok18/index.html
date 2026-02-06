@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Веб-сайты и Словари Python | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 550px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeSlide 0.5s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #0d47a1;
+        }
+
+        .slide-title {
+            color: #0d47a1;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            color: #666;
+            font-size: 1.8rem;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        .web-section, .code-section {
+            padding: 25px;
+            border-radius: 10px;
+            height: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .web-section {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 5px solid #1976d2;
+        }
+
+        .code-section {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left: 5px solid #ff9800;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .web-section .section-title {
+            color: #1976d2;
+        }
+
+        .code-section .section-title {
+            color: #ff9800;
+        }
+
+        .icon {
+            font-size: 1.6rem;
+        }
+
+        .code {
+            background: #263238;
+            color: #eceff1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.95rem;
+            line-height: 1.6;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .keyword { color: #ff6b6b; }
+        .string { color: #4ecdc4; }
+        .number { color: #ffe66d; }
+        .function { color: #1dd1a1; }
+        .comment { color: #8395a7; }
+        .operator { color: #ff9ff3; }
+        .dict-key { color: #3498db; }
+
+        .list {
+            list-style: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .list li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.9rem;
+        }
+
+        .list li:before {
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .web-list li:before {
+            content: "🌐";
+        }
+
+        .code-list li:before {
+            content: "🐍";
+        }
+        p{
+            font-size: 1.9rem;
+            
+        }
+
+        .example-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #f5f5f5;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .nav-btn {
+            background: #0d47a1;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            background: #bdbdbd;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #bdbdbd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: #0d47a1;
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(13, 71, 161, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .html-demo {
+            background: #fffde7;
+            border: 2px dashed #ffd54f;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 20px;
+                min-height: auto;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .navigation {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .slide-indicator {
+                order: -1;
+                margin-bottom: 10px;
+            }
+            
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+            
+            .code {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slide-counter">1/6</div>
+
+        <!-- Слайд 1 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">Веб-сайты и Словари Python</h1>
+                <p class="slide-subtitle">Информатика 9 класс | Основы веб-разработки и структуры данных</p>
+            </div>
+            
+            <div class="content">
+                <div class="web-section">
+                    <h2 class="section-title"><span class="icon">🌐</span> Веб-сайт</h2>
+                    <p>Совокупность веб-страниц, объединенных общей тематикой и доступных в интернете.</p>
+                    
+                    <ul class="list web-list">
+                        <li>HTML - структура страницы</li>
+                        <li>CSS - оформление и дизайн</li>
+                        <li>JavaScript - интерактивность</li>
+                        <li>Домен - адрес сайта</li>
+                        <li>Хостинг - место хранения файлов</li>
+                    </ul>
+                    
+                    <div class="example-box">
+                        <strong>Пример простой HTML-страницы:</strong>
+                        <div class="html-demo">
+                            &lt;!DOCTYPE html&gt;<br>
+                            &lt;html&gt;<br>
+                            &lt;head&gt;<br>
+                            &nbsp;&nbsp;&lt;title&gt;Мой сайт&lt;/title&gt;<br>
+                            &lt;/head&gt;<br>
+                            &lt;body&gt;<br>
+                            &nbsp;&nbsp;&lt;h1&gt;Привет, мир!&lt;/h1&gt;<br>
+                            &lt;/body&gt;<br>
+                            &lt;/html&gt;
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-section">
+                    <h2 class="section-title"><span class="icon">🐍</span> Словарь (dict)</h2>
+                    <p>Структура данных для хранения пар "ключ-значение".</p>
+                    
+                    <div class="code"><span class="comment"># Создание словаря</span>
+<span class="keyword">student</span> = {
+    <span class="dict-key">"name"</span>: <span class="string">"Анна"</span>,
+    <span class="dict-key">"age"</span>: <span class="number">15</span>,
+    <span class="dict-key">"grade"</span>: <span class="string">"9А"</span>,
+    <span class="dict-key">"subjects"</span>: [<span class="string">"Математика"</span>, <span class="string">"Информатика"</span>]
+}
+
+<span class="function">print</span>(student[<span class="string">"name"</span>])    <span class="comment"># Анна</span>
+<span class="function">print</span>(student[<span class="string">"age"</span>])     <span class="comment"># 15</span></div>
+                    
+                    <ul class="list code-list">
+                        <li>Ключи должны быть уникальными</li>
+                        <li>Значения могут быть любого типа</li>
+                        <li>Быстрый доступ по ключу</li>
+                        <li>Не сохраняют порядок (до Python 3.7)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">Структура веб-сайта</h1>
+                <p class="slide-subtitle">Работа с элементами словаря</p>
+            </div>
+            
+            <div class="content">
+                <div class="web-section">
+                    <h2 class="section-title"><span class="icon">🏗️</span> Компоненты веб-страницы</h2>
+                    
+                    <ul class="list web-list">
+                        <li>Заголовок (title)</li>
+                        <li>Навигационное меню</li>
+                        <li>Основное содержание</li>
+                        <li>Боковая панель</li>
+                        <li>Подвал (footer)</li>
+                        <li>Изображения и медиа</li>
+                        <li>Формы для ввода данных</li>
+                    </ul>
+                    
+                    <div class="example-box">
+                        <strong>Типы веб-сайтов:</strong><br>
+                        1. Статические (HTML, CSS)<br>
+                        2. Динамические (PHP, Python, JavaScript)<br>
+                        3. Интернет-магазины<br>
+                        4. Социальные сети<br>
+                        5. Блоги и портфолио
+                    </div>
+                </div>
+                
+                <div class="code-section">
+                    <h2 class="section-title"><span class="icon">🔑</span> Доступ к элементам</h2>
+                    
+                    <div class="code"><span class="keyword">website</span> = {
+    <span class="dict-key">"title"</span>: <span class="string">"Школьный портал"</span>,
+    <span class="dict-key">"url"</span>: <span class="string">"school-portal.ru"</span>,
+    <span class="dict-key">"pages"</span>: <span class="number">15</span>,
+    <span class="dict-key">"secure"</span>: <span class="keyword">True</span>
+}
+
+<span class="comment"># Получение значений</span>
+<span class="function">print</span>(website[<span class="string">"title"</span>])      <span class="comment"># Школьный портал</span>
+<span class="function">print</span>(website.<span class="function">get</span>(<span class="string">"url"</span>))      <span class="comment"># school-portal.ru</span>
+
+<span class="comment"># Изменение значений</span>
+website[<span class="string">"pages"</span>] = <span class="number">20</span>
+website[<span class="string">"updated"</span>] = <span class="string">"2024-03-15"</span>
+
+<span class="comment"># Проверка наличия ключа</span>
+<span class="keyword">if</span> <span class="string">"secure"</span> <span class="keyword">in</span> website:
+    <span class="function">print</span>(<span class="string">"Сайт безопасный"</span>)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">Веб-дизайн и CSS</h1>
+                <p class="slide-subtitle">Методы словарей</p>
+            </div>
+            
+            <div class="content">
+                <div class="web-section">
+                    <h2 class="section-title"><span class="icon">🎨</span> CSS - каскадные таблицы стилей</h2>
+                    
+                    <ul class="list web-list">
+                        <li>Задает внешний вид элементов</li>
+                        <li>Разделяет содержание и оформление</li>
+                        <li>Позволяет создавать адаптивный дизайн</li>
+                        <li>Поддерживает анимации и переходы</li>
+                    </ul>
+                    
+                    <div class="example-box">
+                        <strong>Пример CSS:</strong>
+                        <div class="html-demo">
+                            body {<br>
+                            &nbsp;&nbsp;font-family: Arial;<br>
+                            &nbsp;&nbsp;background: #f0f0f0;<br>
+                            }<br>
+                            h1 {<br>
+                            &nbsp;&nbsp;color: blue;<br>
+                            &nbsp;&nbsp;text-align: center;<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-section">
+                    <h2 class="section-title"><span class="icon">🔄</span> Основные методы</h2>
+                    
+                    <div class="code"><span class="keyword">config</span> = {
+    <span class="dict-key">"language"</span>: <span class="string">"ru"</span>,
+    <span class="dict-key">"theme"</span>: <span class="string">"dark"</span>,
+    <span class="dict-key">"font_size"</span>: <span class="number">14</span>
+}
+
+<span class="comment"># keys() - все ключи</span>
+<span class="function">print</span>(config.<span class="function">keys</span>())    <span class="comment"># dict_keys(['language', 'theme', 'font_size'])</span>
+
+<span class="comment"># values() - все значения</span>
+<span class="function">print</span>(config.<span class="function">values</span>())  <span class="comment"># dict_values(['ru', 'dark', 14])</span>
+
+<span class="comment"># items() - пары ключ-значение</span>
+<span class="keyword">for</span> key, value <span class="keyword">in</span> config.<span class="function">items</span>():
+    <span class="function">print</span>(key, <span class="string">":"</span>, value)
+
+<span class="comment"># update() - объединение словарей</span>
+new_settings = {<span class="string">"auto_save"</span>: <span class="keyword">True</span>, <span class="string">"notifications"</span>: <span class="keyword">False</span>}
+config.<span class="function">update</span>(new_settings)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">JavaScript и интерактивность</h1>
+                <p class="slide-subtitle">Вложенные словари</p>
+            </div>
+            
+            <div class="content">
+                <div class="web-section">
+                    <h2 class="section-title"><span class="icon">⚡</span> JavaScript на веб-страницах</h2>
+                    
+                    <ul class="list web-list">
+                        <li>Добавляет интерактивность</li>
+                        <li>Обрабатывает события (клики, ввод)</li>
+                        <li>Валидирует формы</li>
+                        <li>Загружает данные без перезагрузки</li>
+                        <li>Создает анимации</li>
+                    </ul>
+                    
+                    <div class="example-box">
+                        <strong>Простой JavaScript:</strong>
+                        <div class="html-demo">
+                            &lt;button onclick="showMessage()"&gt;<br>
+                            &nbsp;&nbsp;Нажми меня<br>
+                            &lt;/button&gt;<br><br>
+                            &lt;script&gt;<br>
+                            function showMessage() {<br>
+                            &nbsp;&nbsp;alert("Привет!");<br>
+                            }<br>
+                            &lt;/script&gt;
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-section">
+                    <h2 class="section-title"><span class="icon">📚</span> Сложные структуры</h2>
+                    
+                    <div class="code"><span class="comment"># Словарь с вложенными словарями</span>
+<span class="keyword">school_website</span> = {
+    <span class="dict-key">"info"</span>: {
+        <span class="dict-key">"name"</span>: <span class="string">"Школа №1"</span>,
+        <span class="dict-key">"address"</span>: <span class="string">"ул. Школьная, 1"</span>,
+        <span class="dict-key">"phone"</span>: <span class="string">"+7 (123) 456-78-90"</span>
+    },
+    <span class="dict-key">"content"</span>: {
+        <span class="dict-key">"pages"</span>: [<span class="string">"Главная"</span>, <span class="string">"Новости"</span>, <span class="string">"Контакты"</span>],
+        <span class="dict-key">"news_count"</span>: <span class="number">25</span>,
+        <span class="dict-key">"last_update"</span>: <span class="string">"2024-03-15"</span>
+    },
+    <span class="dict-key">"settings"</span>: {
+        <span class="dict-key">"language"</span>: <span class="string">"ru"</span>,
+        <span class="dict-key">"theme"</span>: <span class="string">"light"</span>,
+        <span class="dict-key">"font_size"</span>: <span class="number">16</span>
+    }
+}
+
+<span class="comment"># Доступ к вложенным данным</span>
+<span class="function">print</span>(school_website[<span class="string">"info"</span>][<span class="string">"name"</span>])        <span class="comment"># Школа №1</span>
+<span class="function">print</span>(school_website[<span class="string">"content"</span>][<span class="string">"pages"</span>][<span class="number">0</span>])  <span class="comment"># Главная</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">Создание простого сайта</h1>
+                <p class="slide-subtitle">Практика с словарями</p>
+            </div>
+            
+            <div class="content">
+                <div class="web-section">
+                    <h2 class="section-title"><span class="icon">🚀</span> Шаги создания сайта</h2>
+                    
+                    <ol class="list web-list" style="counter-reset: item;">
+                        <li style="counter-increment: item;">Планирование структуры</li>
+                        <li style="counter-increment: item;">Создание HTML-разметки</li>
+                        <li style="counter-increment: item;">Добавление CSS стилей</li>
+                        <li style="counter-increment: item;">Написание JavaScript</li>
+                        <li style="counter-increment: item;">Тестирование и публикация</li>
+                    </ol>
+                    
+                    <div class="example-box">
+                        <strong>Советы для начинающих:</strong><br>
+                        1. Начните с простой одностраничной версии<br>
+                        2. Используйте семантические теги HTML5<br>
+                        3. Сделайте сайт адаптивным (mobile-friendly)<br>
+                        4. Проверяйте код на валидаторе<br>
+                        5. Просите обратную связь
+                    </div>
+                </div>
+                
+                <div class="code-section">
+                    <h2 class="section-title"><span class="icon">💻</span> Практический пример</h2>
+                    
+                    <div class="code"><span class="comment"># Управление контентом сайта через словарь</span>
+<span class="keyword">website_content</span> = {}
+
+<span class="comment"># Функция добавления страницы</span>
+<span class="keyword">def</span> <span class="function">add_page</span>(page_id, title, content):
+    website_content[page_id] = {
+        <span class="string">"title"</span>: title,
+        <span class="string">"content"</span>: content,
+        <span class="string">"created"</span>: <span class="string">"2024-03-15"</span>,
+        <span class="string">"views"</span>: <span class="number">0</span>
+    }
+
+<span class="comment"># Добавляем страницы</span>
+<span class="function">add_page</span>(<span class="string">"home"</span>, <span class="string">"Главная"</span>, <span class="string">"Добро пожаловать на наш сайт!"</span>)
+<span class="function">add_page</span>(<span class="string">"about"</span>, <span class="string">"О нас"</span>, <span class="string">"Мы - лучшая школа в городе!"</span>)
+<span class="function">add_page</span>(<span class="string">"contacts"</span>, <span class="string">"Контакты"</span>, <span class="string">"Наши контакты: телефон, email"</span>)
+
+<span class="comment"># Просмотр всех страниц</span>
+<span class="keyword">for</span> page_id, page_data <span class="keyword">in</span> website_content.<span class="function">items</span>():
+    <span class="function">print</span>(<span class="string">f"Страница: {page_data['title']}"</span>)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 6 -->
+        <div class="slide" id="slide6">
+            <div class="slide-header">
+                <h1 class="slide-title">Задания для практики</h1>
+                <p class="slide-subtitle">Закрепление материала</p>
+            </div>
+            
+            <div class="content">
+                <div class="web-section">
+                    <h2 class="section-title"><span class="icon">📝</span> Веб-разработка</h2>
+                    
+                    <div class="example-box">
+                        <strong>Задание 1:</strong> Создайте HTML-страницу "Обо мне"<br>
+                        Должна содержать: заголовок, абзац о себе, список хобби, контакты.
+                    </div>
+                    
+                    <div class="example-box">
+                        <strong>Задание 2:</strong> Добавьте CSS стили<br>
+                        Измените цвета, шрифты, отступы на странице.
+                    </div>
+                    
+                    <div class="example-box">
+                        <strong>Задание 3:</strong> Создайте навигационное меню<br>
+                        Ссылки на разные разделы (Главная, Обо мне, Контакты).
+                    </div>
+                </div>
+                
+                <div class="code-section">
+                    <h2 class="section-title"><span class="icon">🎯</span> Python программирование</h2>
+                    
+                    <div class="code"><span class="comment"># Задание 1: Создайте словарь для хранения информации о книге</span>
+book = {
+    <span class="comment"># Ваш код здесь</span>
+}
+
+<span class="comment"># Задание 2: Создайте словарь для школьного расписания</span>
+schedule = {
+    <span class="string">"monday"</span>: [<span class="string">"Математика"</span>, <span class="string">"Физика"</span>, <span class="string">"Литература"</span>],
+    <span class="comment"># Добавьте другие дни недели</span>
+}
+
+<span class="comment"># Задание 3: Создайте систему учета студентов</span>
+students = {}
+<span class="comment"># Добавьте минимум 3 студентов с данными</span>
+<span class="comment"># Реализуйте функции для поиска, добавления, удаления</span></div>
+                    
+                    <div class="example-box">
+                        <strong>Дополнительно:</strong><br>
+                        Создайте программу, которая генерирует простой HTML-код на основе данных из словаря.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+                <div class="indicator-dot" data-slide="5"></div>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator-dot');
+            const counter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function updateSlide() {
+                // Скрыть все слайды и снять активность с индикаторов
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // Показать текущий слайд
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+                
+                // Обновить счетчик
+                counter.textContent = `${currentSlide + 1}/${totalSlides}`;
+                
+                // Обновить состояние кнопок
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Навигация кнопками
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Навигация по индикаторам
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlide();
+                });
+            });
+            
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Инициализация
+            updateSlide();
+        });
+    </script>
+</body>
+</html>
