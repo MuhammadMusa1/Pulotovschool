@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Основы HTML | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff8c00, #ff0080);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 550px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid #ff8c00;
+        }
+
+        .slide-title {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            color: #ff0080;
+            font-size: 1.7rem;
+            font-weight: bold;
+        }
+        p{
+            font-size: 1.95rem;
+        }
+        li{
+            font-size: 1.95rem;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            .slide {
+                padding: 25px;
+            }
+            .slide-title {
+                font-size: 2rem;
+            }
+        }
+
+        .html-section, .demo-section {
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .html-section {
+            background: #fff1e0;
+            border-left: 6px solid #ff8c00;
+        }
+
+        .demo-section {
+            background: #ffe0f0;
+            border-left: 6px solid #ff0080;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .html-section .section-title { color: #ff8c00; }
+        .demo-section .section-title { color: #ff0080; }
+
+        .code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Consolas', monospace;
+            font-size: 1.95rem;
+            line-height: 1.6;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        
+
+        .example-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+        }
+
+        .live-demo {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed #ff8c00;
+        }
+
+        .btn {
+            background: #ff8c00;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover { background: #ff0080; }
+
+        .table-demo {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .table-demo th, .table-demo td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table-demo th { background: #ff8c00; color: white; }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #f5f5f5;
+            border-top: 2px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #ff8c00;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: #ff0080;
+            transform: translateY(-2px);
+        }
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .indicator-dot.active {
+            background: #ff0080;
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255,140,0,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+                font-size: 1.95rem;
+                color: #856404;
+        }
+
+        .html-icon, .css-icon, .js-icon {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .html-icon { background: #ff8c00; }
+        .css-icon { background: #264de4; }
+        .js-icon { background: #f7df1e; color: black; }
+
+        @media (max-width: 768px) {
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-btn { width: 100%; }
+            .slide-indicator { order: -1; }
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slide-counter">1/7</div>
+
+        <!-- Слайд 1: Титульный -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">🌐 Основы HTML</h1>
+                <p class="slide-subtitle">Создание веб-страниц | 9 класс</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">📌 Что такое HTML?</h2>
+                    <p><strong>HTML</strong> (HyperText Markup Language) — это язык разметки для создания веб-страниц.</p>
+                    <div style="margin-top: 20px;">
+                        <span class="html-icon">HTML</span> — структура<br>
+                        <span class="css-icon">CSS</span> — стили<br>
+                        <span class="js-icon">JS</span> — интерактивность
+                    </div>
+                    <div class="tip" style="margin-top: 20px;">
+                        💡 HTML — это не язык программирования, а язык разметки. Он описывает структуру документа.
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🖥️ Первая страница</h2>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="tag">html</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">head</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">title</span>&gt;<span class="string">Мой сайт</span>&lt;/<span class="tag">title</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span class="tag">head</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">body</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">h1</span>&gt;<span class="string">Привет, мир!</span>&lt;/<span class="tag">h1</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">p</span>&gt;<span class="string">Моя первая страница</span>&lt;/<span class="tag">p</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span class="tag">body</span>&gt;<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2: Базовая структура -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">🏗️ Структура HTML-документа</h1>
+                <p class="slide-subtitle">Скелет любой веб-страницы</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">📐 Основные элементы</h2>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt; <span class="comment">&lt;!-- Тип документа --&gt;</span><br>
+&lt;<span class="tag">html</span>&gt; <span class="comment">&lt;!-- Корневой элемент --&gt;</span><br>
+<br>
+&nbsp;&nbsp;&lt;<span class="tag">head</span>&gt; <span class="comment">&lt;!-- Служебная информация --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">title</span>&gt;<span class="string">Заголовок вкладки</span>&lt;/<span class="tag">title</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span class="tag">head</span>&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;<span class="tag">body</span>&gt; <span class="comment">&lt;!-- Видимая часть --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">&lt;!-- Контент страницы --&gt;</span><br>
+&nbsp;&nbsp;&lt;/<span class="tag">body</span>&gt;<br>
+<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🎯 Аналогия</h2>
+                    <div style="background: #ffe0f0; padding: 20px; border-radius: 10px;">
+                        <p><strong>HTML — это каркас дома:</strong></p>
+                        <ul style="margin-top: 15px; list-style-type: none;">
+                            <li>🏠 &lt;html&gt; — фундамент</li>
+                            <li>🧱 &lt;head&gt; — чертежи и документация</li>
+                            <li>🪑 &lt;body&gt; — комнаты и мебель</li>
+                            <li>🎨 CSS — дизайн и обои</li>
+                            <li>⚡ JavaScript — электрика и сантехника</li>
+                        </ul>
+                    </div>
+                    <div class="tip" style="margin-top: 20px;">
+                        ✅ Всегда начинайте с этой структуры!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3: Текстовые теги -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">📝 Текстовые теги</h1>
+                <p class="slide-subtitle">Заголовки, абзацы, форматирование</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">🏷️ Основные теги</h2>
+                    <div class="code">
+<span class="comment">&lt;!-- Заголовки от h1 до h6 --&gt;</span><br>
+&lt;<span class="tag">h1</span>&gt;<span class="string">Главный заголовок</span>&lt;/<span class="tag">h1</span>&gt;<br>
+&lt;<span class="tag">h2</span>&gt;<span class="string">Подзаголовок</span>&lt;/<span class="tag">h2</span>&gt;<br>
+&lt;<span class="tag">h3</span>&gt;<span class="string">Заголовок 3 уровня</span>&lt;/<span class="tag">h3</span>&gt;<br>
+<br>
+<span class="comment">&lt;!-- Абзац --&gt;</span><br>
+&lt;<span class="tag">p</span>&gt;<span class="string">Это текст абзаца</span>&lt;/<span class="tag">p</span>&gt;<br>
+<br>
+<span class="comment">&lt;!-- Форматирование --&gt;</span><br>
+&lt;<span class="tag">b</span>&gt;<span class="string">Жирный</span>&lt;/<span class="tag">b</span>&gt;<br>
+&lt;<span class="tag">i</span>&gt;<span class="string">Курсив</span>&lt;/<span class="tag">i</span>&gt;<br>
+&lt;<span class="tag">u</span>&gt;<span class="string">Подчеркнутый</span>&lt;/<span class="tag">u</span>&gt;<br>
+&lt;<span class="tag">br</span>&gt; <span class="comment">&lt;!-- Перенос строки --&gt;</span>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">✨ Пример в браузере</h2>
+                    <div class="live-demo">
+                        <h1 style="color: #ff8c00; margin: 10px 0;">Главный заголовок</h1>
+                        <h2 style="color: #ff0080; margin: 10px 0;">Подзаголовок</h2>
+                        <p style="margin: 10px 0;">Это обычный абзац текста.</p>
+                        <p style="margin: 10px 0;">
+                            <b>Жирный текст</b>, 
+                            <i>курсив</i>, 
+                            <u>подчеркнутый</u>
+                        </p>
+                    </div>
+                    <div class="tip">
+                        💡 h1 — самый важный заголовок, должен быть один на странице
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4: Ссылки и изображения -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">🔗 Ссылки и изображения</h1>
+                <p class="slide-subtitle">Теги &lt;a&gt; и &lt;img&gt;</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">🔗 Гиперссылки</h2>
+                    <div class="code">
+<span class="comment">&lt;!-- Ссылка на другой сайт --&gt;</span><br>
+&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="string">"https://google.com"</span>&gt;<br>
+&nbsp;&nbsp;<span class="string">Перейти на Google</span><br>
+&lt;/<span class="tag">a</span>&gt;<br>
+<br>
+<span class="comment">&lt;!-- Ссылка внутри сайта --&gt;</span><br>
+&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="string">"page2.html"</span>&gt;<span class="string">Следующая страница</span>&lt;/<span class="tag">a</span>&gt;<br>
+<br>
+<span class="comment">&lt;!-- Открыть в новой вкладке --&gt;</span><br>
+&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;<span class="string">Новая вкладка</span>&lt;/<span class="tag">a</span>&gt;
+                    </div>
+                    
+                    <h2 class="section-title" style="margin-top: 30px;">🖼️ Изображения</h2>
+                    <div class="code">
+<span class="comment">&lt;!-- Одинарный тег (без закрывающего) --&gt;</span><br>
+&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="string">"cat.jpg"</span> <span class="attr">alt</span>=<span class="string">"Котик"</span>&gt;<br>
+<br>
+<span class="comment">&lt;!-- С указанием размера --&gt;</span><br>
+&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="string">"photo.png"</span> <span class="attr">width</span>=<span class="string">"300"</span> <span class="attr">height</span>=<span class="string">"200"</span>&gt;
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🎯 Живой пример</h2>
+                    <div class="live-demo">
+                        <p><strong>Ссылка:</strong><br>
+                        <a href="#" style="color: #ff0080;">Это ссылка на сайт</a></p>
+                        
+                        <p><strong>Изображение:</strong><br>
+                        <div style="background: #ff8c00; color: white; width: 150px; height: 100px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                            🖼️ Место для фото
+                        </div>
+                        <p style="margin-top: 5px; font-size: 0.9rem;">alt="Описание изображения"</p>
+                    </div>
+                    <div class="tip" style="margin-top: 15px;">
+                        ✅ Атрибут alt — важен для доступности и SEO
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5: Списки -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">📋 Списки</h1>
+                <p class="slide-subtitle">Маркированные и нумерованные</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">🔵 Маркированный список</h2>
+                    <div class="code">
+&lt;<span class="tag">ul</span>&gt; <span class="comment">&lt;!-- Unordered List --&gt;</span><br>
+&nbsp;&nbsp;&lt;<span class="tag">li</span>&gt;<span class="string">Первый пункт</span>&lt;/<span class="tag">li</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">li</span>&gt;<span class="string">Второй пункт</span>&lt;/<span class="tag">li</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">li</span>&gt;<span class="string">Третий пункт</span>&lt;/<span class="tag">li</span>&gt;<br>
+&lt;/<span class="tag">ul</span>&gt;
+                    </div>
+                    
+                    <h2 class="section-title" style="margin-top: 30px;">🔢 Нумерованный список</h2>
+                    <div class="code">
+&lt;<span class="tag">ol</span>&gt; <span class="comment">&lt;!-- Ordered List --&gt;</span><br>
+&nbsp;&nbsp;&lt;<span class="tag">li</span>&gt;<span class="string">Первый шаг</span>&lt;/<span class="tag">li</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">li</span>&gt;<span class="string">Второй шаг</span>&lt;/<span class="tag">li</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">li</span>&gt;<span class="string">Третий шаг</span>&lt;/<span class="tag">li</span>&gt;<br>
+&lt;/<span class="tag">ol</span>&gt;
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">✨ Пример</h2>
+                    <div class="live-demo">
+                        <p><strong>Мои предметы:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>Математика</li>
+                            <li>Информатика</li>
+                            <li>Физика</li>
+                        </ul>
+                        
+                        <p style="margin-top: 20px;"><strong>Расписание:</strong></p>
+                        <ol style="margin-left: 20px;">
+                            <li>9:00 - Математика</li>
+                            <li>10:00 - Информатика</li>
+                            <li>11:00 - Физика</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 6: Таблицы -->
+        <div class="slide" id="slide6">
+            <div class="slide-header">
+                <h1 class="slide-title">📊 Таблицы</h1>
+                <p class="slide-subtitle">Структурирование данных</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">🧱 Структура таблицы</h2>
+                    <div class="code">
+&lt;<span class="tag">table</span> <span class="attr">border</span>=<span class="string">"1"</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">tr</span>&gt; <span class="comment">&lt;!-- Строка --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">th</span>&gt;<span class="string">Заголовок 1</span>&lt;/<span class="tag">th</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">th</span>&gt;<span class="string">Заголовок 2</span>&lt;/<span class="tag">th</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span class="tag">tr</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="tag">tr</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">td</span>&gt;<span class="string">Ячейка 1</span>&lt;/<span class="tag">td</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="tag">td</span>&gt;<span class="string">Ячейка 2</span>&lt;/<span class="tag">td</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span class="tag">tr</span>&gt;<br>
+&lt;/<span class="tag">table</span>&gt;
+                    </div>
+                    
+                    <div class="tip" style="margin-top: 15px;">
+                        📌 th — заголовок (жирный)<br>
+                        📌 td — ячейка данных<br>
+                        📌 tr — строка
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">📋 Пример таблицы</h2>
+                    <div class="live-demo">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr style="background: #ff8c00; color: white;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Предмет</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Оценка</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Учитель</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Математика</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">5</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Иванова</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Информатика</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">5</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Петров</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 7: Практическое задание -->
+        <div class="slide" id="slide7">
+            <div class="slide-header">
+                <h1 class="slide-title">✏️ Практическое задание</h1>
+                <p class="slide-subtitle">Создай свою первую страницу!</p>
+            </div>
+            
+            <div class="content">
+                <div class="html-section">
+                    <h2 class="section-title">📝 Задание: Визитная карточка</h2>
+                    <p style="margin-bottom: 20px;">Создайте HTML-страницу, которая содержит:</p>
+                    <ol style="margin-left: 20px; line-height: 2;">
+                        <li>✅ Заголовок с вашим именем</li>
+                        <li>✅ Абзац с краткой информацией о себе</li>
+                        <li>✅ Список ваших увлечений</li>
+                        <li>✅ Таблицу с расписанием</li>
+                        <li>✅ Ссылку на любимый сайт</li>
+                    </ol>
+                    
+                    <div class="tip" style="margin-top: 30px;">
+                        💡 Сохраните файл с расширением .html и откройте в браузере!
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🚀 Пример выполнения</h2>
+                    <div class="live-demo">
+                        <h1 style="color: #ff8c00;">Анна Петрова</h1>
+                        <p>Ученица 9 класса, люблю программирование и математику.</p>
+                        
+                        <p><strong>Мои хобби:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>Рисование</li>
+                            <li>Python</li>
+                            <li>Волейбол</li>
+                        </ul>
+                        
+                        <p><strong>Расписание:</strong></p>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                            <tr style="background: #ff0080; color: white;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">День</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Предмет</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Пн</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Информатика</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Ср</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Математика</td>
+                            </tr>
+                        </table>
+                        
+                        <p style="margin-top: 15px;">
+                            <a href="#" style="color: #ff0080;">Мой любимый сайт</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+                <div class="indicator-dot" data-slide="5"></div>
+                <div class="indicator-dot" data-slide="6"></div>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator-dot');
+            const counter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                counter.textContent = `${index + 1}/${totalSlides}`;
+                
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === totalSlides - 1;
+                
+                currentSlide = index;
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) showSlide(currentSlide - 1);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+            });
+            
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => showSlide(index));
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>

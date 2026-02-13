@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Типы данных Python | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Consolas, monospace;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 550px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid #2a5298;
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            color: #2a5298;
+            font-size: 1.9rem;
+            font-weight: bold;
+        }
+        p{
+            font-size: 1.95rem;
+        }
+        li{
+            font-size: 1.95rem;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            .slide {
+                padding: 25px;
+            }
+            .slide-title {
+                font-size: 2rem;
+            }
+        }
+
+        .theory-section, .demo-section {
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .theory-section {
+            background: #f0f4f8;
+            border-left: 6px solid #1e3c72;
+        }
+
+        .demo-section {
+            background: #e8f0fe;
+            border-left: 6px solid #2a5298;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theory-section .section-title { color: #1e3c72; }
+        .demo-section .section-title { color: #2a5298; }
+
+        .code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Consolas', monospace;
+            font-size: 1.95rem;
+            line-height: 1.6;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+       
+
+        .type-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #2a5298;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .type-icon {
+            width: 50px;
+            height: 50px;
+            background: #2a5298;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .type-info {
+            flex: 1;
+        }
+
+        .type-name {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.2rem;
+        }
+
+        .type-desc {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .live-demo {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed #2a5298;
+        }
+
+        .demo-output {
+            background: #1e1e1e;
+            color: #b5cea8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .btn {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .btn:hover { background: #1e3c72; }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #f5f5f5;
+            border-top: 2px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: #2a5298;
+            transform: translateY(-2px);
+        }
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .indicator-dot.active {
+            background: #2a5298;
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(42,82,152,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        .tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            font-size: 1.95rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th {
+            background: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        @media (max-width: 768px) {
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-btn { width: 100%; }
+            .slide-indicator { order: -1; }
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slide-counter">1/7</div>
+
+        <!-- Слайд 1: Что такое тип данных? -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">🐍 Типы данных в Python</h1>
+                <p class="slide-subtitle">Что такое тип данных и зачем он нужен?</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <h2 class="section-title">❓ Что такое тип данных?</h2>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                        <strong>Тип данных</strong> — это способ представления информации в памяти компьютера. 
+                        Он определяет:
+                    </p>
+                    <ul style="margin-top: 20px; margin-left: 20px; line-height: 2;">
+                        <li>✅ Какие значения может принимать переменная</li>
+                        <li>✅ Сколько памяти она занимает</li>
+                        <li>✅ Какие операции с ней можно выполнять</li>
+                    </ul>
+                    
+                    <div class="tip" style="margin-top: 30px;">
+                        💡 Python — язык с динамической типизацией. Тип определяется автоматически при присвоении значения!
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🔍 Как узнать тип?</h2>
+                    <div class="code">
+<span class="comment"># Функция type() показывает тип данных</span>
+<span class="keyword">a</span> = <span class="number">42</span>
+<span class="function">print</span>(<span class="function">type</span>(a))  <span class="comment"># &lt;class 'int'&gt;</span>
+
+<span class="keyword">b</span> = <span class="string">"Привет"</span>
+<span class="function">print</span>(<span class="function">type</span>(b))  <span class="comment"># &lt;class 'str'&gt;</span>
+
+<span class="keyword">c</span> = <span class="number">3.14</span>
+<span class="function">print</span>(<span class="function">type</span>(c))  <span class="comment"># &lt;class 'float'&gt;</span>
+                    </div>
+                    
+                    <div class="live-demo">
+                        <p><strong>🎯 Попробуй сам:</strong></p>
+                        <div id="typeDemo" style="font-family: monospace;">
+                            <span id="typeResult" style="color: #1e3c72;"></span>
+                        </div>
+                        <button class="btn" onclick="showTypeExample()">Показать пример</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2: Числовые типы (int, float) -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">🔢 Числовые типы</h1>
+                <p class="slide-subtitle">int и float</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <div class="type-card">
+                        <div class="type-icon">int</div>
+                        <div class="type-info">
+                            <div class="type-name">Целые числа (int)</div>
+                            <div class="type-desc">Целые числа без дробной части</div>
+                        </div>
+                    </div>
+                    
+                    <div class="type-card">
+                        <div class="type-icon">float</div>
+                        <div class="type-info">
+                            <div class="type-name">Вещественные числа (float)</div>
+                            <div class="type-desc">Числа с плавающей точкой</div>
+                        </div>
+                    </div>
+                    
+                    <div class="code" style="margin-top: 20px;">
+<span class="comment"># Целые числа</span>
+age = <span class="number">15</span>
+quantity = -<span class="number">3</span>
+big_number = <span class="number">1_000_000</span>
+
+<span class="comment"># Вещественные числа</span>
+pi = <span class="number">3.14159</span>
+temperature = -<span class="number">5.5</span>
+price = <span class="number">99.99</span>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🧮 Операции с числами</h2>
+                    <div class="code">
+<span class="keyword">a</span> = <span class="number">10</span>
+<span class="keyword">b</span> = <span class="number">3</span>
+
+<span class="function">print</span>(a + b)   <span class="comment"># 13  (сложение)</span>
+<span class="function">print</span>(a - b)   <span class="comment"># 7   (вычитание)</span>
+<span class="function">print</span>(a * b)   <span class="comment"># 30  (умножение)</span>
+<span class="function">print</span>(a / b)   <span class="comment"># 3.33 (деление → float)</span>
+<span class="function">print</span>(a // b)  <span class="comment"># 3   (целочисленное деление)</span>
+<span class="function">print</span>(a % b)   <span class="comment"># 1   (остаток от деления)</span>
+<span class="function">print</span>(a ** b)  <span class="comment"># 1000 (возведение в степень)</span>
+                    </div>
+                    
+                    <div class="tip" style="margin-top: 20px;">
+                        ⚠️ Деление (/) всегда возвращает float, даже если числа целые!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3: Строковый тип (str) -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">📝 Строковый тип</h1>
+                <p class="slide-subtitle">str — работа с текстом</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <div class="type-card">
+                        <div class="type-icon">str</div>
+                        <div class="type-info">
+                            <div class="type-name">Строки (str)</div>
+                            <div class="type-desc">Последовательность символов в кавычках</div>
+                        </div>
+                    </div>
+                    
+                    <div class="code">
+<span class="comment"># Три способа создать строку</span>
+name = <span class="string">'Анна'</span>      <span class="comment"># Одинарные кавычки</span>
+city = <span class="string">"Душанбе"</span>    <span class="comment"># Двойные кавычки</span>
+text = <span class="string">"""Многострочный
+текст"""</span>   <span class="comment"># Тройные кавычки</span>
+
+<span class="comment"># Конкатенация (сложение)</span>
+hello = <span class="string">"Привет, "</span> + name
+                    </div>
+                    
+                    <div class="tip">
+                        💡 В Python нет отдельного типа для символа! 
+                        Одиночный символ — это строка длины 1.
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">✂️ Операции со строками</h2>
+                    <div class="code">
+text = <span class="string">"Python"</span>
+
+<span class="function">print</span>(<span class="function">len</span>(text))        <span class="comment"># 6  (длина строки)</span>
+<span class="function">print</span>(text[<span class="number">0</span>])          <span class="comment"># P  (первый символ)</span>
+<span class="function">print</span>(text[<span class="number">-1</span>])         <span class="comment"># n  (последний символ)</span>
+<span class="function">print</span>(text[<span class="number">1</span>:<span class="number">4</span>])        <span class="comment"># yth (срез)</span>
+<span class="function">print</span>(text.<span class="function">upper</span>())     <span class="comment"># PYTHON (верхний регистр)</span>
+<span class="function">print</span>(text.<span class="function">lower</span>())     <span class="comment"># python (нижний регистр)</span>
+<span class="function">print</span>(text * <span class="number">3</span>)         <span class="comment"># PythonPythonPython</span>
+                    </div>
+                    
+                    <div class="live-demo">
+                        <p><strong>f-строки (форматирование):</strong></p>
+                        <div class="code">
+name = <span class="string">"Анна"</span>
+age = <span class="number">15</span>
+<span class="function">print</span>(<span class="string">f"Меня зовут {name}, мне {age} лет"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4: Логический тип (bool) -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">✅ Логический тип</h1>
+                <p class="slide-subtitle">bool — True и False</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <div class="type-card">
+                        <div class="type-icon">bool</div>
+                        <div class="type-info">
+                            <div class="type-name">Логический тип (bool)</div>
+                            <div class="type-desc">Только два значения: True и False</div>
+                        </div>
+                    </div>
+                    
+                    <div class="code">
+is_student = <span class="boolean">True</span>
+has_graduated = <span class="boolean">False</span>
+
+<span class="function">print</span>(<span class="function">type</span>(is_student))  <span class="comment"># &lt;class 'bool'&gt;</span>
+
+<span class="comment"># Сравнения возвращают bool</span>
+<span class="function">print</span>(<span class="number">5</span> > <span class="number">3</span>)   <span class="comment"># True</span>
+<span class="function">print</span>(<span class="number">10</span> == <span class="number">5</span>)  <span class="comment"># False</span>
+<span class="function">print</span>(<span class="number">7</span> != <span class="number">3</span>)   <span class="comment"># True</span>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🎯 Логические операции</h2>
+                    <div class="code">
+<span class="comment"># and (и) — True только если оба True</span>
+<span class="function">print</span>(<span class="boolean">True</span> <span class="keyword">and</span> <span class="boolean">True</span>)   <span class="comment"># True</span>
+<span class="function">print</span>(<span class="boolean">True</span> <span class="keyword">and</span> <span class="boolean">False</span>)  <span class="comment"># False</span>
+
+<span class="comment"># or (или) — True если хотя бы один True</span>
+<span class="function">print</span>(<span class="boolean">True</span> <span class="keyword">or</span> <span class="boolean">False</span>)   <span class="comment"># True</span>
+
+<span class="comment"># not (не) — инверсия</span>
+<span class="function">print</span>(<span class="keyword">not</span> <span class="boolean">True</span>)          <span class="comment"># False</span>
+
+<span class="comment"># Любое число можно преобразовать в bool</span>
+<span class="function">print</span>(<span class="function">bool</span>(<span class="number">0</span>))     <span class="comment"># False</span>
+<span class="function">print</span>(<span class="function">bool</span>(<span class="number">42</span>))   <span class="comment"># True</span>
+<span class="function">print</span>(<span class="function">bool</span>(<span class="string">""</span>))    <span class="comment"># False</span>
+<span class="function">print</span>(<span class="function">bool</span>(<span class="string">"Hello"</span>))  <span class="comment"># True</span>
+                    </div>
+                    
+                    <div class="tip">
+                        🔍 0, None, пустые строки и списки → False<br>
+                        Всё остальное → True
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5: Преобразование типов -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">🔄 Преобразование типов</h1>
+                <p class="slide-subtitle">Casting — int(), float(), str()</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <h2 class="section-title">📌 Явное преобразование</h2>
+                    
+                    <div class="code">
+<span class="comment"># В целое число (int)</span>
+<span class="function">int</span>(<span class="number">3.14</span>)      <span class="comment"># 3  (отбрасывает дробную часть)</span>
+<span class="function">int</span>(<span class="string">"42"</span>)       <span class="comment"># 42</span>
+
+<span class="comment"># В вещественное число (float)</span>
+<span class="function">float</span>(<span class="number">5</span>)        <span class="comment"># 5.0</span>
+<span class="function">float</span>(<span class="string">"3.14"</span>)    <span class="comment"># 3.14</span>
+
+<span class="comment"># В строку (str)</span>
+<span class="function">str</span>(<span class="number">123</span>)        <span class="comment"># "123"</span>
+<span class="function">str</span>(<span class="boolean">True</span>)      <span class="comment"># "True"</span>
+                    </div>
+                    
+                    <div class="warning" style="background: #f8d7da; padding: 15px; border-radius: 5px; margin-top: 20px;">
+                        ⚠️ Ошибки преобразования:
+                        <code style="display: block; margin-top: 10px;">
+int("3.14")   <span class="comment"># ValueError!</span>
+int("abc")    <span class="comment"># ValueError!</span>
+float("12,5") <span class="comment"># Ошибка! Только точка</span>
+                        </code>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🎯 Калькулятор возраста</h2>
+                    <div class="code">
+<span class="comment"># input() всегда возвращает строку!</span>
+age_str = <span class="function">input</span>(<span class="string">"Сколько вам лет? "</span>)
+
+<span class="comment"># Преобразуем в число для вычислений</span>
+age = <span class="function">int</span>(age_str)
+next_year = age + <span class="number">1</span>
+
+<span class="function">print</span>(<span class="string">f"В следующем году вам будет {next_year}"</span>)
+                    </div>
+                    
+                    <div class="live-demo">
+                        <p><strong>🖱️ Пример:</strong></p>
+                        <div id="ageDemo" style="margin: 15px 0; padding: 15px; background: #f0f0f0; border-radius: 5px;">
+                            <p>Введите возраст: <span id="ageInput" style="color: #2a5298;">15</span></p>
+                            <p>Через год будет: <span id="ageResult" style="color: #1e3c72; font-weight: bold;">16</span></p>
+                        </div>
+                        <button class="btn" onclick="showAgeExample()">Рассчитать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 6: Сравнение типов -->
+        <div class="slide" id="slide6">
+            <div class="slide-header">
+                <h1 class="slide-title">📊 Сравнение типов</h1>
+                <p class="slide-subtitle">Что важно запомнить</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Тип</th>
+                            <th>Название</th>
+                            <th>Пример</th>
+                            <th>Операции</th>
+                        </tr>
+                        <tr>
+                            <td>int</td>
+                            <td>Целое</td>
+                            <td>5, -3, 1000</td>
+                            <td>+, -, *, /, //, %, **</td>
+                        </tr>
+                        <tr>
+                            <td>float</td>
+                            <td>Вещественное</td>
+                            <td>3.14, -0.5</td>
+                            <td>+, -, *, /</td>
+                        </tr>
+                        <tr>
+                            <td>str</td>
+                            <td>Строка</td>
+                            <td>"Привет"</td>
+                            <td>+, *, [], len()</td>
+                        </tr>
+                        <tr>
+                            <td>bool</td>
+                            <td>Логический</td>
+                            <td>True, False</td>
+                            <td>and, or, not</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="tip" style="margin-top: 25px;">
+                        📌 Главное отличие: <strong>тип определяет поведение!</strong>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">❌ Частые ошибки</h2>
+                    
+                    <div class="code" style="margin-bottom: 20px;">
+<span class="comment"># ОШИБКА: сложение числа и строки</span>
+<span class="comment"># 5 + "10"  # TypeError!</span>
+
+<span class="comment"># ПРАВИЛЬНО: преобразуем</span>
+<span class="number">5</span> + <span class="function">int</span>(<span class="string">"10"</span>)   <span class="comment"># 15</span>
+
+<span class="comment"># ОШИБКА: input() возвращает строку</span>
+age = <span class="function">input</span>(<span class="string">"Возраст: "</span>)
+<span class="comment"># age + 1     # Ошибка!</span>
+
+<span class="comment"># ПРАВИЛЬНО:</span>
+age = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Возраст: "</span>))
+                    </div>
+                    
+                    <div class="tip" style="background: #f8d7da; border-left-color: #dc3545;">
+                        ⚠️ Запомни: input() → всегда str!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 7: Практические задания -->
+        <div class="slide" id="slide7">
+            <div class="slide-header">
+                <h1 class="slide-title">✏️ Практические задания</h1>
+                <p class="slide-subtitle">Проверь себя!</p>
+            </div>
+            
+            <div class="content">
+                <div class="theory-section">
+                    <h2 class="section-title">🟢 Уровень 5-6</h2>
+                    <div class="code">
+<span class="comment"># 1. Создайте переменные разных типов</span>
+name = <span class="string">"Анна"</span>    <span class="comment"># str</span>
+age = <span class="number">15</span>         <span class="comment"># int</span>
+height = <span class="number">1.65</span>     <span class="comment"># float</span>
+is_student = <span class="boolean">True</span>  <span class="comment"># bool</span>
+
+<span class="comment"># 2. Выведите тип каждой переменной</span>
+<span class="function">print</span>(<span class="function">type</span>(name))
+<span class="function">print</span>(<span class="function">type</span>(age))
+                    </div>
+                    
+                    <h2 class="section-title" style="margin-top: 30px;">🟡 Уровень 7-8</h2>
+                    <div class="code">
+<span class="comment"># 3. Калькулятор покупки</span>
+price = <span class="function">float</span>(<span class="function">input</span>(<span class="string">"Цена: "</span>))
+quantity = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Количество: "</span>))
+total = price * quantity
+<span class="function">print</span>(<span class="string">f"Итого: {total} сомони"</span>)
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2 class="section-title">🔴 Уровень 9-10</h2>
+                    <div class="code">
+<span class="comment"># 4. Анкета (словарь с типами)</span>
+person = {}
+
+person[<span class="string">"name"</span>] = <span class="function">input</span>(<span class="string">"Имя: "</span>)
+person[<span class="string">"age"</span>] = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Возраст: "</span>))
+person[<span class="string">"height"</span>] = <span class="function">float</span>(<span class="function">input</span>(<span class="string">"Рост: "</span>))
+
+<span class="keyword">for</span> key, value <span class="keyword">in</span> person.<span class="function">items</span>():
+    <span class="function">print</span>(<span class="string">f"{key}: {value} ({type(value).__name__})"</span>)
+                    </div>
+                    
+                    <div class="tip" style="margin-top: 25px;">
+                        🎯 <strong>Финальное задание:</strong><br>
+                        Напиши программу, которая запрашивает год рождения 
+                        и выводит возраст + сообщение о совершеннолетии.
+                    </div>
+                    
+                    <button class="btn" onclick="showFinalTask()" style="width: 100%; margin-top: 20px;">
+                        👀 Показать решение
+                    </button>
+                    
+                    <div id="finalTaskSolution" style="display: none; margin-top: 20px;">
+                        <div class="code">
+birth_year = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Год рождения: "</span>))
+current_year = <span class="number">2026</span>
+age = current_year - birth_year
+
+<span class="function">print</span>(<span class="string">f"Вам {age} лет"</span>)
+
+<span class="keyword">if</span> age >= <span class="number">18</span>:
+    <span class="function">print</span>(<span class="string">"Вы совершеннолетний"</span>)
+<span class="keyword">else</span>:
+    <span class="function">print</span>(<span class="string">"Вы несовершеннолетний"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+                <div class="indicator-dot" data-slide="5"></div>
+                <div class="indicator-dot" data-slide="6"></div>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator-dot');
+            const counter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                counter.textContent = `${index + 1}/${totalSlides}`;
+                
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === totalSlides - 1;
+                
+                currentSlide = index;
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) showSlide(currentSlide - 1);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+            });
+            
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => showSlide(index));
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            window.showTypeExample = function() {
+                const demo = document.getElementById('typeResult');
+                demo.innerHTML = `🔹 42 → int<br>🔹 3.14 → float<br>🔹 "Python" → str<br>🔹 True → bool`;
+            };
+            
+            window.showAgeExample = function() {
+                const ageSpan = document.getElementById('ageInput');
+                const resultSpan = document.getElementById('ageResult');
+                const age = parseInt(ageSpan.textContent);
+                resultSpan.textContent = age + 1;
+            };
+            
+            window.showFinalTask = function() {
+                const solution = document.getElementById('finalTaskSolution');
+                if (solution.style.display === 'none') {
+                    solution.style.display = 'block';
+                } else {
+                    solution.style.display = 'none';
+                }
+            };
+            
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>

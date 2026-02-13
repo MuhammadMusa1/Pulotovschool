@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML и Python | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 30px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fade 0.5s;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide-title {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .level {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .level-5 { background: #4CAF50; }
+        .level-6 { background: #2196F3; }
+        .level-7 { background: #FF9800; }
+        .level-8 { background: #9C27B0; }
+        .level-9 { background: #F44336; }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            .slide { padding: 20px; }
+        }
+
+        .html-block, .python-block {
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .html-block {
+            background: #fff1e0;
+            border-left: 5px solid #ff8c00;
+        }
+
+        .python-block {
+            background: #e3f2fd;
+            border-left: 5px solid #2196F3;
+        }
+
+        .block-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .html-block .block-title { color: #ff8c00; }
+        .python-block .block-title { color: #2196F3; }
+
+        .code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 1.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        
+
+        .demo {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px dashed #ccc;
+            font-size: 1.9rem;
+        }
+
+        .demo-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: #f5f5f5;
+            border-top: 2px solid #ddd;
+        }
+
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(102,126,234,0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-btn { width: 100%; }
+            .slide-indicator { order: -1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slideCounter">1/5</div>
+
+        <!-- Слайд 1: Уровень 5 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">🟢 Уровень 5 баллов</h1>
+                <span class="level level-5">Базовый</span>
+            </div>
+            
+            <div class="content">
+                <div class="html-block">
+                    <div class="block-title">🌐 HTML — Задание 1–2</div>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="tag">html</span>&gt;<br>
+&lt;<span class="tag">head</span>&gt;<br>
+    &lt;<span class="tag">title</span>&gt;<span class="string">My First Page</span>&lt;/<span class="tag">title</span>&gt;<br>
+&lt;/<span class="tag">head</span>&gt;<br>
+&lt;<span class="tag">body</span>&gt;<br>
+<br>
+&lt;<span class="tag">h1</span>&gt;<span class="string">Welcome to my page</span>&lt;/<span class="tag">h1</span>&gt;<br>
+&lt;<span class="tag">p</span>&gt;<span class="string">This is my first HTML page.</span>&lt;/<span class="tag">p</span>&gt;<br>
+<br>
+&lt;/<span class="tag">body</span>&gt;<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Результат в браузере:</div>
+                        <h1 style="color: #ff8c00; font-size: 1.5rem; margin: 10px 0;">Welcome to my page</h1>
+                        <p style="margin: 5px 0;">This is my first HTML page.</p>
+                    </div>
+                </div>
+                
+                <div class="python-block">
+                    <div class="block-title">🐍 Python — Задание 3–4</div>
+                    <div class="code">
+<span class="comment"># Создаем переменные разных типов</span>
+name = <span class="string">"Ali"</span>        <span class="comment"># str</span>
+age = <span class="number">15</span>            <span class="comment"># int</span>
+height = <span class="number">1.70</span>       <span class="comment"># float</span>
+
+<span class="comment"># Выводим значения</span>
+<span class="function">print</span>(name)
+<span class="function">print</span>(age)
+<span class="function">print</span>(height)
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Вывод программы:</div>
+                        <p style="font-family: monospace; background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                            Ali<br>15<br>1.7
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2: Уровень 6 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">🟡 Уровень 6 баллов</h1>
+                <span class="level level-6">Начальный</span>
+            </div>
+            
+            <div class="content">
+                <div class="html-block">
+                    <div class="block-title">🌐 HTML — Список и ссылка</div>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="tag">html</span>&gt;<br>
+&lt;<span class="tag">head</span>&gt;<br>
+    &lt;<span class="tag">title</span>&gt;<span class="string">List Page</span>&lt;/<span class="tag">title</span>&gt;<br>
+&lt;/<span class="tag">head</span>&gt;<br>
+&lt;<span class="tag">body</span>&gt;<br>
+<br>
+&lt;<span class="tag">h1</span>&gt;<span class="string">My Favorite Things</span>&lt;/<span class="tag">h1</span>&gt;<br>
+<br>
+&lt;<span class="tag">ul</span>&gt;<br>
+    &lt;<span class="tag">li</span>&gt;<span class="string">Python</span>&lt;/<span class="tag">li</span>&gt;<br>
+    &lt;<span class="tag">li</span>&gt;<span class="string">HTML</span>&lt;/<span class="tag">li</span>&gt;<br>
+    &lt;<span class="tag">li</span>&gt;<span class="string">Programming</span>&lt;/<span class="tag">li</span>&gt;<br>
+&lt;/<span class="tag">ul</span>&gt;<br>
+<br>
+&lt;<span class="tag">a</span> <span class="tag">href</span>=<span class="string">"https://google.com"</span>&gt;<span class="string">Go to Google</span>&lt;/<span class="tag">a</span>&gt;<br>
+<br>
+&lt;/<span class="tag">body</span>&gt;<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Результат:</div>
+                        <h3 style="margin: 5px 0;">My Favorite Things</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>Python</li>
+                            <li>HTML</li>
+                            <li>Programming</li>
+                        </ul>
+                        <a href="#" style="color: #2196F3;">Go to Google</a>
+                    </div>
+                </div>
+                
+                <div class="python-block">
+                    <div class="block-title">🐍 Python — Типы данных</div>
+                    <div class="code">
+text = <span class="string">"Hello"</span>
+number = <span class="number">10</span>
+pi = <span class="number">3.14</span>
+is_student = <span class="keyword">True</span>
+
+<span class="function">print</span>(<span class="function">type</span>(text))
+<span class="function">print</span>(<span class="function">type</span>(number))
+<span class="function">print</span>(<span class="function">type</span>(pi))
+<span class="function">print</span>(<span class="function">type</span>(is_student))
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Вывод:</div>
+                        <p style="font-family: monospace; background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                            &lt;class 'str'&gt;<br>&lt;class 'int'&gt;<br>&lt;class 'float'&gt;<br>&lt;class 'bool'&gt;
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3: Уровень 7 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">🔵 Уровень 7 баллов</h1>
+                <span class="level level-7">Средний</span>
+            </div>
+            
+            <div class="content">
+                <div class="html-block">
+                    <div class="block-title">🌐 HTML — Таблица и изображение</div>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="tag">html</span>&gt;<br>
+&lt;<span class="tag">head</span>&gt;<br>
+    &lt;<span class="tag">title</span>&gt;<span class="string">Table Page</span>&lt;/<span class="tag">title</span>&gt;<br>
+&lt;/<span class="tag">head</span>&gt;<br>
+&lt;<span class="tag">body</span>&gt;<br>
+<br>
+&lt;<span class="tag">h1</span>&gt;<span class="string">Simple Table</span>&lt;/<span class="tag">h1</span>&gt;<br>
+<br>
+&lt;<span class="tag">table</span> <span class="tag">border</span>=<span class="string">"1"</span>&gt;<br>
+    &lt;<span class="tag">tr</span>&gt;<br>
+        &lt;<span class="tag">td</span>&gt;<span class="string">Name</span>&lt;/<span class="tag">td</span>&gt;<br>
+        &lt;<span class="tag">td</span>&gt;<span class="string">Age</span>&lt;/<span class="tag">td</span>&gt;<br>
+    &lt;/<span class="tag">tr</span>&gt;<br>
+    &lt;<span class="tag">tr</span>&gt;<br>
+        &lt;<span class="tag">td</span>&gt;<span class="string">Ali</span>&lt;/<span class="tag">td</span>&gt;<br>
+        &lt;<span class="tag">td</span>&gt;<span class="number">15</span>&lt;/<span class="tag">td</span>&gt;<br>
+    &lt;/<span class="tag">tr</span>&gt;<br>
+&lt;/<span class="tag">table</span>&gt;<br>
+<br>
+&lt;<span class="tag">img</span> <span class="tag">src</span>=<span class="string">"image.jpg"</span> <span class="tag">width</span>=<span class="string">"150"</span>&gt;<br>
+<br>
+&lt;/<span class="tag">body</span>&gt;<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Результат:</div>
+                        <h3 style="margin: 5px 0;">Simple Table</h3>
+                        <table border="1" style="border-collapse: collapse; margin: 10px 0;">
+                            <tr><td style="padding: 5px;">Name</td><td style="padding: 5px;">Age</td></tr>
+                            <tr><td style="padding: 5px;">Ali</td><td style="padding: 5px;">15</td></tr>
+                        </table>
+                        <div style="background: #ff8c00; color: white; width: 150px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
+                            🖼️ image.jpg
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="python-block">
+                    <div class="block-title">🐍 Python — Ввод данных</div>
+                    <div class="code">
+name = <span class="function">input</span>(<span class="string">"Enter your name: "</span>)
+age = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter your age: "</span>))
+
+<span class="function">print</span>(<span class="string">"Name type:"</span>, <span class="function">type</span>(name))
+<span class="function">print</span>(<span class="string">"Age type:"</span>, <span class="function">type</span>(age))
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Пример работы:</div>
+                        <p style="font-family: monospace; background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                            Enter your name: Ali<br>
+                            Enter your age: 15<br>
+                            Name type: &lt;class 'str'&gt;<br>
+                            Age type: &lt;class 'int'&gt;
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4: Уровень 8 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">🟣 Уровень 8 баллов</h1>
+                <span class="level level-8">Продвинутый</span>
+            </div>
+            
+            <div class="content">
+                <div class="html-block">
+                    <div class="block-title">🌐 HTML — Форма</div>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="tag">html</span>&gt;<br>
+&lt;<span class="tag">head</span>&gt;<br>
+    &lt;<span class="tag">title</span>&gt;<span class="string">Form Page</span>&lt;/<span class="tag">title</span>&gt;<br>
+&lt;/<span class="tag">head</span>&gt;<br>
+&lt;<span class="tag">body</span>&gt;<br>
+<br>
+&lt;<span class="tag">h1</span>&gt;<span class="string">Registration Form</span>&lt;/<span class="tag">h1</span>&gt;<br>
+<br>
+&lt;<span class="tag">form</span>&gt;<br>
+    &lt;<span class="tag">input</span> <span class="tag">type</span>=<span class="string">"text"</span> <span class="tag">placeholder</span>=<span class="string">"Enter your name"</span>&gt;<br>
+    &lt;<span class="tag">br</span>&gt;<br>
+    &lt;<span class="tag">input</span> <span class="tag">type</span>=<span class="string">"submit"</span> <span class="tag">value</span>=<span class="string">"Send"</span>&gt;<br>
+&lt;/<span class="tag">form</span>&gt;<br>
+<br>
+&lt;/<span class="tag">body</span>&gt;<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Результат:</div>
+                        <h3 style="margin: 5px 0;">Registration Form</h3>
+                        <input type="text" placeholder="Enter your name" style="margin: 10px 0; padding: 5px; border: 1px solid #ccc; border-radius: 4px;"><br>
+                        <button style="background: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Send</button>
+                    </div>
+                </div>
+                
+                <div class="python-block">
+                    <div class="block-title">🐍 Python — Проверка числа</div>
+                    <div class="code">
+number = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Enter a number: "</span>))
+
+<span class="function">print</span>(<span class="string">"Type:"</span>, <span class="function">type</span>(number))
+
+<span class="keyword">if</span> number > <span class="number">0</span>:
+    <span class="function">print</span>(<span class="string">"Positive number"</span>)
+<span class="keyword">elif</span> number < <span class="number">0</span>:
+    <span class="function">print</span>(<span class="string">"Negative number"</span>)
+<span class="keyword">else</span>:
+    <span class="function">print</span>(<span class="string">"Zero"</span>)
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Пример:</div>
+                        <p style="font-family: monospace; background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                            Enter a number: 5<br>
+                            Type: &lt;class 'int'&gt;<br>
+                            Positive number
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5: Уровень 9 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">🔴 Уровень 9 баллов</h1>
+                <span class="level level-9">Высокий</span>
+            </div>
+            
+            <div class="content">
+                <div class="html-block">
+                    <div class="block-title">🌐 HTML — Полная страница</div>
+                    <div class="code">
+&lt;<span class="tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="tag">html</span>&gt;<br>
+&lt;<span class="tag">head</span>&gt;<br>
+    &lt;<span class="tag">title</span>&gt;<span class="string">Full Page</span>&lt;/<span class="tag">title</span>&gt;<br>
+&lt;/<span class="tag">head</span>&gt;<br>
+&lt;<span class="tag">body</span>&gt;<br>
+<br>
+&lt;<span class="tag">h1</span>&gt;<span class="string">My Website</span>&lt;/<span class="tag">h1</span>&gt;<br>
+<br>
+&lt;<span class="tag">ul</span>&gt;<br>
+    &lt;<span class="tag">li</span>&gt;<span class="string">Home</span>&lt;/<span class="tag">li</span>&gt;<br>
+    &lt;<span class="tag">li</span>&gt;<span class="string">About</span>&lt;/<span class="tag">li</span>&gt;<br>
+&lt;/<span class="tag">ul</span>&gt;<br>
+<br>
+&lt;<span class="tag">table</span> <span class="tag">border</span>=<span class="string">"1"</span>&gt;<br>
+    &lt;<span class="tag">tr</span>&gt;&lt;<span class="tag">td</span>&gt;<span class="string">Subject</span>&lt;/<span class="tag">td</span>&gt;&lt;<span class="tag">td</span>&gt;<span class="string">Grade</span>&lt;/<span class="tag">td</span>&gt;&lt;/<span class="tag">tr</span>&gt;<br>
+    &lt;<span class="tag">tr</span>&gt;&lt;<span class="tag">td</span>&gt;<span class="string">Math</span>&lt;/<span class="tag">td</span>&gt;&lt;<span class="tag">td</span>&gt;<span class="number">5</span>&lt;/<span class="tag">td</span>&gt;&lt;/<span class="tag">tr</span>&gt;<br>
+&lt;/<span class="tag">table</span>&gt;<br>
+<br>
+&lt;<span class="tag">img</span> <span class="tag">src</span>=<span class="string">"image.jpg"</span> <span class="tag">width</span>=<span class="string">"150"</span>&gt;<br>
+<br>
+&lt;<span class="tag">a</span> <span class="tag">href</span>=<span class="string">"https://school.tj"</span>&gt;<span class="string">School Website</span>&lt;/<span class="tag">a</span>&gt;<br>
+<br>
+&lt;/<span class="tag">body</span>&gt;<br>
+&lt;/<span class="tag">html</span>&gt;
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Результат:</div>
+                        <h2 style="color: #ff8c00;">My Website</h2>
+                        <ul style="margin-left: 20px;">
+                            <li>Home</li>
+                            <li>About</li>
+                        </ul>
+                        <table border="1" style="border-collapse: collapse; margin: 10px 0;">
+                            <tr><td style="padding: 5px;">Subject</td><td style="padding: 5px;">Grade</td></tr>
+                            <tr><td style="padding: 5px;">Math</td><td style="padding: 5px;">5</td></tr>
+                        </table>
+                        <div style="background: #ff8c00; color: white; width: 150px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 10px 0;">
+                            🖼️ image.jpg
+                        </div>
+                        <a href="#" style="color: #2196F3;">School Website</a>
+                    </div>
+                </div>
+                
+                <div class="python-block">
+                    <div class="block-title">🐍 Python — Работа с двумя числами</div>
+                    <div class="code">
+a = <span class="function">float</span>(<span class="function">input</span>(<span class="string">"Enter first number: "</span>))
+b = <span class="function">float</span>(<span class="function">input</span>(<span class="string">"Enter second number: "</span>))
+
+<span class="function">print</span>(<span class="string">"Type of a:"</span>, <span class="function">type</span>(a))
+<span class="function">print</span>(<span class="string">"Type of b:"</span>, <span class="function">type</span>(b))
+
+result = a + b
+<span class="function">print</span>(<span class="string">"Sum:"</span>, result)
+                    </div>
+                    <div class="demo">
+                        <div class="demo-title">📌 Пример:</div>
+                        <p style="font-family: monospace; background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                            Enter first number: 5.5<br>
+                            Enter second number: 3.2<br>
+                            Type of a: &lt;class 'float'&gt;<br>
+                            Type of b: &lt;class 'float'&gt;<br>
+                            Sum: 8.7
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+            </div>
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.indicator-dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const counter = document.getElementById('slideCounter');
+        
+        let current = 0;
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            
+            counter.textContent = `${index + 1}/5`;
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === 4;
+            
+            current = index;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (current > 0) showSlide(current - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (current < 4) showSlide(current + 1);
+        });
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => showSlide(i));
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && current > 0) showSlide(current - 1);
+            if (e.key === 'ArrowRight' && current < 4) showSlide(current + 1);
+        });
+    </script>
+</body>
+</html>

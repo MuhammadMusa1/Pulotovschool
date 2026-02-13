@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-страница (сайт) | 9 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .presentation {
+            width: 100%;
+            max-width: 1900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #26d0ce;
+        }
+
+        .slide-title {
+            color: #1a2980;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            color: #666;
+            font-size: 1.5rem;
+        }
+
+        .content {
+            font-size: 2rem;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #1a2980;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.4rem;
+        }
+
+        .code-demo {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 1.95rem;
+            line-height: 1.5;
+        }
+
+        .html-tag {
+            color: #e34c26;
+        }
+
+        .html-attr {
+            color: #264de4;
+        }
+
+        .html-content {
+            color: #333;
+        }
+
+        .example {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .website-structure {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .structure-item {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .structure-item:before {
+            content: "📁";
+            position: absolute;
+            left: 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .nav-btn {
+            background: #1a2980;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #26d0ce;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: #1a2980;
+            transform: scale(1.2);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(26, 41, 128, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #1a2980;
+            font-weight: bold;
+        }
+
+        .live-demo {
+            border: 2px solid #1a2980;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .demo-title {
+            text-align: center;
+            color: #1a2980;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 20px;
+                min-height: auto;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .navigation {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .slide-indicator {
+                order: -1;
+                margin-bottom: 10px;
+            }
+            
+            .slide-counter {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter" id="slide-counter">1/6</div>
+
+        <!-- Слайд 1 -->
+        <div class="slide active" id="slide1">
+            <div class="slide-header">
+                <h1 class="slide-title">Что такое веб-сайт?</h1>
+                <p class="slide-subtitle">Информатика 9 класс</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🌐</span> Определение</h2>
+                    <p><strong>Веб-сайт</strong> - это совокупность веб-страниц, объединенных под одним доменным именем и доступных в сети Интернет.</p>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🎯</span> Основные компоненты</h2>
+                    <div class="website-structure">
+                        <div class="structure-item">Домен (адрес сайта)</div>
+                        <div class="structure-item">Хостинг (место хранения)</div>
+                        <div class="structure-item">HTML (структура)</div>
+                        <div class="structure-item">CSS (оформление)</div>
+                        <div class="structure-item">JavaScript (интерактивность)</div>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>Интересный факт:</strong> Первый в мире сайт был создан в 1991 году и содержал информацию о технологии World Wide Web.
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="slide" id="slide2">
+            <div class="slide-header">
+                <h1 class="slide-title">HTML - основа сайта</h1>
+                <p class="slide-subtitle">Язык гипертекстовой разметки</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🏗️</span> Что такое HTML?</h2>
+                    <p>HTML (HyperText Markup Language) - язык разметки, который определяет структуру веб-страницы.</p>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">💻</span> Простейшая HTML-страница</h2>
+                    <div class="code-demo">
+&lt;<span class="html-tag">!DOCTYPE html</span>&gt;<br>
+&lt;<span class="html-tag">html</span>&gt;<br>
+&lt;<span class="html-tag">head</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="html-tag">title</span>&gt;<span class="html-content">Мой первый сайт</span>&lt;/<span class="html-tag">title</span>&gt;<br>
+&lt;/<span class="html-tag">head</span>&gt;<br>
+&lt;<span class="html-tag">body</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="html-tag">h1</span>&gt;<span class="html-content">Привет, мир!</span>&lt;/<span class="html-tag">h1</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span class="html-tag">p</span>&gt;<span class="html-content">Это моя первая веб-страница.</span>&lt;/<span class="html-tag">p</span>&gt;<br>
+&lt;/<span class="html-tag">body</span>&gt;<br>
+&lt;/<span class="html-tag">html</span>&gt;
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <strong>Основные теги HTML:</strong><br>
+                    • &lt;h1&gt; - заголовок<br>
+                    • &lt;p&gt; - параграф (абзац)<br>
+                    • &lt;a&gt; - ссылка<br>
+                    • &lt;img&gt; - изображение<br>
+                    • &lt;div&gt; - блок
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="slide" id="slide3">
+            <div class="slide-header">
+                <h1 class="slide-title">CSS - стили и оформление</h1>
+                <p class="slide-subtitle">Каскадные таблицы стилей</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🎨</span> Что такое CSS?</h2>
+                    <p>CSS (Cascading Style Sheets) - язык стилей, который описывает внешний вид HTML-элементов.</p>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">✨</span> Пример CSS кода</h2>
+                    <div class="code-demo">
+<span class="html-tag">body</span> {<br>
+&nbsp;&nbsp;<span class="html-attr">font-family</span>: Arial, sans-serif;<br>
+&nbsp;&nbsp;<span class="html-attr">background-color</span>: <span class="html-content">#f0f0f0</span>;<br>
+&nbsp;&nbsp;<span class="html-attr">color</span>: <span class="html-content">#333</span>;<br>
+}<br><br>
+<span class="html-tag">h1</span> {<br>
+&nbsp;&nbsp;<span class="html-attr">color</span>: <span class="html-content">blue</span>;<br>
+&nbsp;&nbsp;<span class="html-attr">text-align</span>: <span class="html-content">center</span>;<br>
+}<br><br>
+<span class="html-tag">.button</span> {<br>
+&nbsp;&nbsp;<span class="html-attr">background</span>: <span class="html-content">#4CAF50</span>;<br>
+&nbsp;&nbsp;<span class="html-attr">color</span>: <span class="html-content">white</span>;<br>
+&nbsp;&nbsp;<span class="html-attr">padding</span>: <span class="html-content">10px 20px</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="live-demo">
+                    <h3 class="demo-title">Пример применения CSS</h3>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 5px;">
+                        <h2 style="color: #2196F3; text-align: center;">Заголовок с CSS</h2>
+                        <p style="font-size: 16px; line-height: 1.6;">Этот текст стилизован с помощью CSS</p>
+                        <button style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            Кнопка с CSS
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="slide" id="slide4">
+            <div class="slide-header">
+                <h1 class="slide-title">JavaScript - интерактивность</h1>
+                <p class="slide-subtitle">Язык программирования для веба</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">⚡</span> Что такое JavaScript?</h2>
+                    <p>JavaScript - язык программирования, который добавляет интерактивность веб-страницам.</p>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🔧</span> Пример JavaScript</h2>
+                    <div class="code-demo">
+<span class="html-comment">// Изменение текста при клике</span><br>
+&lt;<span class="html-tag">button</span> <span class="html-attr">onclick</span>=<span class="html-content">"changeText()"</span>&gt;<br>
+&nbsp;&nbsp;<span class="html-content">Нажми меня</span><br>
+&lt;/<span class="html-tag">button</span>&gt;<br><br>
+&lt;<span class="html-tag">p</span> <span class="html-attr">id</span>=<span class="html-content">"demo"</span>&gt;<span class="html-content">Исходный текст</span>&lt;/<span class="html-tag">p</span>&gt;<br><br>
+&lt;<span class="html-tag">script</span>&gt;<br>
+<span class="html-content">function changeText() {<br>
+&nbsp;&nbsp;document.getElementById("demo").innerHTML = "Текст изменен!";<br>
+}</span><br>
+&lt;/<span class="html-tag">script</span>&gt;
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <strong>Что может JavaScript:</strong><br>
+                    • Реагировать на действия пользователя<br>
+                    • Изменять содержимое страницы<br>
+                    • Проверять данные форм<br>
+                    • Создавать анимации<br>
+                    • Загружать данные без перезагрузки
+                </div>
+                
+                <div class="tip">
+                    <strong>Совет:</strong> Для начала изучайте HTML и CSS, потом переходите к JavaScript.
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5 -->
+        <div class="slide" id="slide5">
+            <div class="slide-header">
+                <h1 class="slide-title">Типы веб-сайтов</h1>
+                <p class="slide-subtitle">Разнообразие в интернете</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">📱</span> Классификация сайтов</h2>
+                    <div class="website-structure">
+                        <div class="structure-item"><strong>1. Статические сайты</strong> - информация не меняется</div>
+                        <div class="structure-item"><strong>2. Динамические сайты</strong> - информация обновляется</div>
+                        <div class="structure-item"><strong>3. Социальные сети</strong> - общение пользователей</div>
+                        <div class="structure-item"><strong>4. Интернет-магазины</strong> - онлайн-продажи</div>
+                        <div class="structure-item"><strong>5. Блоги</strong> - личные дневники</div>
+                        <div class="structure-item"><strong>6. Порталы</strong> - много информации в одном месте</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🎓</span> Образовательные сайты</h2>
+                    <p>Примеры сайтов для учебы:</p>
+                    <ul style="margin: 15px 0; padding-left: 25px;">
+                        <li>Школьные порталы</li>
+                        <li>Онлайн-курсы</li>
+                        <li>Электронные библиотеки</li>
+                        <li>Обучающие платформы</li>
+                        <li>Сайты для подготовки к экзаменам</li>
+                    </ul>
+                </div>
+                
+                <div class="warning">
+                    <strong>Важно:</strong> При создании сайта думайте о его цели и аудитории.
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 6 -->
+        <div class="slide" id="slide6">
+            <div class="slide-header">
+                <h1 class="slide-title">Практическое задание</h1>
+                <p class="slide-subtitle">Создаем свой первый сайт</p>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🚀</span> Шаги создания</h2>
+                    <div class="website-structure">
+                        <div class="structure-item"><strong>1. Планирование</strong> - определите тему и структуру</div>
+                        <div class="structure-item"><strong>2. Создание HTML</strong> - напишите разметку</div>
+                        <div class="structure-item"><strong>3. Добавление CSS</strong> - оформите страницу</div>
+                        <div class="structure-item"><strong>4. Проверка</strong> - протестируйте в браузере</div>
+                        <div class="structure-item"><strong>5. Публикация</strong> - разместите в интернете</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">📝</span> Задание для 9 класса</h2>
+                    <div class="example">
+                        <p><strong>Создайте сайт "Обо мне" с разделами:</strong></p>
+                        <ol style="margin: 15px 0; padding-left: 25px;">
+                            <li>Главная страница с приветствием</li>
+                            <li>Страница "Обо мне" (интересы, хобби)</li>
+                            <li>Страница "Мои достижения"</li>
+                            <li>Страница "Контакты"</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>Полезные инструменты:</strong><br>
+                    • Блокнот или Notepad++ для написания кода<br>
+                    • Браузер для тестирования<br>
+                    • Бесплатные хостинги для публикации<br>
+                    • Онлайн-редакторы для практики
+                </div>
+                
+                <div class="warning">
+                    <strong>Помните:</strong> Веб-разработка - это творческий процесс. Не бойтесь экспериментировать и учиться на ошибках!
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            
+            <div class="slide-indicator">
+                <div class="indicator-dot active" data-slide="0"></div>
+                <div class="indicator-dot" data-slide="1"></div>
+                <div class="indicator-dot" data-slide="2"></div>
+                <div class="indicator-dot" data-slide="3"></div>
+                <div class="indicator-dot" data-slide="4"></div>
+                <div class="indicator-dot" data-slide="5"></div>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator-dot');
+            const counter = document.getElementById('slide-counter');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            function updateSlide() {
+                // Скрыть все слайды и индикаторы
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // Показать текущий слайд
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+                
+                // Обновить счетчик
+                counter.textContent = `${currentSlide + 1}/${totalSlides}`;
+                
+                // Обновить кнопки
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+            }
+            
+            // Навигация кнопками
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Навигация по индикаторам
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlide();
+                });
+            });
+            
+            // Навигация клавиатурой
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+            
+            // Автоматическая демонстрация (опционально)
+            //let autoSlide = setInterval(() => {
+            //    if (currentSlide < totalSlides - 1) {
+            //        currentSlide++;
+            //    } else {
+            //        currentSlide = 0;
+            //    }
+            //    updateSlide();
+            //}, 30000); // Переключение каждые 30 секунд
+            
+            // Остановить автослайд при взаимодействии
+            document.addEventListener('click', () => {
+                clearInterval(autoSlide);
+            });
+            
+            // Инициализация
+            updateSlide();
+        });
+    </script>
+</body>
+</html>
