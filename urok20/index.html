@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Практика: HTML + CSS (9 класс)</title>
+
+  <!-- 1) Внешний CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- 2) Внутренний CSS (для демонстрации) -->
+  <style>
+    /* Демонстрация internal CSS: подсветим кодовые слова */
+    .highlight { background: #fff2a8; padding: 2px 6px; border-radius: 8px; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="logo">Web<span class="logo__accent">9</span></div>
+
+      <nav class="menu">
+        <a href="#about">О себе</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#skills">Навыки</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+
+      <!-- 3) Встроенный CSS (inline) для демонстрации -->
+      <span style="font-size: 12px; opacity: 0.8;">Inline CSS пример</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__text">
+        <h1>Структура HTML и оформление <span class="accent">CSS</span></h1>
+        <p>
+          HTML — это <span class="highlight">структура</span>,  
+          CSS — это <span class="highlight">внешний вид</span>.  
+          Измени файл <b>style.css</b> и посмотри, как меняется дизайн!
+        </p>
+
+        <div class="hero__buttons">
+          <button class="btn btn--primary" id="btnHello">Нажми меня</button>
+          <a class="btn btn--ghost" href="#skills">Перейти к навыкам</a>
+        </div>
+
+        <p class="note">
+          Задание: поменяй цвет фона, шрифт, рамки карточек и наведение кнопки.
+        </p>
+      </div>
+
+      <div class="card profile">
+        <div class="avatar" aria-label="Фото"></div>
+        <h2 class="profile__name">Ученик 9 класса</h2>
+        <p class="profile__desc">Мой первый мини‑сайт на HTML + CSS</p>
+
+        <div class="badges">
+          <span class="badge">HTML</span>
+          <span class="badge">CSS</span>
+          <span class="badge">Web</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="section__title">О себе</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Что я изучаю</h3>
+          <ul class="list">
+            <li>Структуру HTML: head, body</li>
+            <li>Теги: h1, p, a, img, ul, li</li>
+            <li>Оформление через CSS</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Мой распорядок</h3>
+          <table class="table">
+            <tr><th>День</th><th>Занятие</th></tr>
+            <tr><td>Пн</td><td>HTML</td></tr>
+            <tr><td>Ср</td><td>CSS</td></tr>
+            <tr><td>Пт</td><td>Практика мини‑проект</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section">
+      <h2 class="section__title">Галерея (карточки)</h2>
+      <div class="cards">
+        <article class="card mini">
+          <h3>Карточка 1</h3>
+          <p>Эффект наведения и тень.</p>
+        </article>
+        <article class="card mini">
+          <h3>Карточка 2</h3>
+          <p>Скругление, отступы, фон.</p>
+        </article>
+        <article class="card mini">
+          <h3>Карточка 3</h3>
+          <p>Стилизация текста и ссылок.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <h2 class="section__title">Навыки (прогресс‑полосы)</h2>
+
+      <div class="card">
+        <div class="skill">
+          <div class="skill__row">
+            <span>HTML</span><span>70%</span>
+          </div>
+          <div class="bar"><div class="bar__fill" style="width: 70%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div class="skill__row">
+            <span>CSS</span><span>60%</span>
+          </div>
+          <div class="bar"><div class="bar__fill bar__fill--2" style="width: 60%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div class="skill__row">
+            <span>Дизайн</span><span>40%</span>
+          </div>
+          <div class="bar"><div class="bar__fill bar__fill--3" style="width: 40%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2 class="section__title">Контакты (форма)</h2>
+
+      <form class="card form">
+        <label>
+          Имя:
+          <input type="text" placeholder="Введите имя">
+        </label>
+
+        <label>
+          Сообщение:
+          <textarea rows="4" placeholder="Напишите сообщение"></textarea>
+        </label>
+
+        <button class="btn btn--primary" type="button">Отправить (демо)</button>
+        <p class="note">Здесь JavaScript не нужен — мы показываем только HTML+CSS.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 9 класс • Практика HTML+CSS</span>
+      <a href="#top" class="link">Наверх</a>
+    </div>
+  </footer>
+
+  <!-- Мини‑демо без обязательного изучения: просто сообщение по кнопке -->
+  <script>
+    document.getElementById('btnHello').addEventListener('click', () => {
+      alert('Отлично! Ты видишь, как работает структура HTML и оформление CSS 😊');
+    });
+  </script>
+</body>
+</html>
