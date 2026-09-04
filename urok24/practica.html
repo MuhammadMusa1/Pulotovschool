@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практическая работа: списки, таблицы, iframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Контейнер презентации */
+        .presentation-container {
+            max-width: 1800px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Слайд */
+        .slide {
+            display: none;
+            padding: 40px 50px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Заголовки */
+        h1 {
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+
+        .slide-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            padding-left: 20px;
+        }
+
+        /* Шпаргалка */
+        .cheatsheet {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .cheatsheet pre {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 1.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .cheatsheet code {
+            color: #fbbf24;
+        }
+
+        .task-box {
+            background: #f0fdf4;
+            border-left: 5px solid #22c55e;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .task-box h3 {
+            color: #166534;
+            margin-bottom: 10px;
+        }
+
+        .points {
+            background: #fef3c7;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-block;
+            font-weight: bold;
+            color: #92400e;
+            margin: 15px 0;
+        }
+
+        /* Навигация */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px 30px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #5a67d8;
+            transform: scale(1.02);
+        }
+
+        button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            font-size: 1rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e2e8f0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .total-score {
+            background: #1a1a2e;
+            color: #fbbf24;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            button {
+                padding: 8px 20px;
+            }
+        }
+        p{
+            font-size: 1.5rem;
+            
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Слайд 1 - Титульный -->
+    <div class="slide active" id="slide1">
+        <div class="slide-badge"> Старт</div>
+        <h1> Практическая работа</h1>
+        <p style="font-size: 1.2rem; color: #475569; margin-bottom: 20px;">HTML: списки, таблицы, iframe</p>
+        <div class="task-box">
+            <h3> Информация</h3>
+            <p><strong>Класс:</strong> 9</p>
+            <p><strong>Время:</strong> 45 минут</p>
+            <p><strong>Максимум:</strong> 10 баллов</p>
+            <p><strong>Правило:</strong> баллы суммируются. Каждый новый элемент = +1 балл</p>
+        </div>
+        <div class="points">✨ Нажмите "Далее" чтобы начать</div>
+    </div>
+
+    <!-- Слайд 2 - Балл 1: Каркас -->
+    <div class="slide" id="slide2">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Базовый каркас страницы</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Создать валидный HTML-файл с заголовком &lt;h1&gt;</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Моя страница&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;Моя веб-страница&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 1</div>
+    </div>
+
+    <!-- Слайд 3 - Балл 2: Абзац -->
+    <div class="slide" id="slide3">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Абзац текста</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Добавить абзац &lt;p&gt; с текстом о себе или теме страницы</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;p&gt;Меня зовут [твоё имя]. Эта страница 
+   рассказывает о моём хобби.&lt;/p&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 2</div>
+    </div>
+
+    <!-- Слайд 4 - Балл 3: Маркированный список -->
+    <div class="slide" id="slide4">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Маркированный список</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Добавить маркированный список &lt;ul&gt; с 3 элементами</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;ul&gt;
+    &lt;li&gt;Первый пункт&lt;/li&gt;
+    &lt;li&gt;Второй пункт&lt;/li&gt;
+    &lt;li&gt;Третий пункт&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 3</div>
+    </div>
+
+    <!-- Слайд 5 - Балл 4: Нумерованный список -->
+    <div class="slide" id="slide5">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Нумерованный список</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Добавить нумерованный список &lt;ol&gt; с 3 элементами</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;ol&gt;
+    &lt;li&gt;Шаг первый&lt;/li&gt;
+    &lt;li&gt;Шаг второй&lt;/li&gt;
+    &lt;li&gt;Шаг третий&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 4</div>
+    </div>
+
+    <!-- Слайд 6 - Балл 5: Таблица 2x2 -->
+    <div class="slide" id="slide6">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Таблица 2×2</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Добавить таблицу размером 2 строки и 2 столбца</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;table border="1"&gt;
+    <tr>
+        <td>Строка 1, столбец 1&lt;/td&gt;
+        <td>Строка 1, столбец 2&lt;/td&gt;
+    </tr>
+    <tr>
+        <td>Строка 2, столбец 1&lt;/td&gt;
+        <td>Строка 2, столбец 2&lt;/td&gt;
+    </tr>
+&lt;/table&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 5</div>
+    </div>
+
+    <!-- Слайд 7 - Балл 6: Таблица 3x3 с th -->
+    <div class="slide" id="slide7">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Таблица 3×3 с заголовками</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Расширить таблицу до 3×3 и добавить &lt;th&gt; (жирные заголовки)</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;table border="1"&gt;
+    <tr>
+        &lt;th&gt;Заголовок 1&lt;/th&gt;
+        &lt;th&gt;Заголовок 2&lt;/th&gt;
+        &lt;th&gt;Заголовок 3&lt;/th&gt;
+    </tr>
+    <tr>
+        <td>Строка 1&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;
+    </tr>
+    ...
+&lt;/table&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 6</div>
+    </div>
+
+    <!-- Слайд 8 - Балл 7: colspan -->
+    <div class="slide" id="slide8">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Объединение столбцов (colspan)</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>В таблице объединить 2 или более столбцов в одной ячейке</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;table border="1"&gt;
+    <tr>
+        &lt;th colspan="3"&gt;Общий заголовок на 3 столбца&lt;/th&gt;
+    </tr>
+    <tr>
+        <td>A&lt;/td&gt;&lt;td&gt;B&lt;/td&gt;&lt;td&gt;C&lt;/td&gt;
+    </tr>
+    <tr>
+        &lt;td colspan="2"&gt;Объединены 2 столбца&lt;/td&gt;
+        <td>D&lt;/td&gt;
+    </tr>
+&lt;/table&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 7</div>
+    </div>
+
+    <!-- Слайд 9 - Балл 8: rowspan -->
+    <div class="slide" id="slide9">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Объединение строк (rowspan)</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>В таблице объединить 2 строки в одной ячейке</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;table border="1"&gt;
+    <tr>
+        &lt;td rowspan="2"&gt;Объединены&lt;br&gt;2 строки&lt;/td&gt;
+        <td>Данные 1&lt;/td&gt;
+    </tr>
+    <tr>
+        <td>Данные 2&lt;/td&gt;
+    </tr>
+&lt;/table&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 8</div>
+    </div>
+
+    <!-- Слайд 10 - Балл 9: iframe -->
+    <div class="slide" id="slide10">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Iframe (начальный)</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Добавить iframe с видео YouTube или картой</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;iframe 
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    width="500" 
+    height="280"&gt;
+&lt;/iframe&gt;
+
+&lt;!-- ИЛИ карта --&gt;
+&lt;iframe 
+    src="https://yandex.ru/map/place/moskva"&gt;
+&lt;/iframe&gt;</code></pre>
+        </div>
+        <div class="points">📌 Итого баллов: 9</div>
+    </div>
+
+    <!-- Слайд 11 - Балл 10: iframe + атрибуты -->
+    <div class="slide" id="slide11">
+        <div class="slide-badge">🏆 +1 балл</div>
+        <h2> Iframe + атрибуты доступности</h2>
+        <div class="task-box">
+            <h3> Что сделать:</h3>
+            <p>Добавить к iframe атрибуты width, height, title</p>
+        </div>
+        <div class="cheatsheet">
+            <pre><code>&lt;iframe 
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    width="560" 
+    height="315" 
+    title="Моё любимое видео на YouTube"&gt;
+&lt;/iframe&gt;</code></pre>
+        </div>
+        <div class="points">🎉 Итого баллов: 10 — Работа готова! 🎉</div>
+    </div>
+
+    <!-- Слайд 12 - Итоговая таблица -->
+    <div class="slide" id="slide12">
+        <div class="slide-badge">📋 Итог</div>
+        <h2>Таблица баллов</h2>
+        <div class="cheatsheet" style="background: #f1f5f9; color: #1e293b;">
+            <pre style="font-family: inherit;">
+1 балл → Каркас + &lt;h1&gt;
+2 балла → &lt;p&gt; абзац
+3 балла → &lt;ul&gt; маркированный список
+4 балла → &lt;ol&gt; нумерованный список
+5 баллов → Таблица 2×2
+6 баллов → Таблица 3×3 + &lt;th&gt;
+7 баллов → colspan
+8 баллов → rowspan
+9 баллов → iframe
+10 баллов → iframe + title/width/height
+            </pre>
+        </div>
+        <div class="points">📌 Сохрани файл как index.html и открой в браузере</div>
+    </div>
+
+    <!-- Слайд 13 - Чек-лист -->
+    <div class="slide" id="slide13">
+        <div class="slide-badge"> Проверка</div>
+        <h2>Чек-лист перед сдачей</h2>
+        <div class="task-box">
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li>☐ Страница открывается в браузере</li>
+                <li>☐ Все теги закрыты</li>
+                <li>☐ У iframe есть title</li>
+                <li>☐ У таблицы есть border="1"</li>
+                <li>☐ Списки содержат минимум 3 элемента</li>
+                <li>☐ Есть объединение ячеек (colspan/rowspan)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Слайд 14 - Пример готовой работы -->
+    <div class="slide" id="slide14">
+        <div class="slide-badge">⭐ Пример</div>
+        <h2>Готовая работа на 10 баллов</h2>
+        <div class="cheatsheet">
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Моё хобби — музыка&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Моё хобби — музыка&lt;/h1&gt;
+&lt;p&gt;Я играю на гитаре&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Рок&lt;/li&gt;&lt;li&gt;Джаз&lt;/li&gt;&lt;li&gt;Блюз&lt;/li&gt;&lt;/ul&gt;
+&lt;ol&gt;&lt;li&gt;Queen&lt;/li&gt;&lt;li&gt;Beatles&lt;/li&gt;&lt;li&gt;Nirvana&lt;/li&gt;&lt;/ol&gt;
+&lt;table border="1"&gt;
+  &lt;tr&gt;&lt;th colspan="3"&gt;Мои альбомы&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;th&gt;Группа&lt;/th&gt;&lt;th&gt;Альбом&lt;/th&gt;&lt;th&gt;Год&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td rowspan="2"&gt;Queen&lt;/td&gt;&lt;td&gt;A Night...&lt;/td&gt;&lt;td&gt;1975&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;News...&lt;/td&gt;&lt;td&gt;1991&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;iframe src="https://www.youtube.com/embed/fJ9rUzIMcZQ" 
+        width="560" height="315" 
+        title="Queen - Bohemian Rhapsody"&gt;
+&lt;/iframe&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+    </div>
+
+    <!-- Слайд 15 - Финальный -->
+    <div class="slide" id="slide15">
+        <div class="slide-badge">🎉 Финиш</div>
+        <h1>Удачи! 🍀</h1>
+        <div class="task-box">
+            <p style="font-size: 1.2rem;">Вопросы? Подними руку, учитель подойдёт.</p>
+            <p style="margin-top: 15px;"><strong>Не копируй чужой код</strong> — сделай свою уникальную страницу!</p>
+        </div>
+        <div class="points">📌 Сохрани файл как practica.html</div>
+    </div>
+
+    <!-- Навигация -->
+    <div class="nav-buttons">
+        <button id="prevBtn" onclick="changeSlide(-1)">◀ Назад</button>
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">15</span>
+            <div class="total-score" id="scoreDisplay">🏆 0/10 баллов</div>
+        </div>
+        <button id="nextBtn" onclick="changeSlide(1)">Далее ▶</button>
+    </div>
+</div>
+
+<script>
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const totalScoreEl = document.getElementById('scoreDisplay');
+    const progressFill = document.getElementById('progressFill');
+    const currentSlideSpan = document.getElementById('currentSlide');
+    const totalSlidesSpan = document.getElementById('totalSlides');
+    
+    totalSlidesSpan.textContent = totalSlides;
+
+    // Функция обновления прогресса и отображения баллов
+    function updateProgressAndScore() {
+        // Прогресс-бар
+        const percent = ((currentSlideIndex + 1) / totalSlides) * 100;
+        progressFill.style.width = percent + '%';
+        
+        // Отображение текущего номера слайда
+        currentSlideSpan.textContent = currentSlideIndex + 1;
+        
+        // Отображение баллов в зависимости от слайда
+        // Слайды: 1 (титул) - 0 баллов, далее с 2 по 11 (+1 балл каждый)
+        let currentScore = 0;
+        if (currentSlideIndex >= 1 && currentSlideIndex <= 10) {
+            // Слайд 2 (индекс 1) = 1 балл, ... слайд 11 (индекс 10) = 10 баллов
+            currentScore = currentSlideIndex;
+        } else if (currentSlideIndex > 10) {
+            currentScore = 10;
+        }
+        
+        totalScoreEl.innerHTML = `🏆 ${currentScore}/10 баллов`;
+        
+        // Изменение цвета в зависимости от прогресса
+        if (currentScore >= 7) {
+            totalScoreEl.style.background = '#22c55e';
+            totalScoreEl.style.color = 'white';
+        } else if (currentScore >= 4) {
+            totalScoreEl.style.background = '#fbbf24';
+            totalScoreEl.style.color = '#1a1a2e';
+        } else {
+            totalScoreEl.style.background = '#1a1a2e';
+            totalScoreEl.style.color = '#fbbf24';
+        }
+    }
+
+    function showSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
+        
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+        currentSlideIndex = index;
+        
+        // Управление кнопками
+        document.getElementById('prevBtn').disabled = (currentSlideIndex === 0);
+        document.getElementById('nextBtn').disabled = (currentSlideIndex === totalSlides - 1);
+        
+        updateProgressAndScore();
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlideIndex + direction);
+    }
+
+    // Обработка клавиш стрелок
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            changeSlide(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeSlide(1);
+        }
+    });
+
+    // Инициализация
+    showSlide(0);
+</script>
+
+</body>
+</html>
